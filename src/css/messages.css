@@ -1,0 +1,97 @@
+@keyframes showSystemErr {
+
+  from {
+    height: 0;
+    opacity: 0;
+  }
+
+  to {
+    height: unset;
+    opacity: 1;
+  }
+
+}
+
+/** ========= System Error Wrapper ========= **/
+#systemErrPopupWrapper {
+  z-index: 1000;
+  width: 100%;
+  overflow-y: scroll;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/** ========= System Error Model ========= **/
+[id*="systemErrModel-"]:first-child {
+  margin-top: 10px;
+}
+
+[id*="systemErrModel-"] {
+  width: 95%;
+  max-width: 350px;
+  margin-bottom: 10px;
+  padding-top: 20px;
+  border-radius: 15px;
+  background-color: #EFEFEF;
+
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+
+[id*="systemErrModel-"] .systemErrIcon {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+[id*="systemErrModel-"] .systemErrIcon i {
+  color: #d84d4d;
+  font-size: 70px;
+}
+
+[id*="systemErrModel-"] .systemErrHeader {
+  padding: 20px 0;
+  font-size: 24px;
+}
+
+[id*="systemErrModel-"] .systemErrContent {
+  width: 90%;
+  text-align: center;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+[id*="systemErrModel-"] .systemErrActions {
+  width: 100%;
+  margin-top: 25px;
+}
+
+[id*="systemErrModel-"] .systemErrActions #systemErrButton-1 {
+  padding: 22px;
+  text-align: center;
+  border-top: solid 1px #c7c7c7;
+  background-color: #fff;
+  border-radius: 0 0 15px 15px;
+}
+
+
+
+
+/** ========= System InnerHTML Icon ========= **/
+
+#systemErrWarnIcon {
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+  margin-left: 25px;
+  border-radius: 50%;
+  background-color: red;
+}

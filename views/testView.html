@@ -1,0 +1,123 @@
+<template>
+  <div class="testView d-flex flex-col flex-even flex-align">
+
+    <div class="d-flex flex-even flex-align flex-wrap">
+      <button @bind:class="button" @on:click="show()">Show / Hide</button>
+      <button @bind:class="button" @on:click="add()">Add</button>
+      <button @bind:class="button" @on:click="nextView()">View 2 Method</button>
+      <button @bind:class="button" @on:click="changeClass()">changeClass</button>
+      <button @bind:class="button" route="/about">View 2 Attribute</button>
+    </div>
+
+    <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
+    <input type="text" @reflect="name" @on:enter="logName()">
+    <p @if="bool">SHOWING 1</p>
+    <p @else>SHOWING 2</p>
+    <p>{{a}}</p>
+    <br>
+
+    <div class="block d-flex flex-even flex-align flex-wrap">
+
+      <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
+        <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
+        <span class="text-sm-bold text-danger">Id: [j.productUId]</span>
+        <span class="text-md-boldest text-secondary">[j.label]</span>
+        <span class="text-xs-bold text-muted">[j.containerSize]</span>
+        <span class="text-xs-bold text-muted">[j.description]</span>
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+
+  import { Quantum } from "./packages/Quantum";
+  Quantum.newView('testView', {
+    props: ["test1", "test2"],
+    Data() {
+      return {
+        a: 0,
+        bool: false,
+        blue: "bg-primary text-white",
+        button: "btn-p-xs shadow-sm",
+        person: "person text-center d-flex flex-col flex-even flex-align flex-wrap shadow-sm",
+        name: "World",
+        people: [],
+        products: [],
+        people2: [
+          "tester 1",
+          "tester 2",
+          "tester 3",
+        ]
+      }
+    },
+    Init() {      
+      this.people = this.$state.Get("getPeople");
+      this.products = this.$state.Get("getProducts");
+      console.log(this.products.length);
+      
+      this.people.push({name: "test 6", age: 17});
+      setInterval(() => {
+        this.add();
+      }, 1000);
+      // this.changeClass();
+    },
+    watchers: {
+      people() {
+        console.log("people watcher called");
+      },
+    },
+    methods: {
+      add() {        
+        if (this.a == 10) {
+          this.bool = true;
+          this.a = 0;
+        }
+        this.a++;
+      },
+      changeClass() {
+        if (this.button.indexOf("bg-danger") == -1) {
+          this.button = "btn-p-xs bg-danger text-white shadow-sm";          
+        }
+        else {
+          this.button = "btn-p-xs shadow-sm";
+        }
+      },
+      logItem(a, b, c) {
+        console.log(`a: ${b} b: ${JSON.stringify(c)}`);
+        console.log(this.products[a]);
+        
+      },
+      logName() {
+        console.log(this.name);
+      },
+      show() {
+        this.bool = !this.bool;
+        // console.log(this.bool);        
+      },
+      nextView() {        
+        Quantum.Events.route('/about', {name: this.name});
+      }
+    },    
+  });
+
+</script>
+
+<style>
+  .block {
+    max-width: 80%;
+  }
+  .person {
+    min-width: 300px;
+    max-width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  .person .img {
+    width: 100%;
+  }
+</style>

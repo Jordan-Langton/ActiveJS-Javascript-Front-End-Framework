@@ -1,0 +1,30 @@
+<template>
+  <div class="testView">
+
+    <button class="btn-p-xs bg-warning" @on:click="back()">Back</button>
+    <h1>{{name}}</h1>
+
+  </div>
+</template>
+
+<script>
+
+  import { Quantum } from "./packages/Quantum";
+  Quantum.newView('testView4', {
+    Data() {
+      return {
+        name: "VIEW 4",
+      }
+    },
+    methods: {
+      back() {
+        Quantum.Events.navBack();
+      }
+    }  
+  });
+
+</script>
+
+<style>
+  
+</style>

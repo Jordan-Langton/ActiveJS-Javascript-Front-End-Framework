@@ -1,0 +1,72 @@
+@keyframes pageIn {
+
+  from {
+      left: 100%;
+  }
+
+  to {
+      left: 0;
+  }
+
+}
+
+@keyframes pageOut {
+
+  from {
+      left: 0;
+  }
+
+  to {
+      left: 100%;
+  }
+
+}
+
+/*? Push In Animation ?*/
+
+@keyframes pushIn {
+
+  from {
+      left: 100%;
+  }
+
+  to {
+      left: 0;
+  }
+
+}
+
+@keyframes pushOut {
+
+  from {
+      left: 0;
+  }
+
+  to {
+      left: 100%;
+  }
+
+}
+@keyframes pushInOld {
+
+  from {
+      left: 0;
+  }
+
+  to {
+      left: -100%;
+  }
+
+}
+
+@keyframes pushOutOld {
+
+  from {
+      left: -100%;
+  }
+
+  to {
+      left: 0;
+  }
+
+}

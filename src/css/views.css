@@ -1,0 +1,77 @@
+.baseWrapper {
+  overflow: hidden;
+}
+.view {
+  /* z-index: 0; */
+  /* left : 100%; */
+  height : 100%;
+  width : 100%;
+  position: absolute;
+  background-color: white;
+}
+.view-1 {
+  /* z-index: 0; */
+  left : 100%;
+  height : 100%;
+  width : 100%;
+  position: absolute;
+  background-color: white;
+}
+.view-2 {
+  left : 100%;
+  height : 100%;
+  width : 100%;
+  position: absolute;
+  background-color: white;
+}
+
+/*? Slide Over Animation ?*/
+.slideOver {
+
+  animation-name: pageIn;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
+
+.slideOverOut {
+
+  animation-name: pageOut;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
+
+/*? Push In Animation ?*/
+
+.pushIn {
+
+  animation-name: pushIn;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
+
+.pushOut {
+
+  animation-name: pushOut;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
+
+.pushInOld {
+
+  animation-name: pushInOld;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
+
+.pushOutOld {
+
+  animation-name: pushOutOld;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards; 
+
+}
