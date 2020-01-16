@@ -5,8 +5,7 @@ export const ERROR = {
 
   ERRORS: [],
 
-  NEW(_header, _message, _from, _ele=false, _log=false, _view=false) {
-    
+  NEW(_header, _message, _from, _ele=false, _log=false, _view=false) {    
     let check = true;
     let _key = BIND.getRandowString(5);
 

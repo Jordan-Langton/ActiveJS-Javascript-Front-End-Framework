@@ -118,7 +118,9 @@ export const DOM = {
       DOM.getAllAttributeInterpolation(ele, REF);
 
       //* this gets all the elements with interpolation inside
-      DOM.getAllHtmlInterpolation(ele, REF);   
+      if (ele.children.length == 0) {
+        DOM.getAllHtmlInterpolation(ele, REF);
+      } 
       
     }
 
@@ -307,38 +309,36 @@ export const DOM = {
   },
 
   getAllHtmlInterpolation(ELEMENT, REF) {
-
+    
     let regex = /{{([^}]+)}}/g;
     let rxp = regex;
     let varMatch;
     let innerhtml = ELEMENT.innerHTML;
     let foundInterpolation = false;
-
+// debugger;
     while( varMatch = rxp.exec( innerhtml ) ) {
       //? make sure the element is not a container
-      if (!ELEMENT.firstElementChild) {
-        let newEle = {
-          el: ELEMENT, 
-          binding: varMatch[1].replace(/ /g,''),
-          ref: "qm-"+REF,
-          type: "html",
-          html: ELEMENT.innerHTML
-        };
+      let newEle = {
+        el: ELEMENT, 
+        binding: varMatch[1].replace(/ /g,''),
+        ref: "qm-"+REF,
+        type: "html",
+        html: ELEMENT.innerHTML
+      };
 
-        //* check if element already has a binding
-        let check = window.$qm["DOMBoundKeys"].filter(boundKey => {
-          let found = ELEMENT.getAttributeNode(boundKey);
-          if (found != null) {
-            return boundKey
-          }
-        });
-        
-        if (check.length == 0) {
-          window.$qm["DOMBindings"].push(newEle);
-          window.$qm["DOMBoundKeys"].push("qm-"+REF);
-          foundInterpolation = true;
+      //* check if element already has a binding
+      let check = window.$qm["DOMBoundKeys"].filter(boundKey => {
+        let found = ELEMENT.getAttributeNode(boundKey);
+        if (found != null) {
+          return boundKey
         }
-      }  
+      });
+      
+      if (check.length == 0) {
+        window.$qm["DOMBindings"].push(newEle);
+        window.$qm["DOMBoundKeys"].push("qm-"+REF);
+        foundInterpolation = true;
+      } 
     }
 
     return foundInterpolation;
@@ -354,7 +354,7 @@ export const DOM = {
     if (attrVal.indexOf(".") > -1) {
       
       let script = eval("(HANDLER."+attrVal+")");
-
+      
       if (script != undefined) {
 
         //* check if its an input
@@ -379,7 +379,7 @@ export const DOM = {
         else {
           //? set elements innerHTML
           if (isAttr == false) {
-            let newHTML = binding.html.replace(rgx, HANDLER[attrVal]);
+            let newHTML = binding.html.replace(rgx, script);
             element.innerHTML = newHTML;
           }
           else if (isAttr == true) {
@@ -400,8 +400,7 @@ export const DOM = {
 
     }
     else {
-      
-      if (HANDLER[attrVal] != undefined || HANDLER.computed[attrVal] != undefined) {
+      if (HANDLER[attrVal] != undefined) {
       
         //* check if its an input
         if (element.localName == "input") {

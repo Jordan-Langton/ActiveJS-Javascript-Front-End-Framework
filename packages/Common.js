@@ -30,8 +30,10 @@ export const Common = {
           
           //* build up a script
           let newScript = document.createElement("script");
-              newScript.type = "module";
+              newScript.type = 'text/javascript';
               newScript.id = "CURRENT_VM";
+              newScript.setAttribute("unsafe-inline", "");
+              newScript.setAttribute("hash", "sha256-faJpxnryp8x+/OHMCq6k7GBPfbZistQQYxd02gTcqRw=");
   
           //* add JS to the script
           let inlineScript = document.createTextNode(JS);
@@ -48,15 +50,18 @@ export const Common = {
           //* setup the view_backPage for this view
           window.$qm["view_backPage"] = BACKPAGE;
 
+          //* reset bindings
+          window.$qm.DOMBindings = [];
+          window.$qm.DOMBoundKeys = [];
           //* add template to DOM
           Common.prepareTEMPLATE(html)
             .then((DOCUMENT) => {
-
+              
               //* add the params to the QM object
               window.$qm["params"] = PARAMS;
-
-              window.$qm["READY_DOCUMENT"] = DOCUMENT;              
-
+              
+              window.$qm["READY_DOCUMENT"] = DOCUMENT;
+              
               //* check if there was a script there already
               let el = document.getElementById("CURRENT_VM");
               if (el != null) {

@@ -43,6 +43,8 @@ export const Initialize = {
 				lastCrumb: Breadcrumbs.NEW_CRUMB(isValid.baseView),
 				...Quantum
 			};
+
+			window.Quantum = Quantum;
 			// debugger;
 			//* load the enviroment variables
 			Initialize.Set_Environment();
@@ -62,7 +64,7 @@ export const Initialize = {
 
   },
 
-  buildInit: (Created) => Created(),
+  buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => { Created();console.log("Dom Loaded"); }, false),
 
   validateConfig: (config) => {
 

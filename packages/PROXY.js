@@ -25,7 +25,7 @@ export const PROXY = {
     },
 
     set(_target, _prop, _val, _reciever) { 
- 
+
       if (_prop in _target) {
         Reflect.set(_target, _prop, _val);
         PROXY.PROXY_ONCHANGE_METHOD(_prop);
@@ -33,9 +33,10 @@ export const PROXY = {
         //* get watchers out of object
         let watchers = Object.entries(_target.watchers);
 
-        if (watchers.length > 0) {          
+        if (watchers.length > 0) {
           //* if the property being updated is in the wathers obj call it
-          if (_prop in _target.watchers) _target.watchers[_prop].call(_target);          
+          if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
+          PROXY.PROXY_ONCHANGE_METHOD(_prop);
         }
 
         return true;

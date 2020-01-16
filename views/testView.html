@@ -16,7 +16,7 @@
     <p>{{a}}</p>
     <br>
 
-    <div class="block d-flex flex-even flex-align flex-wrap">
+    <!-- <div class="block d-flex flex-even flex-align flex-wrap">
 
       <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
         <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
@@ -26,14 +26,13 @@
         <span class="text-xs-bold text-muted">[j.description]</span>
       </div>
 
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
 
-  import { Quantum } from "./packages/Quantum";
   Quantum.newView('testView', {
     props: ["test1", "test2"],
     Data() {

@@ -33,10 +33,10 @@ export const Quantum = {
     saveToCache: (key="", payload={}) => {
       let objToCache = {};
       objToCache[key] = payload;
-
+      
       localStorage.setItem("quantumDB", JSON.stringify(objToCache));
 
-      let quantumCache = localStorage.getItem("quantumDB");
+      let quantumCache = JSON.parse(localStorage.getItem("quantumDB"));
 
       return quantumCache;
     },    

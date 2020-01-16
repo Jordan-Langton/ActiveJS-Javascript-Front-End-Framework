@@ -51,6 +51,7 @@ export const Router = {
           Breadcrumbs.NEW(CRUMB);
 
         }
+        Router.getInlineRoutes();
 
       })
       .catch((err) => console.log(err));

@@ -481,6 +481,7 @@ export const BIND = {
 							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 							if (check == 1) {
 								HANDLER[funcName](...found, e);
+								ERROR.RENDER();
 								//! DOM.applyUpdatesToElements(document, HANDLER);
 								// BIND.If(HANDLER);
 							}
@@ -493,8 +494,9 @@ export const BIND = {
 								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 								if (check == 1) {
 									HANDLER[funcName](...found, e);
+									ERROR.RENDER();
 									//! DOM.applyUpdatesToElements(document, HANDLER);
-									BIND.If(HANDLER);
+									// BIND.If(HANDLER);
 								}
 							});
 						}
@@ -515,6 +517,7 @@ export const BIND = {
 							if (check == 1) {
 								if (key === 13) {
 									HANDLER[funcName](...found, e);
+									ERROR.RENDER();
 									//! DOM.applyUpdatesToElements(document, HANDLER);
 									// BIND.If(HANDLER);
 								}
@@ -527,6 +530,7 @@ export const BIND = {
 								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 								if (check == 1) {
 									HANDLER[funcName](...found, e);
+									ERROR.RENDER();
 									//! DOM.applyUpdatesToElements(document, HANDLER);
 									// BIND.If(HANDLER);
 								}
@@ -548,6 +552,7 @@ export const BIND = {
 								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 								if (check == 1) {
 									HANDLER[funcName](...found, e);
+									ERROR.RENDER();
 									//! DOM.applyUpdatesToElements(document, HANDLER);
 									// BIND.If(HANDLER);
 								}
@@ -568,6 +573,7 @@ export const BIND = {
 							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 							if (check == 1) {
 								HANDLER[funcName](...found, e);
+								ERROR.RENDER();
 								//! DOM.applyUpdatesToElements(document, HANDLER);
 								// BIND.If(HANDLER);
 							}
@@ -578,6 +584,7 @@ export const BIND = {
 							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
 							if (check == 1) {
 								HANDLER[funcName](...found, e);
+								ERROR.RENDER();
 								//! DOM.applyUpdatesToElements(document, HANDLER);
 								// BIND.If(HANDLER);
 							}
