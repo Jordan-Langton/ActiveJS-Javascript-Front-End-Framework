@@ -1,14 +1,14 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import { Lib } from "./lib";
-import { Quantum } from "./Quantum";
-import { PROXY } from "./PROXY";
-import { DOM } from "./DOM";
-import { Initialize } from "./initialize";
-import { ERROR } from "./logging";
-import { BIND } from "./BIND";
-import { ANIMATE } from "./animations";
+import { Lib } from "./lib.js";
+import { Quantum } from "./Quantum.js";
+import { PROXY } from "./PROXY.js";
+import { DOM } from "./DOM.js";
+import { Initialize } from "./initialize.js";
+import { ERROR } from "./logging.js";
+import { BIND } from "./BIND.js";
+import { ANIMATE } from "./animations.js";
 
 export const Common = {
 
@@ -30,7 +30,7 @@ export const Common = {
           
           //* build up a script
           let newScript = document.createElement("script");
-              newScript.type = 'text/javascript';
+              newScript.type = 'module';
               newScript.id = "CURRENT_VM";
               newScript.setAttribute("unsafe-inline", "");
               newScript.setAttribute("hash", "sha256-faJpxnryp8x+/OHMCq6k7GBPfbZistQQYxd02gTcqRw=");
@@ -56,11 +56,12 @@ export const Common = {
           //* add template to DOM
           Common.prepareTEMPLATE(html)
             .then((DOCUMENT) => {
-              
+
               //* add the params to the QM object
               window.$qm["params"] = PARAMS;
               
               window.$qm["READY_DOCUMENT"] = DOCUMENT;
+              
               
               //* check if there was a script there already
               let el = document.getElementById("CURRENT_VM");
@@ -100,6 +101,7 @@ export const Common = {
         Init: VM.Init,
         ...VM.Data(),
         ...VM.methods,
+        components: (VM.components)?VM.components:[],
         watchers: {...VM.watchers},
         computed: {...VM.computed},
       };
@@ -110,9 +112,15 @@ export const Common = {
         
         //* setup proxy on the global VM
         window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
+        window["$scope"] = window.$qm["$scope"];
 
-        //* callback to router
-        window.$qm["VM_LOADED"]();
+        //* check for binding Reflect
+        BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => { 
+
+          //* callback to router
+          window.$qm["VM_LOADED"]();
+
+        });
 
         //* call init
         if (window.$qm["$scope"].Init) {

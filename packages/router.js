@@ -1,8 +1,8 @@
 /* eslint-disable dot-notation */
 /* eslint-disable camelcase */
-import { ERROR } from "./logging";
-import { Common } from "./Common";
-import { Breadcrumbs } from "./breadcrumbs";
+import { ERROR } from "./logging.js";
+import { Common } from "./Common.js";
+import { Breadcrumbs } from "./breadcrumbs.js";
 
 export const Router = {
 

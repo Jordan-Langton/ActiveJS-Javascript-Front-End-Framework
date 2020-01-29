@@ -1,7 +1,7 @@
 /* eslint-disable semi */
 /* eslint-disable callback-return */
 /* eslint-disable indent */
-import { ERROR } from "./logging";
+import { ERROR } from "./logging.js";
 
 export const Lib = {
 

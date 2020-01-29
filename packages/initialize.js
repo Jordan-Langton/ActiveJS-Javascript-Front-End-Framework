@@ -1,11 +1,11 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
-import { Router } from "./router";
-import { ERROR } from "./logging";
-import { Quantum } from "./Quantum";
-import { Store } from "./store";
-import { Breadcrumbs } from "./breadcrumbs";
+import { Router } from "./router.js";
+import { ERROR } from "./logging.js";
+import { Quantum } from "./Quantum.js";
+import { Store } from "./store.js";
+import { Breadcrumbs } from "./breadcrumbs.js";
 
 /* eslint-disable no-console */
 export const Initialize = {

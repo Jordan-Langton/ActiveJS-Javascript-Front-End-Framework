@@ -5,10 +5,10 @@
 /* eslint-disable callback-return */
 /* eslint-disable indent */
 /* eslint-disable no-cond-assign */
-import { viewDirectives, bindDirective, ifDirective } from "./directives";
-import { BIND } from "./BIND";
-import { Lib } from "./lib";
-import { ERROR } from "./logging";
+import { viewDirectives, bindDirective, ifDirective } from "./directives.js";
+import { BIND } from "./BIND.js";
+import { Lib } from "./lib.js";
+import { ERROR } from "./logging.js";
 
 export const DOM = {
 
@@ -313,17 +313,27 @@ export const DOM = {
     let regex = /{{([^}]+)}}/g;
     let rxp = regex;
     let varMatch;
+    let found = [];
     let innerhtml = ELEMENT.innerHTML;
     let foundInterpolation = false;
-// debugger;
+    
     while( varMatch = rxp.exec( innerhtml ) ) {
+      // if ( !found.includes(varMatch[1].replace(/ /g,'')) && found.length > 0 ) {
+        found.push(varMatch[1].replace(/ /g,''));
+      // }
+    }    
+
+    found.forEach(_binding => {
+
       //? make sure the element is not a container
       let newEle = {
         el: ELEMENT, 
-        binding: varMatch[1].replace(/ /g,''),
+        binding: _binding,
+        bindings: found,
         ref: "qm-"+REF,
         type: "html",
-        html: ELEMENT.innerHTML
+        html: ELEMENT.innerHTML,
+        multi: (found.length > 1)?true:false,
       };
 
       //* check if element already has a binding
@@ -339,7 +349,8 @@ export const DOM = {
         window.$qm["DOMBoundKeys"].push("qm-"+REF);
         foundInterpolation = true;
       } 
-    }
+
+    });
 
     return foundInterpolation;
 
@@ -350,7 +361,7 @@ export const DOM = {
   setBracketVal(attrVal, element, HANDLER, binding, isAttr=false, attribute=false)
   {
 
-    const rgx = new RegExp(`{{${attrVal}}}`, "g");
+    let rgx = new RegExp(`{{${attrVal}}}`, "g");
     if (attrVal.indexOf(".") > -1) {
       
       let script = eval("(HANDLER."+attrVal+")");
@@ -434,8 +445,24 @@ export const DOM = {
 
             }
             else {
-              let newHTML = binding.html.replace(rgx, HANDLER[attrVal]);
-              element.innerHTML = newHTML;
+
+              if (binding.multi) {
+                let newHTML = "";
+                binding.bindings.forEach(value => {
+                  rgx = new RegExp(`{{${value}}}`, "g");
+                  if (newHTML == "") {
+                    newHTML = binding.html.replace(rgx, HANDLER[value]);
+                  }
+                  else {
+                    newHTML = newHTML.replace(rgx, HANDLER[value]);
+                  }
+                });
+                element.innerHTML = newHTML;
+              }
+              else {
+                let newHTML = binding.html.replace(rgx, HANDLER[attrVal]);
+                element.innerHTML = newHTML;
+              }
             }
             
           }

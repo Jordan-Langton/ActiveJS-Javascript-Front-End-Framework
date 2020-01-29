@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BIND } from "./BIND";
+import { BIND } from "./BIND.js";
 
 export const ERROR = {
 
@@ -31,7 +31,7 @@ export const ERROR = {
       
       let ERR = ERROR.ERRORS.filter(err => err.key == _key)[0];
 
-      if (ERR && ERROR.POPUP == true) {
+      if (ERR && window.$qm["show_errors"] == true) {
         ERROR.BUILD_POPUP_ERRORS(ERR, true);
       }
     }
@@ -120,7 +120,7 @@ export const ERROR = {
   BUILD_POPUP_ERRORS(ERR, autoRender=false) {
 
     let message = '';
-    let wrapperEle = '<div id="systemErrPopupWrapper" class="d-none flex-col flex-align"></div>';
+    let wrapperEle = '<div id="systemErrPopupWrapper" class="d-none flex-col flex-end flex-align"></div>';
 
     let arrToUse = (autoRender == false)?ERROR.ERRORS:[ERR];
 
@@ -146,13 +146,13 @@ export const ERROR = {
         let autoShow = (currentErr.ele != false)?'d-none':'d-flex';
   
         message += `      
-        <div id="systemErrModel-${currentErr.key}" class="${autoShow} flex-col flex-center flex-align">
-          <div class="systemErrIcon"><i class="fas fa-exclamation-triangle"></i></div>
-          <div class="systemErrHeader">${currentErr.header}</div>
-          <div class="systemErrContent">${currentErr.message}</div>
-          <div class="systemErrActions">
-            <div id="systemErrButton-1" onclick="$ERROR.CLOSE_MODEL('${currentErr.key}')">Close Error</div>
-            <!-- <div id="systemErrButton-2"></div> -->
+        <div id="systemErrModel-${currentErr.key}" class="${autoShow} flex-align shadow-xl">
+          <div class="systemErrIcon left d-flex flex-center flex-align bg-danger">
+            <i class="text-white text-lg fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="systemErrContent bg-white text-dark text-sm">${currentErr.message}</div>
+          <div class="systemErrIcon right d-flex flex-center flex-align bg-white">
+            <i class="text-dark text-lg fas fa-times"></i>
           </div>
         </div>`;
       }

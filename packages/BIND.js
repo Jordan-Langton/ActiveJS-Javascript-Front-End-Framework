@@ -5,11 +5,10 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-prototype-builtins */
-import { bindDirective, onDirective } from "./directives";
-import { DOM } from "./DOM";
-import { ERROR } from "./logging";
-import { Lib } from "./lib";
-// import $components from "../shared/$components";
+import { bindDirective, onDirective } from "./directives.js";
+import { DOM } from "./DOM.js";
+import { ERROR } from "./logging.js";
+import { Lib } from "./lib.js";
 
 export const BIND = {
 
@@ -34,6 +33,11 @@ export const BIND = {
 
 				element.addEventListener("input", () => {
 
+					//* if the input type is checkbox
+					if (element.type == "checkbox") {
+						element.value = element.checked;
+					}
+					
 					//* check if a timer has been set and reset it
 					if (BIND.OPTIONS.reflect.timer != false) {
 						clearTimeout(BIND.OPTIONS.reflect.timer);
@@ -663,7 +667,7 @@ export const BIND = {
 							else {
 								script = HANDLER[MODEL_ARR][index];
 							}
-
+							
 							//* gets all keys
 							rgx2 = new RegExp("\\[" + ELE_LOOP_KEY + "\\]", 'g');
 
@@ -734,17 +738,18 @@ export const BIND = {
 		if (HANDLER.components.length > 0) {
 
 			HANDLER.components.forEach(COMP_NAME => {
-
+				// debugger;
 				let compCounter = 1;
-				let currentComp = $components.filter(component => component.ref == COMP_NAME)[0];
+				let currentComp = window.$qm.registeredComponents.filter(component => component.ref == COMP_NAME)[0];
 
 				if (currentComp) {
-
+					
 					const COMP_LIST = BIND.checkIfInDOM(HTML_TEMP, currentComp.ref);
 
 					let done = (HTML_TEMP) => {
 
 						//* make sure all the components have been updated
+						// debugger;
 						if (compCounter == COMP_LIST.length) {
 							return callback(HTML_TEMP);
 						}
@@ -898,7 +903,7 @@ export const BIND = {
 
 		//? if element is of type input
 		if (inputName == "input") {
-			if (isNaN(Number(value))) {
+			if (isNaN(Number(inputVal))) {
 				HANDLER[attrVal] = inputVal;
 
 				//? NOTE* if your state has a global property 'attrVal' it will update it as well
@@ -1047,6 +1052,23 @@ export const BIND = {
 		
 		return found;
 
+	},
+
+	getVarsFromString_2(expresion, template) {
+		//? Getting content between curly braces
+		let found = [];
+		let rxp = expresion;
+		let curMatch;
+
+		while (curMatch = rxp.exec(template)) {
+
+			if (found.indexOf(curMatch[0]) < 0) {
+				found.push(curMatch[0]);
+			}
+
+		}
+
+		return found;
 	}
 
 }

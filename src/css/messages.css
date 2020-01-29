@@ -1,13 +1,15 @@
 @keyframes showSystemErr {
 
-  from {
-    height: 0;
-    opacity: 0;
+  0% {
+    bottom: -100%;
   }
 
-  to {
-    height: unset;
-    opacity: 1;
+  70% {
+    bottom: 10%;
+  }
+
+  100% {
+    bottom: 0;
   }
 
 }
@@ -16,8 +18,8 @@
 #systemErrPopupWrapper {
   z-index: 1000;
   width: 100%;
-  overflow-y: scroll;
-  background-color: rgba(0, 0, 0, 0.5);
+  min-height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
 
   position: fixed;
   top: 0;
@@ -27,62 +29,30 @@
 }
 
 /** ========= System Error Model ========= **/
-[id*="systemErrModel-"]:first-child {
-  margin-top: 10px;
-}
-
 [id*="systemErrModel-"] {
   width: 95%;
-  max-width: 350px;
-  margin-bottom: 10px;
-  padding-top: 20px;
-  border-radius: 15px;
-  background-color: #EFEFEF;
-
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
+  position: relative;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  animation-name: showSystemErr;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
 }
-
 [id*="systemErrModel-"] .systemErrIcon {
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 20%;
+  height: 100%;
 }
-[id*="systemErrModel-"] .systemErrIcon i {
-  color: #d84d4d;
-  font-size: 70px;
+[id*="systemErrModel-"] .systemErrIcon.left {
+  border-radius: 10px 0 0 10px;
 }
-
-[id*="systemErrModel-"] .systemErrHeader {
-  padding: 20px 0;
-  font-size: 24px;
+[id*="systemErrModel-"] .systemErrIcon.right {
+  border-radius: 0 10px 10px 0;
 }
-
 [id*="systemErrModel-"] .systemErrContent {
-  width: 90%;
-  text-align: center;
-  font-size: 16px;
-  line-height: 20px;
+  width: 80%;
+  padding: 10px;
+  text-align: left;
 }
-
-[id*="systemErrModel-"] .systemErrActions {
-  width: 100%;
-  margin-top: 25px;
-}
-
-[id*="systemErrModel-"] .systemErrActions #systemErrButton-1 {
-  padding: 22px;
-  text-align: center;
-  border-top: solid 1px #c7c7c7;
-  background-color: #fff;
-  border-radius: 0 0 15px 15px;
-}
-
-
-
 
 /** ========= System InnerHTML Icon ========= **/
 

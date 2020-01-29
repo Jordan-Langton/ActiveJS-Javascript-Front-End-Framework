@@ -1,6 +1,6 @@
 /* eslint-disable dot-notation */
-import { ERROR } from "./logging";
-import { DOM } from "./DOM";
+import { ERROR } from "./logging.js";
+import { DOM } from "./DOM.js";
 
 export const PROXY = {
 
@@ -26,7 +26,7 @@ export const PROXY = {
 
     set(_target, _prop, _val, _reciever) { 
 
-      if (_prop in _target) {
+      // if (_prop in _target) {
         Reflect.set(_target, _prop, _val);
         PROXY.PROXY_ONCHANGE_METHOD(_prop);
 
@@ -40,11 +40,11 @@ export const PROXY = {
         }
 
         return true;
-      }
-      else {
-        ERROR.NEW("Failed to Set Property", `Quantum was unable to set the property "${_prop}" because is is not defined in your View Model`, 'proxy', false, true, false);
-        return true;
-      }
+      // }
+      // else {
+      //   ERROR.NEW("Failed to Set Property", `Quantum was unable to set the property "${_prop}" because is is not defined in your View Model`, 'proxy', false, true, false);
+      //   return true;
+      // }
 
     },
 

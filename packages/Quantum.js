@@ -1,11 +1,12 @@
 /* eslint-disable dot-notation */
 /* eslint-disable camelcase */
-import { Initialize } from "./initialize";
-import { Router } from "./router";
-import { Common } from "./Common";
-import { ERROR } from "./logging";
-import { BIND } from "./BIND";
-import { Breadcrumbs } from "./breadcrumbs";
+import { Initialize } from "./initialize.js";
+import { Router } from "./router.js";
+import { Common } from "./Common.js";
+import { ERROR } from "./logging.js";
+import { BIND } from "./BIND.js";
+import { Breadcrumbs } from "./breadcrumbs.js";
+import { baseComponent } from "./baseComponent.js";
 
 export const Quantum = {
 
@@ -52,13 +53,35 @@ export const Quantum = {
     },
   },
 
+  Component: baseComponent,
+
+  reqisterComponent: (reference="", component={}) => {
+
+    let exists = false;
+    let componentTO = {ref: reference, component: component};
+    
+    Quantum.registeredComponents.forEach(comp => {
+
+      if (comp.ref == reference) {
+        exists = true;
+      }
+
+    });
+
+    if (!exists) {
+      Quantum.registeredComponents.push(componentTO);
+    }
+
+  },
+
+  registeredComponents: [],
 
   //* Starts the application
   Run: (configuration={}, Created=() => {}) => Initialize.Start(configuration, Created),
 
   //* builds new view
   newView: (View_Name, Controller) => Common.buildVM(View_Name, Controller)
-    .then((VM) => {
+    .then((VM) => {             
 
       //? check for binding Reflect
       BIND.Reflect(VM);        
