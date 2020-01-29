@@ -734,17 +734,23 @@ export const BIND = {
 
 	getComponentsInUse(HTML_TEMP, HANDLER, callback) {
 
+		let errStyle1 = "background-color: darkblue; color:#fff;border-radius:3px 0 0 3px;padding-right: 10px";
+		let errStyle2 = "background-color: lightblue; color:#000;padding:0 5px;border-radius:0 3px 3px 0";
+		console.groupCollapsed("%c SYSTEM %c Components Found", errStyle1, errStyle2);
+
 		//* Check that this view is using components
 		if (HANDLER.components.length > 0) {
 
 			HANDLER.components.forEach(COMP_NAME => {
-				// debugger;
+				
 				let compCounter = 1;
 				let currentComp = window.$qm.registeredComponents.filter(component => component.ref == COMP_NAME)[0];
 
 				if (currentComp) {
 					
 					const COMP_LIST = BIND.checkIfInDOM(HTML_TEMP, currentComp.ref);
+
+					if (COMP_LIST.length > 0) console.log(`(${COMP_NAME}) is being generated`);
 
 					let done = (HTML_TEMP) => {
 
@@ -780,6 +786,7 @@ export const BIND = {
 		else {
 			callback(HTML_TEMP);
 		}
+		console.groupEnd();
 
 	},
 

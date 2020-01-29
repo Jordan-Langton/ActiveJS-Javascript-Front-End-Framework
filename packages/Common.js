@@ -115,12 +115,14 @@ export const Common = {
         window["$scope"] = window.$qm["$scope"];
 
         //* check for binding Reflect
-        BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => { 
-
+        if ( window.$qm["$scope"].components.length > 0) {
+          BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
+        }
+        else {
           //* callback to router
           window.$qm["VM_LOADED"]();
-
-        });
+        }
+        
 
         //* call init
         if (window.$qm["$scope"].Init) {

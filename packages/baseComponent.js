@@ -115,7 +115,7 @@ export class baseComponent {
     if (COMP_PROPS_LENGTH > 0) {
       for (let att, i = 0, atts = COMP_ATTR, n = atts.length; i < n; i++)
       {            
-        
+
         att = atts[i];
         if (att.nodeName.indexOf("cp-") == -1) {
           this.$props[att.nodeName] = att.nodeValue;          
