@@ -32,8 +32,8 @@
 </template>
 
 <script>
-
-  Quantum.newView('testView', {
+  import { newView, Router, State } from "./packages/ActiveJS.js";
+  newView('testView', {
     props: ["test1", "test2"],
     Data() {
       return {
@@ -52,11 +52,13 @@
         ]
       }
     },
-    Init() {      
-      this.people = this.$state.Get("getPeople");
-      this.products = this.$state.Get("getProducts");
-      console.log(this.products.length);
-      
+    Init() {
+      this.people = State.Get("getPeople");
+      this.products = State.Get("getProducts");
+
+      this.name = this.$props.test2;
+      console.log(this.people);
+
       this.people.push({name: "test 6", age: 17});
       setInterval(() => {
         this.add();
@@ -69,7 +71,7 @@
       },
     },
     methods: {
-      add() {        
+      add() {
         if (this.a == 10) {
           this.bool = true;
           this.a = 0;
@@ -78,7 +80,7 @@
       },
       changeClass() {
         if (this.button.indexOf("bg-danger") == -1) {
-          this.button = "btn-p-xs bg-danger text-white shadow-sm";          
+          this.button = "btn-p-xs bg-danger text-white shadow-sm";
         }
         else {
           this.button = "btn-p-xs shadow-sm";
@@ -87,19 +89,19 @@
       logItem(a, b, c) {
         console.log(`a: ${b} b: ${JSON.stringify(c)}`);
         console.log(this.products[a]);
-        
+
       },
       logName() {
         console.log(this.name);
       },
       show() {
         this.bool = !this.bool;
-        // console.log(this.bool);        
+        // console.log(this.bool);
       },
-      nextView() {        
-        Quantum.Events.route('/about', {name: this.name});
+      nextView() {
+        Router.route('/about', {name: this.name});
       }
-    },    
+    },
   });
 
 </script>

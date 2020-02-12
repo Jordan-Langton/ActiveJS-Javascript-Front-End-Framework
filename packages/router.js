@@ -4,7 +4,7 @@ import { ERROR } from "./logging.js";
 import { Common } from "./Common.js";
 import { Breadcrumbs } from "./breadcrumbs.js";
 
-export const Router = {
+export const router = {
 
   routes: [],
   lastRoute: false,
@@ -12,10 +12,10 @@ export const Router = {
   Build: () => {
 
     //* add the routes to the router
-		//! Router.addRoutes(window.$qm.Config.routes);
+		//! router.addRoutes(window.$qm.Config.routes);
 
     //* add all router events
-    Router.addEvents();
+    router.addEvents();
 
   },
 
@@ -51,7 +51,7 @@ export const Router = {
           Breadcrumbs.NEW(CRUMB);
 
         }
-        Router.getInlineRoutes();
+        router.getInlineRoutes();
 
       })
       .catch((err) => console.log(err));
@@ -66,7 +66,7 @@ export const Router = {
 
   },
 
-  addRoutes: (routes=[]) => Router.routes = routes,
+  addRoutes: (routes=[]) => router.routes = routes,
 
   navBack: () => {
     
@@ -74,7 +74,7 @@ export const Router = {
     // debugger;
     if (last.path != window.$qm.Config.baseView) {
       Breadcrumbs.BACK();
-      Router.Search(last.path, last.params, true);
+      router.Search(last.path, last.params, true);
     }
 
   },
@@ -106,7 +106,7 @@ export const Router = {
       if ( (element.hasAttribute("event") == false) && (attrVal != "back") ) {
         element.setAttribute("event","route-handler");
         element.style = "cursor:pointer;";
-        element.addEventListener("click", function() { Router.Search(attrVal); });
+        element.addEventListener("click", function() { router.Search(attrVal); });
       }      
 
     });

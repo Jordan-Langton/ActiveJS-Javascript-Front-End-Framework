@@ -1,9 +1,9 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-useless-concat */
 /* eslint-disable camelcase */
-import { Router } from "./router.js";
+import { router } from "./router.js";
 import { ERROR } from "./logging.js";
-import { Quantum } from "./Quantum.js";
+import * as ActiveJS from "./ActiveJS.js";
 import { Store } from "./store.js";
 import { Breadcrumbs } from "./breadcrumbs.js";
 
@@ -27,30 +27,52 @@ export const Initialize = {
 
     //* validate the config 
     const isValid = Initialize.validateConfig(config);
-
+		
     //* if you have a valid config
     if (isValid) {
-			
-			Quantum.Config = isValid;
-			Quantum.State = new Store(isValid.store).Model;
+
+			//* setup the config options
+			ActiveJS.Config.name = isValid.name;
+			ActiveJS.Config.version = isValid.version;
+			ActiveJS.Config.environment = isValid.environment;
+			ActiveJS.Config.description = isValid.description;
+			ActiveJS.Config.baseView = isValid.baseView;
+			ActiveJS.Config.appWrapper = isValid.appWrapper;
+			ActiveJS.Config.systemTheme = isValid.systemTheme;
+			ActiveJS.Config.systemStyles = isValid.systemStyles;
+			ActiveJS.Config.interfaces = isValid.interfaces;
+			ActiveJS.Config.store = isValid.store;
+			ActiveJS.Config.routes = isValid.routes;
+
+			//* setup the state
+			ActiveJS.State.state = new Store(isValid.store).Model;
 
 			//* setup the global VM
 			window.$qm = {
-				Config: isValid,
+				Config: ActiveJS.Config,
 				DOMBindings: [],
 				DOMBoundKeys: [],
 				CRUMBS: [],
 				lastCrumb: Breadcrumbs.NEW_CRUMB(isValid.baseView),
-				...Quantum
+				registeredComponents: ActiveJS.registeredComponents,
+				Component: ActiveJS.Component,
+				State: ActiveJS.State,
+				emit: ActiveJS.emit,
+				accept: ActiveJS.accept,
+				navBack: ActiveJS.navBack,
+				saveToCache: ActiveJS.saveToCache,
+				getFromCache: ActiveJS.getFromCache,
+				createApp: ActiveJS.createApp,
+				newView: ActiveJS.newView,
+				reqisterComponent: ActiveJS.reqisterComponent,
+				Router: ActiveJS.Router,
 			};
 
-			window.Quantum = Quantum;
-			// debugger;
 			//* load the enviroment variables
 			Initialize.Set_Environment();
 
 			//* initialize the router
-			Router.Build();
+			router.Build();
 
 			//* add system styles
 			Initialize.loadSystemStyles();
@@ -64,7 +86,7 @@ export const Initialize = {
 
   },
 
-  buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => { Created();console.log("Dom Loaded"); }, false),
+  buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => { Created(); }, false),
 
   validateConfig: (config) => {
 
@@ -75,7 +97,7 @@ export const Initialize = {
 
   Set_Environment: () => {
 
-    switch (Quantum.Config.environment) {
+    switch (ActiveJS.Config.environment) {
       case "Development":
         Initialize.loadDevSettings();
         break;
@@ -99,11 +121,11 @@ export const Initialize = {
 			window.$qm["show_errors"] = true;			
 
 			//* log the dev elopment data
-			// Initialize.showLogData();
+			Initialize.showLogData();
 
 		} 
 		catch (err) {
-			console.error('Failed to load the Development settings');
+			console.error('Failed to load the Development settings : '+err);
 		}
 
 	},
@@ -127,15 +149,13 @@ export const Initialize = {
 	},
 
 	loadSystemStyles: () => {
-
 		let systemStyle = document.createElement("style");
     systemStyle.innerHTML = `@import url("src/theme/${window.$qm.Config.systemTheme}.css");`;
     window.$qm.Config.systemStyles.forEach((style) => {
-      systemStyle.innerHTML += `@import url("src/css/${style}.css");`;
+			systemStyle.innerHTML += `@import url("src/css/${style}.css");`;
     });
-
+		
     document.getElementsByTagName("head")[0].append(systemStyle);
-
 	},
 
   showLogData: () => {
@@ -147,14 +167,14 @@ export const Initialize = {
 		const styles4 = "color:green;";
 		const styles5 = "color:blue;";    
 
-		console.groupCollapsed("%c "+Quantum.Config.name+" ("+Quantum.Config.environment+") %c V"+Quantum.Config.version+" ", styles1, styles2);
+		console.groupCollapsed("%c "+ActiveJS.Config.name+" ("+ActiveJS.Config.environment+") %c V"+ActiveJS.Config.version+" ", styles1, styles2);
 
 			console.info("%c INFO ", styles3);    
 
-			console.log("%cInitial View: "+"%c ["+Quantum.Config.baseView+"]", styles4,styles5);      
+			console.log("%cInitial View: "+"%c ["+ActiveJS.Config.baseView+"]", styles4,styles5);      
 
-			console.groupCollapsed("%cInterfaces Loaded: "+"%c ("+Quantum.Config.interfaces.length+")", styles4,styles5);
-			Quantum.Config.interfaces.forEach(int => {
+			console.groupCollapsed("%cInterfaces Loaded: "+"%c ("+ActiveJS.Config.interfaces.length+")", styles4,styles5);
+			ActiveJS.Config.interfaces.forEach(int => {
 				console.groupCollapsed("%c- "+int.ref, styles5);
 				// eslint-disable-next-line dot-notation
 				console.dir(int.interface);
@@ -162,16 +182,16 @@ export const Initialize = {
 			});
 			console.groupEnd();
 
-			console.groupCollapsed("%cRoutes Loaded: "+"%c ("+Quantum.Config.routes.length+")", styles4,styles5);
-			Quantum.Config.routes.forEach(route => {
+			console.groupCollapsed("%cRoutes Loaded: "+"%c ("+ActiveJS.Config.routes.length+")", styles4,styles5);
+			ActiveJS.Config.routes.forEach(route => {
 				console.groupCollapsed("%c- "+route.path, styles5);
-				console.dir(new route.handler());
+				console.log(route.handler);
 				console.groupEnd();
 			});
 			console.groupEnd();
 
 			console.groupCollapsed("%cProject Description: ", styles4);
-				console.info(Quantum.Config.description);
+				console.info(ActiveJS.Config.description);
 			console.groupEnd();
 
 			console.groupEnd();

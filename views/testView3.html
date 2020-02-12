@@ -9,8 +9,8 @@
 </template>
 
 <script>
-
-  Quantum.newView('testView3', {
+  import { newView, Router, State } from "./packages/ActiveJS.js";
+  newView('testView3', {
     Data() {
       return {
         name: "VIEW 3",
@@ -18,10 +18,10 @@
     },
     methods: {
       back() {
-        Quantum.Events.navBack();
+        Router.navBack();
       },
       next() {
-        Quantum.Events.route("/contact2");
+        Router.route("/contact2");
       }
     }  
   });

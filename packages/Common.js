@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import { Lib } from "./lib.js";
-import { Quantum } from "./Quantum.js";
+import * as ActiveJS from "./ActiveJS.js";
 import { PROXY } from "./PROXY.js";
 import { DOM } from "./DOM.js";
 import { Initialize } from "./initialize.js";
@@ -95,8 +95,8 @@ export const Common = {
       //* set on global VM
       const $VM = {
         fileName: VM_NAME,
-        $events: Quantum.Events,
-        $state: window.$qm.State,
+        // $events: ActiveJS.Events,
+        // $state: window.$qm.State,
         $props: {},
         Init: VM.Init,
         ...VM.Data(),
@@ -106,6 +106,28 @@ export const Common = {
         computed: {...VM.computed},
       };
 
+      //* setup config in the ActiveJS export
+      ActiveJS.Config.name = window.$qm.Config.name;
+			ActiveJS.Config.version = window.$qm.Config.version;
+			ActiveJS.Config.environment = window.$qm.Config.environment;
+			ActiveJS.Config.description = window.$qm.Config.description;
+			ActiveJS.Config.baseView = window.$qm.Config.baseView;
+			ActiveJS.Config.appWrapper = window.$qm.Config.appWrapper;
+			ActiveJS.Config.systemTheme = window.$qm.Config.systemTheme;
+			ActiveJS.Config.systemStyles = window.$qm.Config.systemStyles;
+			ActiveJS.Config.interfaces = window.$qm.Config.interfaces;
+			ActiveJS.Config.store = window.$qm.Config.store;
+			ActiveJS.Config.routes = window.$qm.Config.routes;
+      
+      //* setup state in the ActiveJS export
+      ActiveJS.State.state = window.$qm.State.state.state;
+      ActiveJS.State.Commit = window.$qm.State.state.Commit;
+      ActiveJS.State.Dispatch = window.$qm.State.state.Dispatch;
+      ActiveJS.State.Get = window.$qm.State.state.Get;
+
+      window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
+
+      // ActiveJS.registeredComponents = window.$qm.registeredComponents;
       
       //* build up the props
       Common.buildProps(VM, $VM).then(() => {
@@ -126,7 +148,7 @@ export const Common = {
 
         //* call init
         if (window.$qm["$scope"].Init) {
-          window.$qm["$scope"].Init();          
+          window.$qm["$scope"].Init();
         }
 
         DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
@@ -181,7 +203,7 @@ export const Common = {
         }
         
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
 
     });
 
