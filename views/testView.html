@@ -15,6 +15,7 @@
     <p @else>SHOWING 2</p>
     <p>{{a}}</p>
     <br>
+    <div id="test">Hello</div>
 
     <!-- <div class="block d-flex flex-even flex-align flex-wrap">
 
@@ -53,15 +54,23 @@
         ]
       }
     },
-    Init() {
+    _Init() {
 
       this.people = State.Get("getPeople");
       this.products = State.Get("getProducts");
       this.name = State.Get("getName");
 
+      console.log(document.getElementById('test'));
+      
+
       setInterval(() => {
         this.add();
       }, 1000);
+    },
+    _Rendered() {
+
+      console.log(document.getElementById('test'));
+
     },
     watchers: {
       name() {

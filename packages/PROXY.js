@@ -77,28 +77,7 @@ export const PROXY = {
     //* Callback function to execute when mutations are observed
     const callback = function(mutationsList) {
         
-      // DOM.replaceDirective(document);
-
-      // DOM.getAllInterpolation(document);
-
-      // DOM.applyUpdatesToElements(document.body, window.$scope);
       
-      // //? check for binding Reflect
-      // BIND.Reflect(window.$scope);        
-
-      // //? check for binding Bind
-      // BIND.Bind(window.$scope);
-
-      // //? check for binding For
-      // BIND.For(window.$scope);
-
-      // //? check for binding If
-      // BIND.If(window.$scope);
-
-      // //? check for binding on
-      // BIND.On(window.$scope);
-
-      // ERROR.RENDER();
 
     };
 
@@ -111,7 +90,18 @@ export const PROXY = {
   },
 
   UPDATED_DOM(_property) {   
+
+    //* call the mounted life cycle method
+    if (window.$qm["$scope"]._beforeUpdate) {
+      window.$qm["$scope"]._beforeUpdate();
+    }
+
     DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
+
+    //* call the mounted life cycle method
+    if (window.$qm["$scope"]._Updated) {
+      window.$qm["$scope"]._Updated();
+    }
   },
 
 };

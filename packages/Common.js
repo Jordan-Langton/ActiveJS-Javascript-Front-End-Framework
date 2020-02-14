@@ -97,8 +97,11 @@ export const Common = {
         el: VM.el,
         fileName: VM_NAME,
         $props: {},
-        Init: VM.Init,
-        Created: VM.Created,
+        _Init: VM._Init,
+        _Rendered: VM._Rendered,
+        _Mounted: VM._Mounted,
+        _beforeUpdate: VM._beforeUpdate,
+        _Updated: VM._Updated,
         ...VM.Data(),
         ...VM.methods,
         components: (VM.components)?VM.components:[],
@@ -136,6 +139,11 @@ export const Common = {
         window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
         window["$scope"] = window.$qm["$scope"];
 
+        //* call the mounted life cycle method
+        if (window.$qm["$scope"]._Mounted) {
+          window.$qm["$scope"]._Mounted();
+        }
+
         //* check for binding Reflect
         if ( window.$qm["$scope"].components.length > 0) {
           BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
@@ -146,9 +154,9 @@ export const Common = {
         }
         
 
-        //* call init
-        if (window.$qm["$scope"].Init) {
-          window.$qm["$scope"].Init();
+        //* call init life cycle method
+        if (window.$qm["$scope"]._Init) {
+          window.$qm["$scope"]._Init();
         }
 
         DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
@@ -205,9 +213,9 @@ export const Common = {
             wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
             resolve(window.$qm["$scope"]);
 
-            //* call init
-            if (window.$qm["$scope"].Created) {
-              window.$qm["$scope"].Created();
+            //* call Rendered life cycle method
+            if (window.$qm["$scope"]._Rendered) {
+              window.$qm["$scope"]._Rendered();
             }
 
 
