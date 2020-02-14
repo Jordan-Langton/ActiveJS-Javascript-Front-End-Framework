@@ -6,8 +6,6 @@ createApp({
 	"version": "2.0.5",
 	"environment": "Development",
 	"description": "This is a test application",
-	"baseView": "/splash",
-	"appWrapper": "#app",
 	"systemTheme": "project-theme",
   "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
   "interfaces": [],

@@ -34,6 +34,7 @@
 <script>
   import { newView, Router, State } from "./packages/ActiveJS.js";
   newView('testView', {
+    el: "#app",
     props: ["test1", "test2"],
     Data() {
       return {

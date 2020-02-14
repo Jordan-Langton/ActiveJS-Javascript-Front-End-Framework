@@ -94,9 +94,8 @@ export const Common = {
 
       //* set on global VM
       const $VM = {
+        el: VM.el,
         fileName: VM_NAME,
-        // $events: ActiveJS.Events,
-        // $state: window.$qm.State,
         $props: {},
         Init: VM.Init,
         ...VM.Data(),
@@ -153,9 +152,19 @@ export const Common = {
 
         DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
 
-        const wrapper = document.getElementById(window.$qm.Config.appWrapper.replace("#", ""));
-        let VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
-        VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
+
+        let wrapper = false;
+        let VIEW_WRAPPER = false;        
+        if (window.$qm["$scope"].hasOwnProperty("el")) {
+
+          wrapper = document.getElementById(window.$qm["$scope"].el.replace("#", ""));
+          VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
+          VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
+
+        }
+        else {
+          ERROR.NEW("System Failed During Render", `Property 'el' was not supplied for the view [${window.$qm["$scope"].fileName}]. Please make sure to always pass this property to your View Models`, "render", false, true, false);
+        }        
 
         //* start render proccess
         if (wrapper != null) {
@@ -172,7 +181,7 @@ export const Common = {
                 break;
             
               default:
-                ERROR.NEW("Render Error", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
+                ERROR.NEW("System Failed During Render", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
                 break;
             }
             
@@ -199,7 +208,7 @@ export const Common = {
 
         }
         else {
-          ERROR.NEW("Render Error", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
+          ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
         }
         
       })
