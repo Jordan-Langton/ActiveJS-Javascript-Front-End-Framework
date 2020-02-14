@@ -21,7 +21,9 @@ export let Config = {
   "routes": []
 };
 
-export let registeredComponents = [];
+let Emitted_Data = {};
+
+let registeredComponents = [];
 
 export const Component = baseComponent;
 
@@ -34,11 +36,19 @@ export let State = {
 
 //* ================== METHODS ==================
 
-export const emit = (eventName="", payload=true) => {};
+export const emit = (eventName="", payload=true) => {
 
-export const accept = (eventName="") => {};
+  Emitted_Data = payload;
+  let event = new Event(eventName);
+  document.dispatchEvent(event);
 
-export const navBack = () => {};
+};
+
+export const accept = (eventName="") => {
+
+  document.addEventListener(eventName, () => { return Emitted_Data; });
+
+};
 
 export const saveToCache = (key="", payload={}) => {
   let objToCache = {};
