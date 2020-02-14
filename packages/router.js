@@ -9,7 +9,7 @@ export const router = {
   routes: [],
   lastRoute: false,
 
-  Build: () => {
+  Generate_Router: () => {
 
     //* add the routes to the router
 		//! router.addRoutes(window.$qm.Config.routes);
@@ -51,6 +51,8 @@ export const router = {
           Breadcrumbs.NEW(CRUMB);
 
         }
+
+        //* looks for any inline route attributes
         router.getInlineRoutes();
 
       })
@@ -65,8 +67,6 @@ export const router = {
     ERROR.RENDER();
 
   },
-
-  addRoutes: (routes=[]) => router.routes = routes,
 
   navBack: () => {
     
@@ -83,12 +83,12 @@ export const router = {
 
     //? detect the back/forward button
     window.onpopstate = (e) => {       
-      // this.checkCurrentURL();
+      // console.log(e);
     };
     
     //? route Event
     document.addEventListener("checkRoutes", (e) => {      
-      // this.checkForRoutes();
+      // console.log(e);
     });
 
   },
@@ -102,7 +102,7 @@ export const router = {
 
       let attrVal = element.attributes.route.value;
 
-      //? If attrVal is a route
+      //* If attrVal is a route
       if ( (element.hasAttribute("event") == false) && (attrVal != "back") ) {
         element.setAttribute("event","route-handler");
         element.style = "cursor:pointer;";

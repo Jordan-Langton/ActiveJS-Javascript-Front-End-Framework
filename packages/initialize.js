@@ -23,6 +23,7 @@ export const Initialize = {
 		"routes": []
 	},
 
+	//* starts the initialization of ActiveJS
   Start: (config, Created=false) => {
 
     //* validate the config 
@@ -72,7 +73,7 @@ export const Initialize = {
 			Initialize.Set_Environment();
 
 			//* initialize the router
-			router.Build();
+			router.Generate_Router();
 
 			//* add system styles
 			Initialize.loadSystemStyles();
@@ -86,8 +87,10 @@ export const Initialize = {
 
   },
 
-  buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => { Created(); }, false),
-
+	//* calls the custom init proccess after the DOM has loaded
+	buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => { Created(); }, false),
+	
+	//* this validates the config passed
   validateConfig: (config) => {
 
     //* 
@@ -95,6 +98,7 @@ export const Initialize = {
 
   },
 
+	//* Chooses the environment
   Set_Environment: () => {
 
     switch (ActiveJS.Config.environment) {
@@ -148,6 +152,7 @@ export const Initialize = {
 
 	},
 
+	//* Loads the system styles and theme
 	loadSystemStyles: () => {
 		let systemStyle = document.createElement("style");
     systemStyle.innerHTML = `@import url("src/theme/${window.$qm.Config.systemTheme}.css");`;
@@ -158,6 +163,7 @@ export const Initialize = {
     document.getElementsByTagName("head")[0].append(systemStyle);
 	},
 
+	//* displays the log data
   showLogData: () => {
 
     const styles1 = "font-size:90%;padding: 2px;color:#fff;background-color:lightslategrey;border-radius: 3px 0 0 3px";
