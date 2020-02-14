@@ -98,6 +98,7 @@ export const Common = {
         fileName: VM_NAME,
         $props: {},
         Init: VM.Init,
+        Created: VM.Created,
         ...VM.Data(),
         ...VM.methods,
         components: (VM.components)?VM.components:[],
@@ -203,6 +204,12 @@ export const Common = {
 
             wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
             resolve(window.$qm["$scope"]);
+
+            //* call init
+            if (window.$qm["$scope"].Created) {
+              window.$qm["$scope"].Created();
+            }
+
 
           }
 
