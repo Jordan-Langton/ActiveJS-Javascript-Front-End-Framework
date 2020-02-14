@@ -54,12 +54,12 @@ export const router = {
         router.getInlineRoutes();
 
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
       
 
     }
     else {
-      ERROR.NEW("Invalid Route", "The route you are trying to access has not been setup as a valid route", "router", false, true, false);
+      ERROR.NEW("System Router Error", `The route '${route_path}' you are trying to access has not been setup as a valid route`, "router", false, true, false);
     }
 
     ERROR.RENDER();

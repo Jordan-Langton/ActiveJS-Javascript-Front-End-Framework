@@ -53,21 +53,18 @@
       }
     },
     Init() {
+
       this.people = State.Get("getPeople");
       this.products = State.Get("getProducts");
+      this.name = State.Get("getName");
 
-      this.name = this.$props.test2;
-      console.log(this.people);
-
-      this.people.push({name: "test 6", age: 17});
       setInterval(() => {
         this.add();
       }, 1000);
-      // this.changeClass();
     },
     watchers: {
-      people() {
-        console.log("people watcher called");
+      name() {
+        State.Commit("updateName", this.name);
       },
     },
     methods: {
