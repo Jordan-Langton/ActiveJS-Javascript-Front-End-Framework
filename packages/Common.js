@@ -97,17 +97,17 @@ export const Common = {
         el: VM.el,
         fileName: VM_NAME,
         $props: {},
-        _Init: VM._Init,
-        _Rendered: VM._Rendered,
+        // _Init: VM._Init,
         _Mounted: VM._Mounted,
+        _Rendered: VM._Rendered,
         _beforeUpdate: VM._beforeUpdate,
         _Updated: VM._Updated,
         ...VM.Data(),
         ...VM.methods,
         components: (VM.components)?VM.components:[],
-        watchers: {...VM.watchers},
         computed: {...VM.computed},
-      };
+        watchers: {...VM.watchers},
+      };     
 
       //* setup config in the ActiveJS export
       ActiveJS.Config.name = window.$qm.Config.name;
@@ -128,103 +128,138 @@ export const Common = {
       ActiveJS.State.Dispatch = window.$qm.State.state.Dispatch;
       ActiveJS.State.Get = window.$qm.State.state.Get;
 
+      //* get all registered components
       window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
-
-      // ActiveJS.registeredComponents = window.$qm.registeredComponents;
       
       //* build up the props
-      Common.buildProps(VM, $VM).then(() => {
-        
-        //* setup proxy on the global VM
-        window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
-        window["$scope"] = window.$qm["$scope"];
+      Common.buildProps(VM, $VM).then(($props) => {
 
-        //* call the mounted life cycle method
-        if (window.$qm["$scope"]._Mounted) {
-          window.$qm["$scope"]._Mounted();
-        }
+         //* setup proxy on the global VM
+         window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
+         window["$scope"] = window.$qm["$scope"];
 
-        //* check for binding Reflect
-        if ( window.$qm["$scope"].components.length > 0) {
-          BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
-        }
-        else {
-          //* callback to router
-          window.$qm["VM_LOADED"]();
-        }
-        
+        //* run all computed props if there are any
+        const computed = Object.entries($VM.computed);
+        if (computed.length != 0) {
 
-        //* call init life cycle method
-        if (window.$qm["$scope"]._Init) {
-          window.$qm["$scope"]._Init();
-        }
+          computed.forEach(comp => {
+            //? tell the PROXY that we are running computed props
+            window.$qm["computedMethodKey"] = {
+              intialRun: true, 
+              methodKeys: [],
+              methodsCalled: 0,
+              currentMethodName: comp[0], 
+              computedMethodsLength: computed.length,
+            };
 
-        DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
-
-
-        let wrapper = false;
-        let VIEW_WRAPPER = false;        
-        if (window.$qm["$scope"].hasOwnProperty("el")) {
-
-          wrapper = document.getElementById(window.$qm["$scope"].el.replace("#", ""));
-          VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
-          VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
-
-        }
-        else {
-          ERROR.NEW("System Failed During Render", `Property 'el' was not supplied for the view [${window.$qm["$scope"].fileName}]. Please make sure to always pass this property to your View Models`, "render", false, true, false);
-        }        
-
-        //* start render proccess
-        if (wrapper != null) {
-
-          //* animation passed
-          if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName) ) {
-
-            switch (window.$qm["view_animation"]) {
-              case "slideOver":
-                VIEW_WRAPPER.classList = "view-1";
-                break;
-              case "pushIn":
-                VIEW_WRAPPER.classList = "view-2";
-                break;
-            
-              default:
-                ERROR.NEW("System Failed During Render", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
-                break;
-            }
-            
-            //* add view to the DOM
-            wrapper.appendChild(window.$qm["READY_DOCUMENT"].body.firstChild);
-
-            //* start check for animations
-            Common.prepareRenderAnimations(window.$qm["view_animation"], window.$qm["view_navBack"], window.$qm["view_backPage"])
-            .then(() => {
-              resolve(window.$qm["$scope"]);
-            })
-            .catch(() => {
-              
+            window.$qm["computedMethodKey"].methodKeys.push({
+              name: comp[0],
+              dependencies: []
             });
 
-          }
-          //* no animation
-          else {
-
-            wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
-            resolve(window.$qm["$scope"]);
-
-            //* call Rendered life cycle method
-            if (window.$qm["$scope"]._Rendered) {
-              window.$qm["$scope"]._Rendered();
-            }
-
-
-          }
-
+            //? define a computed property for reference later on
+            window.$qm["$scope"][comp[0]] = $VM.computed[comp[0]].apply(window.$qm["$scope"]);
+          });
         }
         else {
-          ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
+          const event = new Event("computedMethodsSetupDone");
+          document.dispatchEvent(event);
         }
+
+        document.addEventListener("computedMethodsSetupDone", () => {
+
+          //* tell the PROXY that we are done setting up computed props
+          console.warn("intialRun is OVER");          
+          window.$qm["computedMethodKey"].intialRun = false;        
+
+          //* call the mounted life cycle method
+          if (window.$qm["$scope"]._Mounted) {
+            window.$qm["$scope"]._Mounted($props);
+          }
+
+          //* check for binding Reflect
+          if ( window.$qm["$scope"].components.length > 0) {
+            BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
+          }
+          else {
+            //* callback to router
+            window.$qm["VM_LOADED"]();
+          }
+          
+
+          //* call init life cycle method
+          // if (window.$qm["$scope"]._Init) {
+          //   window.$qm["$scope"]._Init();
+          // }
+
+          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
+
+
+          let wrapper = false;
+          let VIEW_WRAPPER = false;        
+          if (window.$qm["$scope"].hasOwnProperty("el")) {
+
+            wrapper = document.getElementById(window.$qm["$scope"].el.replace("#", ""));
+            VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
+            VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
+
+          }
+          else {
+            ERROR.NEW("System Failed During Render", `Property 'el' was not supplied for the view [${window.$qm["$scope"].fileName}]. Please make sure to always pass this property to your View Models`, "render", false, true, false);
+          }        
+
+          //* start render proccess
+          if (wrapper != null) {
+
+            //* animation passed
+            if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName) ) {
+
+              switch (window.$qm["view_animation"]) {
+                case "slideOver":
+                  VIEW_WRAPPER.classList = "view-1";
+                  break;
+                case "pushIn":
+                  VIEW_WRAPPER.classList = "view-2";
+                  break;
+              
+                default:
+                  ERROR.NEW("System Failed During Render", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
+                  break;
+              }
+              
+              //* add view to the DOM
+              wrapper.appendChild(window.$qm["READY_DOCUMENT"].body.firstChild);
+
+              //* start check for animations
+              Common.prepareRenderAnimations(window.$qm["view_animation"], window.$qm["view_navBack"], window.$qm["view_backPage"])
+              .then(() => {
+                resolve(window.$qm["$scope"]);
+              })
+              .catch(() => {
+                
+              });
+
+            }
+            //* no animation
+            else {
+
+              wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
+              resolve(window.$qm["$scope"]);
+
+              //* call Rendered life cycle method
+              if (window.$qm["$scope"]._Rendered) {
+                window.$qm["$scope"]._Rendered();
+              }
+
+
+            }
+
+          }
+          else {
+            ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
+          }
+
+        });
         
       })
       .catch((err) => console.error(err));
@@ -290,7 +325,7 @@ export const Common = {
         });
       }
 
-      resolve();
+      resolve( newVM.$props);
 
     });
 

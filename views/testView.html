@@ -3,6 +3,7 @@
 
     <div class="d-flex flex-even flex-align flex-wrap">
       <button @bind:class="button" @on:click="show()">Show / Hide</button>
+      <button @bind:class="button" @on:click="startCounter()">Start / Stop</button>
       <button @bind:class="button" @on:click="add()">Add</button>
       <button @bind:class="button" @on:click="nextView()">View 2 Method</button>
       <button @bind:class="button" @on:click="changeClass()">changeClass</button>
@@ -40,6 +41,8 @@
     Data() {
       return {
         a: 0,
+        timerOn: false,
+        counter: false,
         bool: false,
         blue: "bg-primary text-white",
         button: "btn-p-xs shadow-sm",
@@ -54,30 +57,43 @@
         ]
       }
     },
-    _Init() {
-
+    _Mounted(props) {
+      console.log(props);      
       this.people = State.Get("getPeople");
       this.products = State.Get("getProducts");
       this.name = State.Get("getName");
 
       console.log(document.getElementById('test'));
-      
-
-      setInterval(() => {
-        this.add();
-      }, 1000);
+      this.startCounter();
     },
     _Rendered() {
-
       console.log(document.getElementById('test'));
-
     },
     watchers: {
       name() {
         State.Commit("updateName", this.name);
       },
     },
+    computed: {
+      bar() {
+        return "hello "+this.name;
+      }
+    },
     methods: {
+      startCounter() {
+
+        if (this.timerOn == false) {
+          this.counter = setInterval(() => {
+            this.add();
+          }, 1000);
+          this.timerOn = true;
+        }
+        else {
+          clearInterval(this.counter);
+          this.timerOn = false;
+        }
+
+      },
       add() {
         if (this.a == 10) {
           this.bool = true;

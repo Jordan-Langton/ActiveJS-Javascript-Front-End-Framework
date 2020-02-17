@@ -14,7 +14,19 @@ export const PROXY = {
     get(_target, _prop, _reciever) {
 
       if (_prop in _target) {
-        return _target[_prop];        
+        // //* check if computed methods are being setup
+        if (window.$qm["computedMethodKey"].intialRun) {
+
+          console.warn("HIT GET : "+_prop);        
+          // const event = new Event("computedMethodsSetupDone");
+          // document.dispatchEvent(event);
+
+          return _target[_prop];
+
+        }
+        else {
+          return _target[_prop];
+        }        
       }
       else {
         if (_prop != 'then') {
@@ -26,25 +38,26 @@ export const PROXY = {
 
     set(_target, _prop, _val, _reciever) { 
 
-      // if (_prop in _target) {
-        Reflect.set(_target, _prop, _val);
+      Reflect.set(_target, _prop, _val);
+      PROXY.PROXY_ONCHANGE_METHOD(_prop);
+
+      //* get watchers out of object
+      let watchers = Object.entries(_target.watchers);
+      let computed = Object.entries(_target.computed);
+
+      if (watchers.length > 0) {
+        //* if the property being updated is in the wathers obj call it
+        if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
         PROXY.PROXY_ONCHANGE_METHOD(_prop);
+      }
 
-        //* get watchers out of object
-        let watchers = Object.entries(_target.watchers);
+      if (computed.length > 0) {
+        //* if the property being updated is in the wathers obj call it
+        if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
+        PROXY.PROXY_ONCHANGE_METHOD(_prop);
+      }
 
-        if (watchers.length > 0) {
-          //* if the property being updated is in the wathers obj call it
-          if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
-          PROXY.PROXY_ONCHANGE_METHOD(_prop);
-        }
-
-        return true;
-      // }
-      // else {
-      //   ERROR.NEW("Failed to Set Property", `Quantum was unable to set the property "${_prop}" because is is not defined in your View Model`, 'proxy', false, true, false);
-      //   return true;
-      // }
+      return true;
 
     },
 
