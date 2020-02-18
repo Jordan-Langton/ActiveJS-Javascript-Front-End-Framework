@@ -54,6 +54,10 @@ export const Initialize = {
 				DOMBindings: [],
 				DOMBoundKeys: [],
 				CRUMBS: [],
+				systemEvents: {
+					computedMethodsSetupDone: {},
+					computedPropSetOnVM: {},
+				},
 				lastCrumb: Breadcrumbs.NEW_CRUMB(isValid.baseView),
 				registeredComponents: ActiveJS.registeredComponents,
 				Component: ActiveJS.Component,

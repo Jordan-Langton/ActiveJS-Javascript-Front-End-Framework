@@ -18,10 +18,13 @@
         name: false,
       }
     },
-    Init() {
-      console.log(this.$props.name);
-      
+    _Mounted() {    
       this.name = this.$props.name;      
+    },
+    computed: {
+      bar() {
+        return this.name +" hello";
+      },
     },
     methods: {
       back() {

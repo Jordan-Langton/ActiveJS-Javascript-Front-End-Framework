@@ -109,6 +109,18 @@ export const Common = {
         watchers: { ...VM.watchers },
       };
 
+      //* setup for if you have computed props
+      const computed = Object.entries($VM.computed);
+      window.$qm["computedMethodKey"] = {
+        intialRun: true,
+        setupDone: false,
+        cbCalled: false,
+        methodKeys: [],
+        methodsCalled: 0,
+        currentMethodName: false,
+        computedMethodsLength: computed.length,
+      };
+
       //* setup config in the ActiveJS export
       ActiveJS.Config.name = window.$qm.Config.name;
       ActiveJS.Config.version = window.$qm.Config.version;
@@ -130,12 +142,17 @@ export const Common = {
 
       //* get all registered components
       window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
+      
 
       //* build up the props
       Common.buildProps(VM, $VM).then(($props) => {
 
-        //*setup event to check for when the computed methods have been setup
-        document.addEventListener("computedMethodsSetupDone", () => {
+        //* setup proxy on the global VM
+        window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
+        window["$scope"] = window.$qm["$scope"];
+
+        //* method to run when computed methods have been setup
+        window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
 
           //* tell the PROXY that we are done setting up computed props
           console.warn("intialRun is OVER");
@@ -227,23 +244,6 @@ export const Common = {
           else {
             ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
           }
-
-        });
-
-        //* setup proxy on the global VM
-        window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
-        window["$scope"] = window.$qm["$scope"];
-
-        //* setup for if you have computed props
-        const computed = Object.entries($VM.computed);
-        window.$qm["computedMethodKey"] = {
-          intialRun: true,
-          setupDone: false,
-          cbCalled: false,
-          methodKeys: [],
-          methodsCalled: 0,
-          currentMethodName: false,
-          computedMethodsLength: computed.length,
         };
 
         //* if you have computed props        
@@ -279,8 +279,7 @@ export const Common = {
           });
         }
         else {
-          const event = new Event("computedMethodsSetupDone");
-          document.dispatchEvent(event);
+          window.$qm["systemEvents"]["computedMethodsSetupDone"]();
         }
 
       })

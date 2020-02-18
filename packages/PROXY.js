@@ -12,12 +12,11 @@ export const PROXY = {
   //* build up the proxy handler
   PROXY_HANDLER : {
     get(_target, _prop, _reciever) {
-      // debugger;
       
       if (_prop in window.$qm["$scope"] || window.$qm["computedMethodKey"].intialRun) {
         // //* check if computed methods are being setup
         if (window.$qm["computedMethodKey"].intialRun) {
-          console.warn("Setting up computed Prop : "+window.$qm["computedMethodKey"].currentMethodName);
+          console.warn("Setting up computed Prop : ["+window.$qm["computedMethodKey"].currentMethodName+"] Dependecy: "+_prop);
 
           window.$qm["computedMethodKey"].methodKeys.forEach((method, index) => {
             if (method.name == window.$qm["computedMethodKey"].currentMethodName) {
@@ -25,14 +24,13 @@ export const PROXY = {
             }
           });
 
-          //* let the render proccess know that computed methods are setup 
-          document.addEventListener("computedPropSetOnVM", () => {      
+          //* method to run when computed methods are setup
+          window.$qm["systemEvents"]["computedPropSetOnVM"] = () => {
             if (window.$qm["computedMethodKey"].cbCalled == false) {
               window.$qm["computedMethodKey"].cbCalled = true;
-              const event = new Event("computedMethodsSetupDone");
-              document.dispatchEvent(event);   
-            }   
-          });   
+              window.$qm["systemEvents"]["computedMethodsSetupDone"]();   
+            }
+          };  
 
           //* return prop
           return _target[_prop];
@@ -85,8 +83,7 @@ export const PROXY = {
       
       //* if the initial run is still going, 
       if (window.$qm["computedMethodKey"].intialRun == true && window.$qm["computedMethodKey"].methodsCalled == window.$qm["computedMethodKey"].computedMethodsLength) {
-        const event = new Event("computedPropSetOnVM");
-        document.dispatchEvent(event);       
+        window.$qm["systemEvents"]["computedPropSetOnVM"]();       
       }
 
       return true;
