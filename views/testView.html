@@ -11,12 +11,16 @@
     </div>
 
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
-    <input type="text" @reflect="name" @on:enter="logName()">
+    <div class="d-flex flex-center flex-align">
+      <input type="number" @reflect="age1" @on:enter="logName()">
+      <div class=""> (TIMES) </div>
+      <input type="number" @reflect="age2" @on:enter="logName()">
+    </div>
     <p @if="bool">SHOWING 1</p>
     <p @else>SHOWING 2</p>
     <p>{{a}}</p>
     <br>
-    <div id="test">{{foo}}</div>
+    <div id="test"></div>
 
     <!-- <div class="block d-flex flex-even flex-align flex-wrap">
 
@@ -44,6 +48,8 @@
         timerOn: false,
         counter: false,
         bool: false,
+        age1: 0,
+        age2: 0,
         blue: "bg-primary text-white",
         button: "btn-p-xs shadow-sm",
         person: "person text-center d-flex flex-col flex-even flex-align flex-wrap shadow-sm",
@@ -75,21 +81,9 @@
       },
     },
     computed: {
-      foo() {
-        return "test "+this.name;
-      },
-      bar() {
-        let data = "";
-
-        this.people.forEach(person => {
-          data += person.name+" : "+person.age+"<br>";
-        });
-
-        return data;
-      },
-      bay() {
-        return "hello "+this.people2[1];
-      }
+      // foo() {
+      //   return this.age1*this.age2;
+      // },
     },
     methods: {
       startCounter() {

@@ -920,11 +920,6 @@ export const BIND = {
 			}
 			else {
 				HANDLER[attrVal] = Number(inputVal);
-
-				//? NOTE* if your state has a global property 'attrVal' it will update it as well
-				if (HANDLER.$state.state.hasOwnProperty(attrVal)) {
-					HANDLER.$state.state[attrVal] = Number(inputVal);
-				}
 			}
 		}
 		//? if element is of type select

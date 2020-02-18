@@ -232,23 +232,24 @@ export const Common = {
 
         //* setup proxy on the global VM
         window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
-        window["$scope"] = window.$qm["$scope"];        
+        window["$scope"] = window.$qm["$scope"];
 
-        //* if you have computed props
+        //* setup for if you have computed props
         const computed = Object.entries($VM.computed);
+        window.$qm["computedMethodKey"] = {
+          intialRun: true,
+          setupDone: false,
+          cbCalled: false,
+          methodKeys: [],
+          methodsCalled: 0,
+          currentMethodName: false,
+          computedMethodsLength: computed.length,
+        };
+
+        //* if you have computed props        
         if (computed.length != 0) {          
 
           //* tell the PROXY that we are running computed props
-          window.$qm["computedMethodKey"] = {
-            intialRun: true,
-            setupDone: false,
-            cbCalled: false,
-            methodKeys: [],
-            methodsCalled: 0,
-            currentMethodName: false,
-            computedMethodsLength: computed.length,
-          };
-
           computed.forEach((comp, index) => {
             window.$qm["computedMethodKey"].currentMethodName = comp[0];
             
