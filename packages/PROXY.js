@@ -12,15 +12,29 @@ export const PROXY = {
   //* build up the proxy handler
   PROXY_HANDLER : {
     get(_target, _prop, _reciever) {
-
-      if (_prop in _target) {
+      // debugger;
+      
+      if (_prop in window.$qm["$scope"] || window.$qm["computedMethodKey"].intialRun) {
         // //* check if computed methods are being setup
         if (window.$qm["computedMethodKey"].intialRun) {
+          console.warn("Setting up computed Prop : "+window.$qm["computedMethodKey"].currentMethodName);
 
-          console.warn("HIT GET : "+_prop);        
-          // const event = new Event("computedMethodsSetupDone");
-          // document.dispatchEvent(event);
+          window.$qm["computedMethodKey"].methodKeys.forEach((method, index) => {
+            if (method.name == window.$qm["computedMethodKey"].currentMethodName) {
+              window.$qm["computedMethodKey"].methodKeys[index].dependencies.push(_prop);
+            }
+          });
 
+          //* let the render proccess know that computed methods are setup 
+          document.addEventListener("computedPropSetOnVM", () => {      
+            if (window.$qm["computedMethodKey"].cbCalled == false) {
+              window.$qm["computedMethodKey"].cbCalled = true;
+              const event = new Event("computedMethodsSetupDone");
+              document.dispatchEvent(event);   
+            }   
+          });   
+
+          //* return prop
           return _target[_prop];
 
         }
@@ -29,32 +43,50 @@ export const PROXY = {
         }        
       }
       else {
-        if (_prop != 'then') {
+        if (_prop != 'then' && window.$qm["computedMethodKey"].intialRun == false) {
           return ERROR.NEW("Failed to Get Property", `Quantum was unable to get the property "${_prop}" because it is not defined in your View Model`, 'proxy', false, true, false);          
         }
       }
 
     },
 
-    set(_target, _prop, _val, _reciever) { 
+    set(_target, _prop, _val, _reciever) {
 
       Reflect.set(_target, _prop, _val);
-      PROXY.PROXY_ONCHANGE_METHOD(_prop);
+      if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(_prop);
 
-      //* get watchers out of object
+      //* call any watchers which watch current prop
       let watchers = Object.entries(_target.watchers);
-      let computed = Object.entries(_target.computed);
-
       if (watchers.length > 0) {
         //* if the property being updated is in the wathers obj call it
         if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
-        PROXY.PROXY_ONCHANGE_METHOD(_prop);
+        if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(_prop);
       }
 
-      if (computed.length > 0) {
-        //* if the property being updated is in the wathers obj call it
-        if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
-        PROXY.PROXY_ONCHANGE_METHOD(_prop);
+      //* run any computed props which need the current prop's value
+      if (window.$qm["computedMethodKey"].methodKeys.length > 0) {
+        
+        for (let i = 0; i < window.$qm["computedMethodKey"].methodKeys.length; i++) {
+          const method = window.$qm["computedMethodKey"].methodKeys[i];
+
+          for (let j = 0; j < window.$qm["computedMethodKey"].methodKeys[i].dependencies.length; j++) {
+            const dependency = window.$qm["computedMethodKey"].methodKeys[i].dependencies[j];
+            
+            if (dependency == _prop) {   
+              window.$qm["$scope"].computed[method.name].apply(window.$qm["$scope"]);
+              if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(method.name);
+            }
+
+          }
+          
+        }
+
+      }
+      
+      //* if the initial run is still going, 
+      if (window.$qm["computedMethodKey"].intialRun == true && window.$qm["computedMethodKey"].methodsCalled == window.$qm["computedMethodKey"].computedMethodsLength) {
+        const event = new Event("computedPropSetOnVM");
+        document.dispatchEvent(event);       
       }
 
       return true;
@@ -105,14 +137,14 @@ export const PROXY = {
   UPDATED_DOM(_property) {   
 
     //* call the mounted life cycle method
-    if (window.$qm["$scope"]._beforeUpdate) {
+    if (window.$qm["$scope"]._beforeUpdate && window.$qm["computedMethodKey"].intialRun == false) {
       window.$qm["$scope"]._beforeUpdate();
     }
 
     DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
 
     //* call the mounted life cycle method
-    if (window.$qm["$scope"]._Updated) {
+    if (window.$qm["$scope"]._Updated && window.$qm["computedMethodKey"].intialRun == false) {
       window.$qm["$scope"]._Updated();
     }
   },

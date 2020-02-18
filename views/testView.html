@@ -16,7 +16,7 @@
     <p @else>SHOWING 2</p>
     <p>{{a}}</p>
     <br>
-    <div id="test">Hello</div>
+    <div id="test">{{foo}}</div>
 
     <!-- <div class="block d-flex flex-even flex-align flex-wrap">
 
@@ -64,7 +64,7 @@
       this.name = State.Get("getName");
 
       console.log(document.getElementById('test'));
-      this.startCounter();
+      // this.startCounter();
     },
     _Rendered() {
       console.log(document.getElementById('test'));
@@ -75,8 +75,20 @@
       },
     },
     computed: {
+      foo() {
+        return "test "+this.name;
+      },
       bar() {
-        return "hello "+this.name;
+        let data = "";
+
+        this.people.forEach(person => {
+          data += person.name+" : "+person.age+"<br>";
+        });
+
+        return data;
+      },
+      bay() {
+        return "hello "+this.people2[1];
       }
     },
     methods: {
