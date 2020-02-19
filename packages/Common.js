@@ -106,7 +106,7 @@ export const Common = {
         ...VM.methods,
         components: (VM.components) ? VM.components : [],
         computed: { ...VM.computed },
-        watchers: { ...VM.watchers },
+        observers: { ...VM.observers },
       };
 
       //* setup for if you have computed props

@@ -70,7 +70,7 @@ export const getFromCache = (key="") => {
 
 export const createApp = (configuration={}, Created=() => {}) => Initialize.Start(configuration, Created);
 
-export const newView = (View_Name="", Controller={props: [], Data() {}, Init() {}, watchers: {}, methods: {}}) => Common.buildVM(View_Name, Controller)
+export const newView = (View_Name="", Controller={props: [], Data() {}, Init() {}, observers: {}, methods: {}}) => Common.buildVM(View_Name, Controller)
               .then((VM) => {             
 
                 //? check for binding Reflect

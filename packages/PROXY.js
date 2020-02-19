@@ -53,11 +53,11 @@ export const PROXY = {
       Reflect.set(_target, _prop, _val);
       if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(_prop);
 
-      //* call any watchers which watch current prop
-      let watchers = Object.entries(_target.watchers);
-      if (watchers.length > 0) {
+      //* call any observers which watch current prop
+      let observers = Object.entries(_target.observers);
+      if (observers.length > 0) {
         //* if the property being updated is in the wathers obj call it
-        if (_prop in _target.watchers) _target.watchers[_prop].apply(window.$qm["$scope"]);
+        if (_prop in _target.observers) _target.observers[_prop].apply(window.$qm["$scope"]);
         if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(_prop);
       }
 
@@ -139,11 +139,6 @@ export const PROXY = {
     }
 
     DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
-
-    //* call the mounted life cycle method
-    if (window.$qm["$scope"]._Updated && window.$qm["computedMethodKey"].intialRun == false) {
-      window.$qm["$scope"]._Updated();
-    }
   },
 
 };

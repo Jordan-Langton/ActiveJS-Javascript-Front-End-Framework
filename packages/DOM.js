@@ -397,6 +397,11 @@ export const DOM = {
             element.attributes[attribute].value = script;
           }          
         }
+
+        //* call the mounted life cycle method
+        if (window.$qm["$scope"]._Updated && window.$qm["computedMethodKey"].intialRun == false) {
+          window.$qm["$scope"]._Updated();
+        }
         
       }
       else {

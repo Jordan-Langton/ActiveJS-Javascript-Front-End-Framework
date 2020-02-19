@@ -11,6 +11,7 @@
     </div>
 
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
+    <input type="text" @reflect="name" @on:enter="logName()">
     <div class="d-flex flex-center flex-align">
       <input type="number" @reflect="age1" @on:enter="logName()">
       <div class=""> (TIMES) </div>
@@ -75,7 +76,7 @@
     _Rendered() {
       console.log(document.getElementById('test'));
     },
-    watchers: {
+    observers: {
       name() {
         State.Commit("updateName", this.name);
       },

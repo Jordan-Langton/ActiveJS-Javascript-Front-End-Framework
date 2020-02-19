@@ -422,6 +422,11 @@ export const BIND = {
 				}
 			}
 
+			//* call the mounted life cycle method
+			if (window.$qm["$scope"]._Updated && window.$qm["computedMethodKey"].intialRun == false) {
+				window.$qm["$scope"]._Updated();
+			}
+
 		});
 
 	},
