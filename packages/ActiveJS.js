@@ -36,7 +36,7 @@ export let State = {
 
 //* ================== METHODS ==================
 
-export const emit = (eventName="", payload=true) => {
+export const Emit = (eventName="", payload=true) => {
 
   Emitted_Data = payload;
   let event = new Event(eventName);
@@ -44,7 +44,7 @@ export const emit = (eventName="", payload=true) => {
 
 };
 
-export const accept = (eventName="") => {
+export const Accept = (eventName="") => {
 
   document.addEventListener(eventName, () => { return Emitted_Data; });
 
@@ -70,7 +70,7 @@ export const getFromCache = (key="") => {
 
 export const createApp = (configuration={}, Created=() => {}) => Initialize.Start(configuration, Created);
 
-export const newView = (View_Name="", Controller={props: [], Data() {}, Init() {}, observers: {}, methods: {}}) => Common.buildVM(View_Name, Controller)
+export const newController = (View_Name="", Controller={props: [], Data() {}, Init() {}, observers: {}, methods: {}}) => Common.buildVM(View_Name, Controller)
               .then((VM) => {             
 
                 //? check for binding Reflect

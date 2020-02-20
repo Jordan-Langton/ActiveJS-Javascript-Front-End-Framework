@@ -71,7 +71,7 @@ export const Initialize = {
 				saveToCache: ActiveJS.saveToCache,
 				getFromCache: ActiveJS.getFromCache,
 				createApp: ActiveJS.createApp,
-				newView: ActiveJS.newView,
+				newController: ActiveJS.newController,
 				reqisterComponent: ActiveJS.reqisterComponent,
 				Router: ActiveJS.Router,
 			};

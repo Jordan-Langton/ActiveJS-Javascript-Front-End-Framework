@@ -39,8 +39,8 @@
 </template>
 
 <script>
-  import { newView, Router, State } from "./packages/ActiveJS.js";
-  newView('testView', {
+  import { newController, Router, State } from "./packages/ActiveJS.js";
+  newController('testView', {
     el: "#app",
     props: ["test1", "test2"],
     Data() {

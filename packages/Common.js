@@ -122,7 +122,6 @@ export const Common = {
       };
 
       //* setup config in the ActiveJS export
-      debugger;
       ActiveJS.Config.name = window.$qm.Config.name;
       ActiveJS.Config.version = window.$qm.Config.version;
       ActiveJS.Config.environment = window.$qm.Config.environment;
