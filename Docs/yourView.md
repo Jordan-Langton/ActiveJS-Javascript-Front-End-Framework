@@ -39,137 +39,137 @@ import * as ActiveJS from "./packages/ActiveJS.js";
 
 ```
 
-### ActiveJS (Config)
-```js
-import { Config } from "./packages/ActiveJS.js";
+- ### ActiveJS (Config)
+  - ```js
+    import { Config } from "./packages/ActiveJS.js";
 
-// An object with all your initial config data inside
-Config = {
-  "name": "TESTING Application",
-  "version": "1.0.0",
-  "environment": "Development",
-  "description": "This is a test application",
-  "systemTheme": "project-theme",
-  "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
-  "interfaces": [],
-  "store": Store, // if you passed a global store to ActiveJS
-  "routes": []
-}
-```
+    // An object with all your initial config data inside
+    Config = {
+      "name": "TESTING Application",
+      "version": "1.0.0",
+      "environment": "Development",
+      "description": "This is a test application",
+      "systemTheme": "project-theme",
+      "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
+      "interfaces": [],
+      "store": Store, // if you passed a global store to ActiveJS
+      "routes": []
+    }
+    ```
 
-### ActiveJS (State)
-```js
-import { State } from "./packages/ActiveJS.js";
+- ### ActiveJS (State)
+  - ```js
+    import { State } from "./packages/ActiveJS.js";
 
-// An object with all your State methods and global state
-State = {
-  model: {},
-  Get(propName="", payload) {},
-  Commit(name="", payload) {},
-  Dispatch(name="", payload, callback=()=>{}) {}
-}
-```
+    // An object with all your State methods and global state
+    State = {
+      model: {},
+      Get(propName="", payload) {},
+      Commit(name="", payload) {},
+      Dispatch(name="", payload, callback=()=>{}) {}
+    }
+    ```
 
-### ActiveJS (Emit)
-```js
-import { Emit } from "./packages/ActiveJS.js";
+- ### ActiveJS (Emit)
+  - ```js
+    import { Emit } from "./packages/ActiveJS.js";
 
-// A method used to 'emit' some sort of data
-Emit(eventName="", payload=true);
-```
+    // A method used to 'emit' some sort of data
+    Emit(eventName="", payload=true);
+    ```
 
-### ActiveJS (Accept)
-```js
-import { Accept } from "./packages/ActiveJS.js";
+- ### ActiveJS (Accept)
+  -  ```js
+      import { Accept } from "./packages/ActiveJS.js";
 
-// A method used to 'accept' data emited from somewhere in your app
-Accept(eventName="");
-```
+      // A method used to 'accept' data emited from somewhere in your app
+      Accept(eventName="");
+      ```
 
-### ActiveJS (Component)
-```js
-import { Component } from "./packages/ActiveJS.js";
+- ### ActiveJS (Component)
+  - ```js
+    import { Component } from "./packages/ActiveJS.js";
 
-// A class where you define a new component
-export default class testComp extends Component {
+    // A class where you define a new component
+    export default class testComp extends Component {
 
-  constructor(props) {
-    // Always call super passing props from the constructor
-    super(props);
-  }
+      constructor(props) {
+        // Always call super passing props from the constructor
+        super(props);
+      }
 
-  // this is a life cycle method
-  compMounted() {    
-    console.log(this.$props);    
-    this.render(`<h1>${this.$props.message}</h1>`);
-  }
+      // this is a life cycle method
+      compMounted() {    
+        console.log(this.$props);    
+        this.render(`<h1>${this.$props.message}</h1>`);
+      }
 
-}
-```
+    }
+    ```
 
-### ActiveJS (reqisterComponent)
-```js
-import { reqisterComponent } from "./packages/ActiveJS.js";
+- ### ActiveJS (reqisterComponent)
+  - ```js
+    import { reqisterComponent } from "./packages/ActiveJS.js";
 
-// A method used to a component to ActiveJS to use in your views
-reqisterComponent(reference="", component={});
-```
+    // A method used to a component to ActiveJS to use in your views
+    reqisterComponent(reference="", component={});
+    ```
 
-### ActiveJS (saveToCache)
-```js
-import { saveToCache } from "./packages/ActiveJS.js";
+- ### ActiveJS (saveToCache)
+  - ```js
+    import { saveToCache } from "./packages/ActiveJS.js";
 
-// A method used to cache some data on the device
-saveToCache(key="", payload={});
-```
+    // A method used to cache some data on the device
+    saveToCache(key="", payload={});
+    ```
 
-### ActiveJS (getFromCache)
-```js
-import { getFromCache } from "./packages/ActiveJS.js";
+- ### ActiveJS (getFromCache)
+  - ```js
+    import { getFromCache } from "./packages/ActiveJS.js";
 
-// A method used to get something out of your device cache
-getFromCache(key="");
-```
+    // A method used to get something out of your device cache
+    getFromCache(key="");
+    ```
 
-### ActiveJS (createApp)
-```js
-import { createApp } from "./packages/ActiveJS.js";
+- ### ActiveJS (createApp)
+  - ```js
+    import { createApp } from "./packages/ActiveJS.js";
 
-// This is what you call to initialize your ActiveJS application
-createApp(configuration={}, Created=() => {});
-```
+    // This is what you call to initialize your ActiveJS application
+    createApp(configuration={}, Created=() => {});
+    ```
 
-### ActiveJS (Router)
-```js
-import { Router } from "./packages/ActiveJS.js";
+- ### ActiveJS (Router)
+  - ```js
+    import { Router } from "./packages/ActiveJS.js";
 
-// An object with router specific methods
-Router = {
-  navBack: () => {},
-  removeLastCrumb: () => {},
-  route: (path="", params=null) => {},
-  addCrumb: (crumb={path: "", params: null}) => {},
-}
-```
+    // An object with router specific methods
+    Router = {
+      navBack: () => {},
+      removeLastCrumb: () => {},
+      route: (path="", params=null) => {},
+      addCrumb: (crumb={path: "", params: null}) => {},
+    }
+    ```
 
-### ActiveJS (newController)
-```js
-import { newController } from "./packages/ActiveJS.js";
+- ### ActiveJS (newController)
+  - ```js
+    import { newController } from "./packages/ActiveJS.js";
 
-// This is what you call to initialize a new controller for a view
-newController(View_Name="", Controller={
-  el: '',
-  props: [], 
-  Data() {}, 
-  _Mounted() {}, 
-  _Rendered() {}, 
-  _beforeUpdate() {}, 
-  _Updated() {}, 
-  observers: {}, 
-  computed: {}, 
-  methods: {}
-});
-```
+    // This is what you call to initialize a new controller for a view
+    newController(View_Name="", Controller={
+      el: '',
+      props: [], 
+      Data() {}, 
+      _Mounted() {}, 
+      _Rendered() {}, 
+      _beforeUpdate() {}, 
+      _Updated() {}, 
+      observers: {}, 
+      computed: {}, 
+      methods: {}
+    });
+    ```
 
 # The Template
 This is where you would put all of the mochup for the page in your application. See example below.
@@ -237,99 +237,99 @@ _Rendered|`Method`|A `life cycle` method which is called `after` anything has re
 _beforeUpdate|`Method`|A `life cycle` method which is called before anything has `updated` in the `DOM`|[example](#rendered-example)
 _Update|`Method`|A `life cycle` method which is called `after` anything has `updated` in the `DOM`|[example](#rendered-example)
 
-## ActiveJS Props Example
-When routing to a view in ActiveJS, you can pass data between views. If you tell a view that it accepts props, the view will produce an error until you pass it the props needed. See example below on how to tell a view it accepts props:
-```js
-import { newController } from "./packages/ActiveJS.js";
-newController("Props", {
-  el: "#app",
-  props: ["prop1", "prop2", "prop3"],
-  Data() {
-    return {
-      message: 'Hello World!'
-    }
+- ## ActiveJS Props Example
+  When routing to a view in ActiveJS, you can pass data between views. If you tell a view that it accepts props, the view will produce an error until you pass it the props needed. See example below on how to tell a view it accepts props:
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Props", {
+    el: "#app",
+    props: ["prop1", "prop2", "prop3"],
+    Data() {
+      return {
+        message: 'Hello World!'
+      }
+    },
+  })
+  ```
+  You can set a property in your view data to the value of one of the props inside of the `_Mounted` using `this.$props` life cycle method. See below example:
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Props", {
+    el: "#app",
+    props: ["prop1", "prop2", "prop3"],
+    Data() {
+      return {
+        propData: false
+      }
   },
-})
-```
-You can set a property in your view data to the value of one of the props inside of the `_Mounted` using `this.$props` life cycle method. See below example:
-```js
-import { newController } from "./packages/ActiveJS.js";
-newController("Props", {
-  el: "#app",
-  props: ["prop1", "prop2", "prop3"],
-  Data() {
-    return {
-      propData: false
+    _Mounted() {    
+      this.propData = this.$props.prop1;
+      // or
+      this.propData = this.$props;
     }
- },
-  _Mounted() {    
-    this.propData = this.$props.prop1;
-    // or
-    this.propData = this.$props;
-  }
-})
-```
-## ActiveJS Observers Example
-An observer is a method which will `watch` for a property in your view data to `change`. Once the data does change, the observer will perform an `action you supplied`. To create an observer, first add the `observers` object to your view controller. Then add a method inside of the object with the method's name being the same as the name of the property you wish to `observe`. See example below:
-```js
-import { newController } from "./packages/ActiveJS.js";
-newController("Observers", {
-  el: "#app",
-  Data() {
-    return {
-      message: 'Hello World!'
+  })
+  ```
+- ## ActiveJS Observers Example
+  An observer is a method which will `watch` for a property in your view data to `change`. Once the data does change, the observer will perform an `action you supplied`. To create an observer, first add the `observers` object to your view controller. Then add a method inside of the object with the method's name being the same as the name of the property you wish to `observe`. See example below:
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Observers", {
+    el: "#app",
+    Data() {
+      return {
+        message: 'Hello World!'
+      }
+    },
+    observers: {
+      message() {
+        console.log("the property 'message' has been updated");
+      }
     }
-  },
-  observers: {
-    message() {
-      console.log("the property 'message' has been updated");
+  })
+  ```
+- ## ActiveJS Computed Properties Example
+  A computed property is a method which sets a property in your view data to the return value of said computed method. Your create a computed method by first adding the `computed` object to your view controller. Then add a method with the name you wish to access via your controller. Make sure that your computed methods `ALWAYS` return a value. See example below:
+  >#### NOTE : As you can see, the computed method uses 2 data properties. If either of these properties change, the computed method will run and update it's computed value.
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Computed_Properties", {
+    el: "#app",
+    Data() {
+      return {
+        productPrice_1: 10,
+        productPrice_2: 5,
+      }
+    },
+    computed: {
+      total() {
+        return this.productPrice_1 + this.productPrice_2;
+      }
     }
-  }
-})
-```
-## ActiveJS Computed Properties Example
-A computed property is a method which sets a property in your view data to the return value of said computed method. Your create a computed method by first adding the `computed` object to your view controller. Then add a method with the name you wish to access via your controller. Make sure that your computed methods `ALWAYS` return a value. See example below:
->#### NOTE : As you can see, the computed method uses 2 data properties. If either of these properties change, the computed method will run and update it's computed value.
-```js
-import { newController } from "./packages/ActiveJS.js";
-newController("Computed_Properties", {
-  el: "#app",
-  Data() {
-    return {
-      productPrice_1: 10,
-      productPrice_2: 5,
+  })
+  ```
+- ## ActiveJS Methods Example
+  This is an object of all the custom methods you would want to call due to user interaction or during a proccess flow. To add a method to your controller, first add the `methods` object to the controller and inside of it, add your method. See example below:
+  ```html
+  <template>
+    <h3>Counter: {{counter}}</h3>
+    <button @on:click="addToCounter()">Add</button>
+  </template>
+  ```
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Methods", {
+    el: "#app",
+    Data() {
+      return {
+        counter: 0
+      }
+    },
+    methods: {
+      addToCounter() {
+        this.counter = this.counter++;
+      }
     }
-  },
-  computed: {
-    total() {
-      return this.productPrice_1 + this.productPrice_2;
-    }
-  }
-})
-```
-## ActiveJS Methods Example
-This is an object of all the custom methods you would want to call due to user interaction or during a proccess flow. To add a method to your controller, first add the `methods` object to the controller and inside of it, add your method. See example below:
-```html
-<template>
-  <h3>Counter: {{counter}}</h3>
-  <button @on:click="addToCounter()">Add</button>
-</template>
-```
-```js
-import { newController } from "./packages/ActiveJS.js";
-newController("Methods", {
-  el: "#app",
-  Data() {
-    return {
-      counter: 0
-    }
-  },
-  methods: {
-    addToCounter() {
-      this.counter = this.counter++;
-    }
-  }
-})
-```
+  })
+  ```
 # 
 
