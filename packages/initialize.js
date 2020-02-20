@@ -46,7 +46,10 @@ export const Initialize = {
 			ActiveJS.Config.routes = isValid.routes;
 
 			//* setup the state
-			ActiveJS.State.state = new Store(isValid.store).Model;
+			ActiveJS.State.model = new Store(isValid.store).Model.model;
+			ActiveJS.State.Get = new Store(isValid.store).Model.Get;
+			ActiveJS.State.Commit = new Store(isValid.store).Model.Commit;
+			ActiveJS.State.Dispatch = new Store(isValid.store).Model.Dispatch;
 
 			//* setup the global VM
 			window.$qm = {

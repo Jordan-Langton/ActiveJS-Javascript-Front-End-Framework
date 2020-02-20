@@ -65,11 +65,10 @@
       }
     },
     _Mounted(props) {
-      console.log(props);      
+      console.log(State);      
       this.people = State.Get("getPeople");
       this.products = State.Get("getProducts");
       this.name = State.Get("getName");
-
       console.log(document.getElementById('test'));
       // this.startCounter();
     },

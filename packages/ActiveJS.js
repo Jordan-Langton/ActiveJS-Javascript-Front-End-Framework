@@ -28,7 +28,7 @@ export let registeredComponents = [];
 export const Component = baseComponent;
 
 export let State = {
-  state: {},
+  model: {},
   Get(propName="", payload) {},
   Commit(name="", payload) {},
   Dispatch(name="", payload, callback=()=>{}) {}

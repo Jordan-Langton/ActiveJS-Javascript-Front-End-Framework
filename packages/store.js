@@ -55,7 +55,7 @@ export class Store {
     //? setup store
     this.Model = {
       handler: null,
-      state: _this.state,
+      model: _this.state,
       Get(propName, payload) {
         return _this.get(_this.Context, propName, payload);
       },

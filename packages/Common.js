@@ -122,6 +122,7 @@ export const Common = {
       };
 
       //* setup config in the ActiveJS export
+      debugger;
       ActiveJS.Config.name = window.$qm.Config.name;
       ActiveJS.Config.version = window.$qm.Config.version;
       ActiveJS.Config.environment = window.$qm.Config.environment;
@@ -135,10 +136,10 @@ export const Common = {
       ActiveJS.Config.routes = window.$qm.Config.routes;
 
       //* setup state in the ActiveJS export
-      ActiveJS.State.state = window.$qm.State.state.state;
-      ActiveJS.State.Commit = window.$qm.State.state.Commit;
-      ActiveJS.State.Dispatch = window.$qm.State.state.Dispatch;
-      ActiveJS.State.Get = window.$qm.State.state.Get;
+      ActiveJS.State.model = window.$qm.State.model;
+      ActiveJS.State.Commit = window.$qm.State.Commit;
+      ActiveJS.State.Dispatch = window.$qm.State.Dispatch;
+      ActiveJS.State.Get = window.$qm.State.Get;
 
       //* get all registered components
       window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
