@@ -2,28 +2,28 @@ import test from "./testObj";
 
 export default {
 
-  "state": {
+  "model": {
     name: "Markus",
     people: test.cache.people,
     products: test.cache.products
   },
   "getters": {
-    getName({$state}) {
-      return $state.name;
+    getName({$model}) {
+      return $model.name;
     },
-    getPeople({$state}) {
-      return $state.people;
+    getPeople({$model}) {
+      return $model.people;
     },
-    getProducts({$state}) {
-      return $state.products;
+    getProducts({$model}) {
+      return $model.products;
     },
   },
   "mutations": {
-    setPeople({$state}, payload) {
-      $state.people = payload;
+    setPeople({$model}, payload) {
+      $model.people = payload;
     },
-    updateName({$state}, payload) {
-      $state.name = payload;
+    updateName({$model}, payload) {
+      $model.name = payload;
     }
   },
   "actions": {},

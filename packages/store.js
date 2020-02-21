@@ -31,14 +31,14 @@ export class Store {
     let _this = this;
     
     //? setup getters and setters
-    this.state = store.state;
+    this.state = store.model;
     this.getters = store.getters;
 
     //? setup events
     this.Context = {
       // eslint-disable-next-line no-undef
       // $events : {...$Events},
-      $state: this.state,
+      $model: this.state,
       $mutations: store.mutations,
       $actions: store.actions,
       Get(name, payload) {        
