@@ -17,8 +17,7 @@
   - [getFromCache](#activeJS-(getFromCache)-back-to-top)
   - [createApp](#activeJS-(createApp)-back-to-top)
   - [Router](#activeJS-(Router)-back-to-top)
-  - [newController](#activeJS-(newController)-back-to-top)
-  
+  - [newController](#activeJS-(newController)-back-to-top)  
 - [View Structure](#the-single-file-view)
   - [Template](#the-template)
   - [Style](#the-style)
@@ -27,7 +26,8 @@
     - [Props Example](#activeJS-props-example)
     - [Observers Example](#activeJS-props-example)
     - [Computed Properties Example](#activeJS-props-example)
-    - [Methods Example](#activeJS-methods-example)  
+    - [Methods Example](#activeJS-methods-example)
+- [Data Binding](#data-binding)
 - [State Management](#state-management)  
   - [About](#what-is-state)  
   - [Getting Started](#lets-get-started)  
@@ -348,6 +348,181 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
     }
   })
   ```
+# Data Binding
+#### [back to top](#sections)
+We Know that alot of applications separate markup and logic into separtate files. In ActiveJS we decided to allow both to work side by side. We enable this with `Declerative Expressions`. These expressions make your UI alot easier to read and understand.
+
+## How to Bind a property
+#### [back to top](#sections)
+In order to bind a variable/property to your template, all you need to do is wrap the property name in `Moustache Braces` and place it anywhere in your template like this.
+
+```html
+<template>
+  <p>{{message}}</p>
+</template>
+```
+By doing this, ActiveJS will get your property value and place it in the position you placed it in.
+
+## Directives
+#### [back to top](#sections)
+Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS has built in out of the box. They are used to make you development alot faster and apply changes to the DOM when your View Controller data is updated or modified.
+
+- ## @if Directive
+  The `@if` directive is used when you are wanting to render an element depending on a `truthy` value in your `View Controller`.
+  For example, lets say you have a `div` which should be displayed when a user doesn't fill in an input field. We would use `@if`.
+
+  ```html
+  <template>
+    <div class="errMsg" @if="error">
+      Please fill in all required fields
+    </div>
+  </template>
+  ```
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Directives", {
+    el: "#app",
+    Data() {
+      return {
+        username: "",
+        password: "",
+        error: false
+      }
+    },
+    methods: {
+      submit() {
+        check = this.validateFields();
+
+        if(!check) {
+          this.error = true;
+        }
+      }
+      // other methods for view
+    }
+  })
+  ```
+
+- ## bind Directive
+  #### [back to top](#sections)
+  The `@bind` directive is very useful. You can use this directive to bind a property in your View Controller to an `attribute` on an element. For instance, if you want to apply a class to an element if an error occurs. You would use the `@Bind:class` attribute to do so. See the table below for infomation on what you can bind to.
+
+  Binding | Type | Description
+  ------- | ---- | -----------
+  @bind:id|`String`|Allows you to bind your data property to the `id` of the element
+  @bind:class|`String`|Allows you to bind your data property to the `class` of the element
+  @bind:disabled|`Boolean`|Will add a `disbaled` attribute to the element depending on the `value` of your data property
+  @bind:href|`String`|Will set the `href` attribute to the value of your data property
+
+  ```html
+  <template>
+    <button @bind:class="submitButton">Submit</button>
+  </template>
+  ```
+
+- ## @on Directive
+  #### [back to top](#sections)
+  The `@on` directive is used to bind a users `action` to an element. For example, if you have a button to alert a user's name once it's `clicked`. You would use the `@on:click` directive and this would add a click event listener to that element. See the table below for infomation on what you can bind to.
+
+  Binding | Description
+  ------- | -----------
+  @on:click|This will add a `click` event to your element
+  @on:enter|This enables you to add an `enter` event to your element
+  @on:change|This allows you to add an `onchange` event to your element
+  @on:submit|This allows you to add a `submit` event to a form
+  @on:scroll|This allows you to add a `scroll` event to your element
+
+  ```html
+  <template>
+    <button @on:click="submit()">Submit</button>
+  </template>
+  ```
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Directives", {
+    el: "#app",
+    Data() {
+      return {
+        username: "",
+        password: "",
+      }
+    },
+    methods: {
+      submit() {
+        check = this.validateFields();
+
+        if(!check) {
+          this.error = true;
+        }
+      }
+      // other methods for view
+    }
+  })
+  ```
+
+- ## @reflect Directive
+  #### [back to top](#sections)
+  The `@reflect` directive is a very special attribute. By adding this attribute to an element, you bind the value of that element to the value of your data property in your View Controller. As well as the propery inside your View Controller is bound to the value of the element. This is called `Two way data binding`. Any updates that happen to the `View Controller`, will update the `DOM`, as well as any updates that happen in the `DOM` will update your View Controller
+
+  In the example below, we have an input which is bound to `userInput` in the View Controller. And a heading which is also bound to the same property.
+
+  ```html
+  <template>
+    // to display the user input
+    <p>{{userInput}}</p>
+    <input type="text" @reflect="userInput">
+  </template>
+  ```
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Directives", {
+    el: "#app",
+    Data() {
+      return {
+        userInput: "",
+      }
+    }
+  })
+  ```
+  If you were to type something inside the input field it would set the View Controller property, which would update any other elements in the DOM with the same binding. In this case it would be the paragraph.
+
+- ## @for Directive
+  #### [back to top](#sections)
+  The `@for` directive can be used to render a list of items based on an `array`. The `@for` directive requires a special syntax in the form of `item in items`, where items is the `source data array` and item is an `alias` for the array element being iterated on.
+
+  Say you want to render a list of users which displays some data. Bellow we created an array of users with some data about each user inside of our View Controller
+  ```js
+  import { newController } from "./packages/ActiveJS.js";
+  newController("Directives", {
+    el: "#app",
+    Data() {
+      return {
+        users: [
+          {name: "James", age: 15},
+          {name: "Fred", age: 34},
+          {name: "John", age: 22}
+        ],
+      }
+    }
+  })
+  ```
+  Now we build up the `HTML Mocup` for the list. the `@for` Directive will loop the the element the directive is placed in. For example, if you add the `@for` Directive to an `li` element. the `li` element will be looped over and iterate over the array passed. To display the array data being looped over, start by adding `square brackets` inside the looped element. Then insert the `alias` you passed as an argument.
+
+  ```html
+  <template>
+    <ul>
+      <li @for="user in users">Name: [user.name] | Age: [user.age]</li>
+    </ul>
+  </template>
+  ```
+  If you are wanting to get the current `index` of the loop, just add `:key=""` to the loop element and pass it a `reference` you want to use.
+  ```html
+  <template>
+    <ul>
+      <li @for="user in users" :key="index">[index] Name: [user.name] | Age: [user.age]</li>
+    </ul>
+  </template>
+  ```
+
 # State Management
 #### [back to top](#sections)
 ## What is State
