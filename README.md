@@ -1,9 +1,9 @@
-![ActiveJS](/src/images/system/favicon.png)
+![ActiveJS](/src/images/system/ActiveJS_Logo_Full.png)
 # ActiveJS
 
 ## Getting Started
 
-`Quantum JS` is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the `funs parts of developing!`, Here we will help you understand how to `use Quantum JS to its full potential`, while also covering some of the `core fundamentils`. So what are you waiting for, `lets begin!`.
+`ActiveJS` is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the `funs parts of developing!`, Here we will help you understand how to `use ActiveJS to its full potential`, while also covering some of the `core fundamentils`. So what are you waiting for, `lets begin!`.
 
 # Sections
 - [Importing ActiveJS](#importing-activeJS)
