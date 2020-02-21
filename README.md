@@ -6,8 +6,6 @@
 `Quantum JS` is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the `funs parts of developing!`, Here we will help you understand how to `use Quantum JS to its full potential`, while also covering some of the `core fundamentils`. So what are you waiting for, `lets begin!`.
 
 # Sections
-* [Back to readMe.md](../README.md)
-* =-=-=-=-=-=-=-=-
 - [Importing ActiveJS](#importing-activeJS)
   - [Config](#activeJS-(Config)-back-to-top)
   - [State](#activeJS-(State)-back-to-top)
@@ -30,17 +28,21 @@
     - [Observers Example](#activeJS-props-example)
     - [Computed Properties Example](#activeJS-props-example)
     - [Methods Example](#activeJS-methods-example)  
+- [State Management](#state-management)  
+  - [About](#what-is-state)  
+  - [Getting Started](#lets-get-started)  
+  - [Context Object](#context-object)  
+  - [The Model Object](#the-model-object)  
+  - [The Getters Object](#the-getters-object)  
+  - [The Mutations Object](#the-mutations-object)  
+  - [The Actions Object](#the-actions-object)  
   
-
-# Overview
-The `SFV` is a `.html` file which will define a page or `View` inside of your application. It must always contin the following to help you define your views the way you want to.
 
 # Importing ActiveJS
 In order to access some of the features the ActiveJS provides, you will need to import `ActiveJS` from the packages folder. You can import it in every view. See example below to see what you can access from the import:
 
 ```js
 import * as ActiveJS from "./packages/ActiveJS.js";
-
 ```
 
 - ### ActiveJS (Config) [back to top](#sections)
@@ -176,7 +178,7 @@ import * as ActiveJS from "./packages/ActiveJS.js";
     ```
 
 # The Single File View
-In this section, we will teach you all the basics and fundamentals of the ActiveJS `SFV (Single File View)` to enable you to start building amazing and beautiful projects. We will go over the basics of how to structure your `View` and will explain the different parts of it, and what it does. So lets get started!
+In this section, we will teach you all the basics and fundamentals of the ActiveJS `SFV (Single File View)` to enable you to start building amazing and beautiful projects. We will go over the basics of how to structure your `View` and will explain the different parts of it, and what it does. So lets get started! The `SFV` is a `.html` file which will define a page or `View` inside of your application. It must always contin the following to help you define your views the way you want to.
 
 # The Template
 #### [back to top](#sections)
@@ -457,5 +459,22 @@ The `actions` property is very similar to the mutations property, but there is o
 
 For example, say we have a table in a database which conatins all our `users`. Now we want to get a user and then insert him/her into our `model`. Here is where an action will come into play. Lets call this action `getUserFromDB()`, and fetch the user from our `database`. Once we get the user, we can call a `mutaion` to insert the user we just got back. See example below.
 
+```js
+"actions": {
+  getUserFromDB({Commit}) {
+    fetch("https://someApi/users")
+    .then((response) => {
+      if(response.status != 200) {
+        console.error("Request failed with a status of : "+response.status);
+        return;
+      }
 
+      // call mutation to insert user
+      Commit("insertUser", JSON.parse(response.result));
+    })
+    .catch((err) => {
+      console.error("Request failed : "+err);
+    })
+  }
+}
 
