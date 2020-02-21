@@ -1,4 +1,4 @@
-![ActiveJS](/src/images/system/ActiveJS_Logo_Full.png)
+![ActiveJS](./src/images/system/ActiveJS_Logo_Full_Black.png)
 # ActiveJS
 
 ## Getting Started
