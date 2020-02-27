@@ -39,8 +39,7 @@
 </template>
 
 <script>
-  import { newController, Router, State } from "./packages/ActiveJS.js";
-  newController('testView', {
+  ActiveJS.newController('testView', {
     el: "#app",
     props: ["test1", "test2"],
     Data() {
@@ -65,10 +64,10 @@
       }
     },
     _Mounted(props) {
-      console.log(State);      
-      this.people = State.Get("getPeople");
-      this.products = State.Get("getProducts");
-      this.name = State.Get("getName");
+      console.log(ActiveJS.State);      
+      this.people = ActiveJS.State.Get("getPeople");
+      this.products = ActiveJS.State.Get("getProducts");
+      this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
       // this.startCounter();
     },
@@ -77,7 +76,7 @@
     },
     observers: {
       name() {
-        State.Commit("updateName", this.name);
+        ActiveJS.State.Commit("updateName", this.name);
       },
     },
     computed: {
@@ -131,7 +130,7 @@
         // console.log(this.bool);
       },
       nextView() {
-        Router.route('/about', {name: this.name});
+        ActiveJS.Router.route('/about', {name: this.name});
       }
     },
   });
