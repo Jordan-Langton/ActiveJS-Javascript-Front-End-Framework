@@ -31,13 +31,13 @@ export const BIND = {
 			//? check if of type input
 			if ((inputName == "input") || (inputName == "select") || (inputName == "option") || (inputName == "button") || (inputName == "textarea")) {
 
-				element.addEventListener("input", () => {
-
+				let eventObj = {type: "input", event: false, el: element};
+				let _method = (e) => {
 					//* if the input type is checkbox
 					if (element.type == "checkbox") {
 						element.value = element.checked;
 					}
-					
+
 					//* check if a timer has been set and reset it
 					if (BIND.OPTIONS.reflect.timer != false) {
 						clearTimeout(BIND.OPTIONS.reflect.timer);
@@ -71,8 +71,11 @@ export const BIND = {
 						}
 
 					}, BIND.OPTIONS.reflect.waitTime);
-
-				});
+				};
+				eventObj.type = "input";
+				eventObj.event = _method;
+				element.addEventListener("input", _method);
+				window.$qm["DOMEventListeners"].push(eventObj);
 
 			}
 			else {
@@ -105,8 +108,7 @@ export const BIND = {
 
 				//? checks if the attrVal exists in your data set
 				function checkIfAttrValExists(index, val) {
-					if (HANDLER[val]) return 1;
-					else if (HANDLER[val + "_comp"]) return 2;
+					if (HANDLER[val] != undefined) return 1;
 					else {
 						ERROR.NEW(
 							"Bind Directive Error",
@@ -117,8 +119,8 @@ export const BIND = {
 					}
 				}
 
-				let keys = Object.entries(bindDirective);
-
+				let keys = Object.entries(bindDirective);				
+				
 				//? Check what type of binding
 				switch (bindVal) {
 					case keys[0][1]:
@@ -217,6 +219,23 @@ export const BIND = {
 							ERROR.NEW(
 								"Bind Directive Error",
 								`You cannot bind the property ${attrVal} to the ${bindKey} attribute on an ${element.localName} tag because it's not an anchor tag`,
+								'bind',
+								element,
+								true
+							);
+						}
+						break;
+					case keys[5][1]:
+						if (typeof HANDLER[attrVal] == "string") {
+							let check = checkIfAttrValExists(bindKey, attrVal);
+							if (check == 1) {
+								element.style = HANDLER[attrVal];
+							}
+						}
+						else {
+							ERROR.NEW(
+								"Bind Directive Error",
+								`You cannot bind the attribute ${bindKey} to the property ${attrVal}, because it is not of the type <b>string</b>`,
 								'bind',
 								element,
 								true
@@ -474,40 +493,84 @@ export const BIND = {
 					element.style.cursor = "pointer";
 				}
 
-				let keys = Object.entries(onDirective);
-				/*
-				"@On:Click": "vm-u67W2a8",
-				"@On:Submit": "vm-dIbLGpz",
-				"@On:Enter": "vm-rwAaot4",
-				"@On:Change": "vm-8ikHgbc",
-				"@On:Input": "vm-fbnsI6S",
-				"@On:Scroll": "vm-ldN8dke",
-				*/
-
-				switch (bindVal) {
-					case keys[0][1]:
-						element.addEventListener("click", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
+				let _methods = {
+					"click": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"submit": (e) => {
+						e.preventDefault();
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"keypress": (e) => {
+						let key = e.which || e.keyCode;
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							if (key === 13) {
 								HANDLER[funcName](...found, e);
 								ERROR.RENDER();
 								//! DOM.applyUpdatesToElements(document, HANDLER);
 								// BIND.If(HANDLER);
 							}
-						});
+						}
+					},
+					"change": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"input": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"mousewheel": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+				}
+
+				let keys = Object.entries(onDirective);
+				let eventObj = {type: "", event: false, el: element};
+
+				switch (bindVal) {
+					case keys[0][1]:
+						eventObj.type = "click";
+						eventObj.event = _methods["click"];
+						element.addEventListener("click", _methods["click"], false);
+						// debugger;
+						window.$qm["DOMEventListeners"].push(eventObj);
 						break;
 					case keys[1][1]:
 						if (element.localName == "form") {
-							element.addEventListener("submit", (e) => {
-								e.preventDefault();
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "submit";
+							eventObj.event = _methods["submit"];
+							element.addEventListener("submit", _methods["submit"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -520,30 +583,17 @@ export const BIND = {
 						}
 						break;
 					case keys[2][1]:
-						element.addEventListener("keypress", (e) => {
-							let key = e.which || e.keyCode;
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								if (key === 13) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							}
-						});
+						eventObj.type = "keypress";
+						eventObj.event = _methods["keypress"];
+						element.addEventListener("keypress", _methods["keypress"], false);
+						window.$qm["DOMEventListeners"].push(eventObj);
 						break;
 					case keys[3][1]:
 						if ((element.localName == "input") || (element.localName == "select")) {
-							element.addEventListener("change", (e) => {
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "change";
+							eventObj.event = _methods["change"];
+							element.addEventListener("change", _methods["change"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -557,15 +607,10 @@ export const BIND = {
 						break;
 					case keys[4][1]:
 						if (element.localName == "input") {
-							element.addEventListener("input", (e) => {
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "input";
+							eventObj.event = _methods["input"];
+							element.addEventListener("input", _methods["input"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -578,26 +623,16 @@ export const BIND = {
 						}
 						break;
 					case keys[5][1]:
-						element.addEventListener("mousewheel", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								HANDLER[funcName](...found, e);
-								ERROR.RENDER();
-								//! DOM.applyUpdatesToElements(document, HANDLER);
-								// BIND.If(HANDLER);
-							}
-						});
+						eventObj.type = "mousewheel";
+						eventObj.event = _methods["mousewheel"];
+						element.addEventListener("mousewheel", _methods["mousewheel"], false);
+						window.$qm["DOMEventListeners"].push();
 						break;
 					case keys[11][1]:
-						element.addEventListener("mousewheel", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								HANDLER[funcName](...found, e);
-								ERROR.RENDER();
-								//! DOM.applyUpdatesToElements(document, HANDLER);
-								// BIND.If(HANDLER);
-							}
-						});
+						eventObj.type = "mousewheel";
+						eventObj.event = _methods["mousewheel"];
+						element.addEventListener("mousewheel", _methods["mousewheel"], false);
+						window.$qm["DOMEventListeners"].push();
 						break;
 
 					default:
@@ -741,7 +776,7 @@ export const BIND = {
 
 		let errStyle1 = "background-color: darkblue; color:#fff;border-radius:3px 0 0 3px;padding-right: 10px";
 		let errStyle2 = "background-color: lightblue; color:#000;padding:0 5px;border-radius:0 3px 3px 0";
-		console.groupCollapsed("%c SYSTEM %c Components Found", errStyle1, errStyle2);
+		// console.groupCollapsed("%c SYSTEM %c Components Found", errStyle1, errStyle2);
 
 		//* Check that this view is using components
 		if (HANDLER.components.length > 0) {

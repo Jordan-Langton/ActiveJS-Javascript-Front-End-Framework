@@ -108,7 +108,7 @@ export const reqisterComponent = (reference="", component={}) => {
 
   });
 
-  if (!exists) {
+  if (exists == false) {
     registeredComponents.push(componentTO);
   }
 };
