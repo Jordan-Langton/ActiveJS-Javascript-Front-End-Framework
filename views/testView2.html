@@ -5,21 +5,37 @@
     <button class="btn-p-xs bg-warning" @on:click="next()">View 3</button>
     <h1>{{bar}}</h1>
 
+    <div class="block d-flex flex-even flex-align flex-wrap">
+
+      <div @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
+        <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
+        <span class="text-sm-bold text-danger">Id: [j.productUId]</span>
+        <span class="text-md-boldest text-secondary">[j.label]</span>
+        <span class="text-xs-bold text-muted">[j.containerSize]</span>
+        <span class="text-xs-bold text-muted">[j.description]</span>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
 <script>
-  import { newController, Router, State } from "./packages/ActiveJS.js";
-  newController('testView2', {
+  ActiveJS.newController('testView2', {
     el: "#app",
-    props: ["name"],
+    props: ["name", "products"],
     Data() {
       return {
+        products: [],
         name: false,
+        price: false,
+        label: false,
+        description: false,
       }
     },
     _Mounted() {    
       this.name = this.$props.name;      
+      this.products = this.$props.products;      
     },
     computed: {
       bar() {
@@ -28,10 +44,10 @@
     },
     methods: {
       back() {
-        Router.navBack();
+        ActiveJS.Router.navBack();
       },
       next() {
-        Router.route("/contact");
+        ActiveJS.Router.route("/contact");
       }
     }  
   });

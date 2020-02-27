@@ -9,8 +9,7 @@
 </template>
 
 <script>
-  import { newController, Router, State } from "./packages/ActiveJS.js";
-  newController('testView3', {
+  ActiveJS.newController('testView3', {
     el: "#app",
     Data() {
       return {
@@ -19,10 +18,10 @@
     },
     methods: {
       back() {
-        Router.navBack();
+        ActiveJS.Router.navBack();
       },
       next() {
-        Router.route("/contact2");
+        ActiveJS.Router.route("/contact2");
       }
     }  
   });

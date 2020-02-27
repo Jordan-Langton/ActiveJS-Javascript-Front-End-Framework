@@ -141,7 +141,7 @@ export const Common = {
       ActiveJS.State.Get = window.$qm.State.Get;
 
       //* get all registered components
-      window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
+      window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponents.push(comp));
       
 
       //* build up the props
@@ -163,6 +163,9 @@ export const Common = {
             window.$qm["$scope"]._Mounted($props);
           }
 
+          //* start updating the DOM with all dynamic values
+          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
+
           //* check for binding Reflect
           if (window.$qm["$scope"].components.length > 0) {
             BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
@@ -171,15 +174,6 @@ export const Common = {
             //* callback to router
             window.$qm["VM_LOADED"]();
           }
-
-
-          //* call init life cycle method
-          // if (window.$qm["$scope"]._Init) {
-          //   window.$qm["$scope"]._Init();
-          // }
-
-          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
-
 
           let wrapper = false;
           let VIEW_WRAPPER = false;

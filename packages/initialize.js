@@ -76,6 +76,9 @@ export const Initialize = {
 				Router: ActiveJS.Router,
 			};
 
+			//* allow global access to the 'ActiveJS' variable
+			window.ActiveJS = ActiveJS;
+
 			//* load the enviroment variables
 			Initialize.Set_Environment();
 

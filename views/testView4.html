@@ -9,7 +9,7 @@
 
 <script>
   import { newController, Router, State } from "./packages/ActiveJS.js";
-  newController('testView4', {
+  ActiveJS.newController('testView4', {
     el: "#app",
     Data() {
       return {
@@ -18,7 +18,7 @@
     },
     methods: {
       back() {
-        Router.navBack();
+        ActiveJS.Router.navBack();
       }
     }  
   });

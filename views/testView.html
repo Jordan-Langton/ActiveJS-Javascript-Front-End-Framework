@@ -23,7 +23,7 @@
     <br>
     <div id="test">{{foo}}</div>
 
-    <!-- <div class="block d-flex flex-even flex-align flex-wrap">
+    <div class="block d-flex flex-even flex-align flex-wrap">
 
       <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
         <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
@@ -33,14 +33,13 @@
         <span class="text-xs-bold text-muted">[j.description]</span>
       </div>
 
-    </div> -->
+    </div>
 
   </div>
 </template>
 
 <script>
-  import { newController, Router, State } from "./packages/ActiveJS.js";
-  newController('testView', {
+  ActiveJS.newController('testView', {
     el: "#app",
     props: ["test1", "test2"],
     Data() {
@@ -65,19 +64,20 @@
       }
     },
     _Mounted(props) {
-      console.log(State);      
-      this.people = State.Get("getPeople");
-      this.products = State.Get("getProducts");
-      this.name = State.Get("getName");
+      console.log(ActiveJS.State);      
+      this.people = ActiveJS.State.Get("getPeople");
+      this.products = ActiveJS.State.Get("getProducts");
+      this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
       // this.startCounter();
+      this.nextView();
     },
     _Rendered() {
       console.log(document.getElementById('test'));
     },
     observers: {
       name() {
-        State.Commit("updateName", this.name);
+        ActiveJS.State.Commit("updateName", this.name);
       },
     },
     computed: {
@@ -131,7 +131,7 @@
         // console.log(this.bool);
       },
       nextView() {
-        Router.route('/about', {name: this.name});
+        ActiveJS.Router.route('/about', {name: this.name, products: this.products});
       }
     },
   });
