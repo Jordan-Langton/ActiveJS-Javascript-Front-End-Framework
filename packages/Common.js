@@ -32,8 +32,6 @@ export const Common = {
           let newScript = document.createElement("script");
           newScript.type = 'module';
           newScript.id = "CURRENT_VM";
-          newScript.setAttribute("unsafe-inline", "");
-          newScript.setAttribute("hash", "sha256-faJpxnryp8x+/OHMCq6k7GBPfbZistQQYxd02gTcqRw=");
 
           //* add JS to the script
           let inlineScript = document.createTextNode(JS);
@@ -121,27 +119,27 @@ export const Common = {
         computedMethodsLength: computed.length,
       };
 
-      //* setup config in the ActiveJS export
-      ActiveJS.Config.name = window.$qm.Config.name;
-      ActiveJS.Config.version = window.$qm.Config.version;
-      ActiveJS.Config.environment = window.$qm.Config.environment;
-      ActiveJS.Config.description = window.$qm.Config.description;
-      ActiveJS.Config.baseView = window.$qm.Config.baseView;
-      ActiveJS.Config.appWrapper = window.$qm.Config.appWrapper;
-      ActiveJS.Config.systemTheme = window.$qm.Config.systemTheme;
-      ActiveJS.Config.systemStyles = window.$qm.Config.systemStyles;
-      ActiveJS.Config.interfaces = window.$qm.Config.interfaces;
-      ActiveJS.Config.store = window.$qm.Config.store;
-      ActiveJS.Config.routes = window.$qm.Config.routes;
+      //! DEPRICATED CODE
+      // ActiveJS.Config.name = window.$qm.Config.name;
+      // ActiveJS.Config.version = window.$qm.Config.version;
+      // ActiveJS.Config.environment = window.$qm.Config.environment;
+      // ActiveJS.Config.description = window.$qm.Config.description;
+      // ActiveJS.Config.baseView = window.$qm.Config.baseView;
+      // ActiveJS.Config.appWrapper = window.$qm.Config.appWrapper;
+      // ActiveJS.Config.systemTheme = window.$qm.Config.systemTheme;
+      // ActiveJS.Config.systemStyles = window.$qm.Config.systemStyles;
+      // ActiveJS.Config.interfaces = window.$qm.Config.interfaces;
+      // ActiveJS.Config.store = window.$qm.Config.store;
+      // ActiveJS.Config.routes = window.$qm.Config.routes;
 
-      //* setup state in the ActiveJS export
-      ActiveJS.State.model = window.$qm.State.model;
-      ActiveJS.State.Commit = window.$qm.State.Commit;
-      ActiveJS.State.Dispatch = window.$qm.State.Dispatch;
-      ActiveJS.State.Get = window.$qm.State.Get;
+      //! DEPRICATED CODE
+      // ActiveJS.State.model = window.$qm.State.model;
+      // ActiveJS.State.Commit = window.$qm.State.Commit;
+      // ActiveJS.State.Dispatch = window.$qm.State.Dispatch;
+      // ActiveJS.State.Get = window.$qm.State.Get;
 
-      //* get all registered components
-      window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponent.push(comp));
+      //! DEPRICATED CODE
+      // window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponents.push(comp));
       
 
       //* build up the props
@@ -155,13 +153,15 @@ export const Common = {
         window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
 
           //* tell the PROXY that we are done setting up computed props
-          console.warn("intialRun is OVER");
+          // console.warn("intialRun is OVER");
           window.$qm["computedMethodKey"].intialRun = false;
 
           //* call the mounted life cycle method
           if (window.$qm["$scope"]._Mounted) {
             window.$qm["$scope"]._Mounted($props);
           }
+
+          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
 
           //* check for binding Reflect
           if (window.$qm["$scope"].components.length > 0) {
@@ -171,15 +171,6 @@ export const Common = {
             //* callback to router
             window.$qm["VM_LOADED"]();
           }
-
-
-          //* call init life cycle method
-          // if (window.$qm["$scope"]._Init) {
-          //   window.$qm["$scope"]._Init();
-          // }
-
-          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
-
 
           let wrapper = false;
           let VIEW_WRAPPER = false;
@@ -322,13 +313,10 @@ export const Common = {
             if (params.length == VM.props.length) {
 
               params.forEach(param => {
-
+                // debugger;
                 if (param[0] == prop) {
-                  if (param[1]) {
-                    newVM.$props[prop] = param[1];
-                  }
-                  else {
-                    newVM.$props[prop] = "Prop not passed";
+                  if (param[1] != undefined) {
+                    newVM['$props'][prop] = param[1];
                   }
                 }
 

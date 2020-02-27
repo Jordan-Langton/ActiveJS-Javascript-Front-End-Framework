@@ -25,7 +25,26 @@ export const router = {
     let matched = window.$qm.Config.routes.filter(route => route.path == route_path)[0];
     
     //* successfully fouch a match
-    if (matched) {      
+    if (matched) {
+
+      //* scroll to top of page
+      window.scrollTo(0,0);
+
+      //* destroy all event listeners
+      if (window.$qm["DOMEventListeners"].length > 0) {
+        let count = 0;
+        window.$qm["DOMEventListeners"].forEach(listener => {
+          // debugger;
+          listener.el.removeEventListener(listener.type, listener.event, true);
+          count++
+        });
+        
+        
+        if (count == window.$qm["DOMEventListeners"].length) {
+          // console.log(window.$qm["DOMEventListeners"]);
+          window.$qm["DOMEventListeners"] = [];
+        }
+      }
 
       //* load the VM into the DOM
       Common.LoadVM(

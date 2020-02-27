@@ -511,6 +511,9 @@ export const DOM = {
         case bindDirective["@Bind:href"].toLowerCase():
           element.href = HANDLER[attrVal];
           break;
+        case bindDirective["@Bind:style"].toLowerCase():
+          element.style = HANDLER[attrVal];
+          break;
       
         default:
           break;

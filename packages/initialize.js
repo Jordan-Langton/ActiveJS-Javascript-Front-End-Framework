@@ -56,6 +56,7 @@ export const Initialize = {
 				Config: ActiveJS.Config,
 				DOMBindings: [],
 				DOMBoundKeys: [],
+				DOMEventListeners: [],
 				CRUMBS: [],
 				systemEvents: {
 					computedMethodsSetupDone: {},
@@ -74,6 +75,23 @@ export const Initialize = {
 				newController: ActiveJS.newController,
 				reqisterComponent: ActiveJS.reqisterComponent,
 				Router: ActiveJS.Router,
+			};
+
+			//* allow global access to the 'ActiveJS' variable
+			window.ActiveJS = {
+				Config: window.$qm.Config,
+				registeredComponents: window.$qm.registeredComponents,
+				Component: window.$qm.Component,
+				State: window.$qm.State,
+				emit: window.$qm.emit,
+				accept: window.$qm.accept,
+				navBack: window.$qm.navBack,
+				saveToCache: window.$qm.saveToCache,
+				getFromCache: window.$qm.getFromCache,
+				createApp: window.$qm.createApp,
+				newController: window.$qm.newController,
+				reqisterComponent: window.$qm.reqisterComponent,
+				Router: window.$qm.Router,
 			};
 
 			//* load the enviroment variables
