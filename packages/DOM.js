@@ -251,6 +251,7 @@ export const DOM = {
         });
         
         if (check.length == 0) {
+          ELEMENT.setAttribute("qm-"+REF, "");
           window.$qm["DOMBindings"].push(newEle);
           window.$qm["DOMBoundKeys"].push("qm-"+REF);
           foundInterpolation = true;
@@ -526,51 +527,67 @@ export const DOM = {
   //* Finds elements with @For attributes and updates them
   //? @params (DOMBinding, element, HANDLER) - Update obj, Element to update, View Controller
   updateForAttribute(DOMBinding, element, HANDLER) {
-    
+
     let NEW_ELE = document.createElement(DOMBinding.el.localName);
     NEW_ELE.innerHTML = DOMBinding.interpolation;
 
-    //? add all attributes to alement
+    //* add all attributes to alement
     Object.entries(DOMBinding.el.attributes).forEach(attr => {
       let key = attr[1].nodeName;
       let value = attr[1].value;
 
-      //? make sure that we don't set an element key on the new built up element
+      //* make sure that we don't set an element key on the new built up element
       if (key !== DOMBinding.ref) {
         NEW_ELE.setAttribute(key, value);
       }
       
-    });     
+    });
+
+    //* look for all the old for ele and remove unless it's index is 0
+    let FOR_ELE = false
+    document.querySelectorAll("["+DOMBinding.ref+"]").forEach(FOR_BINDING => {
+      if (FOR_BINDING.attributes[DOMBinding.ref].value > 0) {
+        FOR_BINDING.remove();
+      }
+      else {
+        FOR_ELE = FOR_BINDING;
+      }         
+    });
     
-    if (DOMBinding.index <= 0) {
-      document.querySelectorAll("["+DOMBinding.ref+"]").forEach(FOR_BINDING => {
-        if (FOR_BINDING.attributes[DOMBinding.ref].value > 0) {
-          FOR_BINDING.remove();
-        }               
-      });
+    //* remove the old bindings from the saved bindings array
+    window.$qm["DOMBindings"].filter((binding, index) => {
+      if (binding.ref == DOMBinding.ref) {
+        window.$qm["DOMBindings"].splice(index, 1);
+      }
+    });
+
+    //* get the element and replace it with the original mockup
+    const UPDATE_KEY = "qf-"+BIND.getRandowString(7);
+    document.querySelectorAll("["+DOMBinding.ref+"]").forEach(FOR_BINDING => {    
+      NEW_ELE.setAttribute(UPDATE_KEY, "");
+      FOR_BINDING.parentElement.replaceChild( NEW_ELE, FOR_ELE );
+      FOR_BINDING.remove();    
+      BIND.For(HANDLER, UPDATE_KEY);
+    });
+
+    // if (DOMBinding.index <= 0) {
+            
       
-      window.$qm["DOMBindings"].filter((binding, index) => {
-        if (binding.ref == DOMBinding.ref) {
-          window.$qm["DOMBindings"].splice(index, 1);
-        }
-      });      
-      
-    }
-    else {
-      document.querySelectorAll("["+DOMBinding.ref+"]").forEach(FOR_BINDING => {        
-        FOR_BINDING.parentElement.replaceChild( NEW_ELE, FOR_BINDING );
-        FOR_BINDING.remove();        
-        BIND.For(HANDLER, HANDLER[DOMBinding.binding]);
-      });
-    }    
+    // }
+    // else {
+    //   document.querySelectorAll("["+DOMBinding.ref+"]").forEach(FOR_BINDING => {        
+    //     FOR_BINDING.parentElement.replaceChild( NEW_ELE, FOR_BINDING );
+    //     FOR_BINDING.remove();        
+    //     BIND.For(HANDLER, HANDLER[DOMBinding.binding]);
+    //   });
+    // }    
 
   },
 
   getDynamicElements(binding, HANDLER) {
-
+    // debugger;
     //* get element using the ele key
     document.querySelectorAll("["+binding.ref+"]").forEach(element => {
-      
       //* choose how to update element
       switch (binding.type) {
         case "html":
@@ -586,7 +603,7 @@ export const DOM = {
           BIND.If(HANDLER);
           break;
         case "for":
-          
+          DOM.updateForAttribute(binding, element, HANDLER);         
           break;
       
         default:
@@ -604,7 +621,7 @@ export const DOM = {
 
     //? if the updated element was passed
     if (updatedProp) {
- 
+      
       //? get element bindings which update "updatedProp"
       const DYNAMIC_ELE = window.$qm["DOMBindings"].filter(DYNAMIC_ELE => DYNAMIC_ELE.binding == updatedProp);
       

@@ -38,10 +38,12 @@ export const PROXY = {
         }
         else {
           return _target[_prop];
-        }        
+        } 
+         
+        
       }
       else {
-        if (_prop != 'then' && window.$qm["computedMethodKey"].intialRun == false) {
+        if (_prop != 'then' && _prop != 'length' && window.$qm["computedMethodKey"].intialRun == false) {
           return ERROR.NEW("Failed to Get Property", `Quantum was unable to get the property "${_prop}" because it is not defined in your View Model`, 'proxy', false, true, false);          
         }
       }
@@ -49,7 +51,7 @@ export const PROXY = {
     },
 
     set(_target, _prop, _val, _reciever) {
-
+      
       Reflect.set(_target, _prop, _val);
       if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(_prop);
 
@@ -67,11 +69,11 @@ export const PROXY = {
         for (let i = 0; i < window.$qm["computedMethodKey"].methodKeys.length; i++) {
           const method = window.$qm["computedMethodKey"].methodKeys[i];
 
-          for (let j = 0; j < window.$qm["computedMethodKey"].methodKeys[i].dependencies.length; j++) {
-            const dependency = window.$qm["computedMethodKey"].methodKeys[i].dependencies[j];
+          for (let j = 0; j < method.dependencies.length; j++) {
+            const dependency = method.dependencies[j];
             
             if (dependency == _prop) {   
-              window.$qm["$scope"].computed[method.name].apply(window.$qm["$scope"]);
+              window.$qm["$scope"][method.name] = window.$qm["$scope"].computed[method.name].apply(window.$qm["$scope"]);
               if (window.$qm["computedMethodKey"].intialRun == false) PROXY.PROXY_ONCHANGE_METHOD(method.name);
             }
 

@@ -260,7 +260,7 @@ export const Common = {
               window.$qm["$scope"][comp[0]] = new Promise((resolve, reject) => {
                 let responce = $VM.computed[comp[0]].apply(window.$qm["$scope"]);
                 if (responce == undefined) {
-                  resolve(responce);
+                  reject(responce);
                   ERROR.NEW("Computed Property Error", `Your computed property resolved to 'undefined'. This may be because you are using asynchronous code within the method. Note you cannot use asynchronous code inside of a computed property`);
                 }
                 else {
