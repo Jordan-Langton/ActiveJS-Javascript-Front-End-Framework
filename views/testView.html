@@ -66,11 +66,11 @@
     _Mounted(props) {
       console.log(ActiveJS.State);      
       this.people = ActiveJS.State.Get("getPeople");
-      this.products = ActiveJS.State.Get("getProducts");
+      // this.products = ActiveJS.State.Get("getProducts");
       this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
       // this.startCounter();
-      this.nextView();
+      // this.nextView();
     },
     _Rendered() {
       console.log(document.getElementById('test'));
