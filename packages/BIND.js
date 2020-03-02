@@ -282,7 +282,7 @@ export const BIND = {
 			let script;
 			let newVal;
 
-			//? Checks for JS expressions
+			//* Checks for JS expressions
 			if (attrVal.indexOf("[") >= 0) {
 
 				//? replaces 'this' with $scope.view
@@ -348,7 +348,7 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks for object tree
+			//* Checks for object tree
 			else if (attrVal.indexOf(".") != -1) {
 				script = eval("(HANDLER." + attrVal + ")");
 				if (elseEle != null) {
@@ -370,7 +370,7 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks if value is a boolean
+			//* Checks if value is a boolean
 			else if (attrVal == "true" || attrVal == "false") {
 				if (elseEle != null) {
 					if (eval(attrVal)) {
@@ -391,7 +391,7 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks if the value exists in your View Controller
+			//* Checks if the value exists in your View Controller
 			else {
 
 				if (HANDLER.hasOwnProperty(attrVal)) {
