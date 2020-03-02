@@ -139,7 +139,7 @@ export const DOM = {
           eleObj.el.setAttribute(eleObj.ref, "");
           break;
         case "if":
-          
+          eleObj.el.setAttribute(eleObj.ref, "");
           break;
         case "for":
           
@@ -251,7 +251,6 @@ export const DOM = {
         });
         
         if (check.length == 0) {
-          ELEMENT.setAttribute("qm-"+REF, "");
           window.$qm["DOMBindings"].push(newEle);
           window.$qm["DOMBoundKeys"].push("qm-"+REF);
           foundInterpolation = true;
