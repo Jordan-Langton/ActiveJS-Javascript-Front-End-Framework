@@ -145,10 +145,6 @@ export const Common = {
       //* build up the props
       Common.buildProps(VM, $VM).then(($props) => {
 
-        //* setup proxy on the global VM
-        window.$qm["$scope"] = PROXY.NEW_PROXY_OBJ($VM, PROXY.UPDATED_DOM);
-        window["$scope"] = window.$qm["$scope"];
-
         //* method to run when computed methods have been setup
         window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
 
@@ -236,6 +232,20 @@ export const Common = {
             ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
           }
         };
+
+        //* setup proxy on the global VM        
+        window.$qm["$scope"] = PROXY.Observe($VM, PROXY.handler, (_property) => {
+
+          //? call the mounted life cycle method
+          if (window.$qm["$scope"]._beforeUpdate && window.$qm["computedMethodKey"].intialRun == false) {
+            window.$qm["$scope"]._beforeUpdate();
+          }
+
+          //? apply DOM updates
+          DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
+
+        });
+        window["$scope"] = window.$qm["$scope"];
 
         //* if you have computed props        
         if (computed.length != 0) {          
@@ -588,6 +598,24 @@ export const Common = {
 
     });
 
-  }
+  },
+
+  prepareComputedProperties: (target, prop) => {
+    // debugger;
+    window.$qm["computedMethodKey"].methodKeys.forEach((method, index) => {
+      if (method.name == window.$qm["computedMethodKey"].currentMethodName) {
+        window.$qm["computedMethodKey"].methodKeys[index].dependencies.push(prop);
+      }
+    });
+
+    //* method to run when computed methods are setup
+    window.$qm["systemEvents"]["computedPropSetOnVM"] = () => {
+      if (window.$qm["computedMethodKey"].cbCalled == false) {
+        window.$qm["computedMethodKey"].cbCalled = true;
+        window.$qm["systemEvents"]["computedMethodsSetupDone"]();   
+      }
+    };
+
+  },
 
 };

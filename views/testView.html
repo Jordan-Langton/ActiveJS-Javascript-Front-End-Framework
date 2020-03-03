@@ -1,6 +1,5 @@
 <template>
   <div class="testView d-flex flex-col flex-even flex-align">
-
     <div class="d-flex flex-even flex-align flex-wrap">
       <button @bind:class="button" @on:click="show()">Show / Hide</button>
       <button @bind:class="button" @on:click="startCounter()">Start / Stop</button>
@@ -10,7 +9,7 @@
       <button @bind:class="button" route="/about">View 2 Attribute</button>
     </div>
 
-    <div class="">{{test.other.name}}</div>
+    <div class="">{{test.other.test2}}</div>
 
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
     <input type="text" @reflect="name" @on:enter="logName()">
@@ -46,15 +45,18 @@
     props: ["test1", "test2"],
     Data() {
       return {
+
         test: {
+          name: "TESTER",
           other: {
-            name: "TESTER"
+            test2: "Hello"
           }
         },
+
         a: 0,
         timerOn: false,
         counter: false,
-        bool: false,
+        bool: true,
         age1: 0,
         age2: 0,
         blue: "bg-primary text-white",
@@ -71,7 +73,7 @@
       }
     },
     _Mounted(props) {
-      console.log(ActiveJS.State);      
+
       this.people = ActiveJS.State.Get("getPeople");
       // this.products = ActiveJS.State.Get("getProducts");
       this.name = ActiveJS.State.Get("getName");
@@ -82,6 +84,11 @@
       }, 500);
       // this.startCounter();
       // this.nextView();
+
+      setTimeout(() => {
+        this.test.other.test2 = "NEW VALUE";
+      }, 500);
+      // debugger;
     },
     _Rendered() {
       console.log(document.getElementById('test'));
