@@ -623,7 +623,22 @@ export const DOM = {
     if (updatedProp) {
       
       //? get element bindings which update "updatedProp"
-      const DYNAMIC_ELE = window.$qm["DOMBindings"].filter(DYNAMIC_ELE => DYNAMIC_ELE.binding == updatedProp);
+      const DYNAMIC_ELE = window.$qm["DOMBindings"].filter(DYNAMIC_ELE => {
+
+        if (DYNAMIC_ELE.binding.indexOf(".") != -1) {
+          const splitArr = updatedProp.split(".");
+          const newProp = splitArr[splitArr.length - 1];
+          if (newProp == updatedProp) {
+            return DYNAMIC_ELE;
+          }
+        }
+        else {
+          if (DYNAMIC_ELE.binding == updatedProp) {
+            return DYNAMIC_ELE;
+          }
+        }
+
+      });
       
       if (DYNAMIC_ELE.length > 0) {
         DYNAMIC_ELE.forEach(binding => {

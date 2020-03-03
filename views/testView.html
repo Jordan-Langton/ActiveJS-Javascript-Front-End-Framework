@@ -1,7 +1,5 @@
 <template>
   <div class="testView d-flex flex-col flex-even flex-align">
-    <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
-    <input type="text" @reflect="name" @on:enter="logName()">
     <div class="d-flex flex-even flex-align flex-wrap">
       <button @bind:class="button" @on:click="show()">Show / Hide</button>
       <button @bind:class="button" @on:click="startCounter()">Start / Stop</button>
@@ -11,7 +9,9 @@
       <button @bind:class="button" route="/about">View 2 Attribute</button>
     </div>
 
-   <!--  <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
+    <!-- <div class="">{{test.name}}</div> -->
+
+    <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
     <input type="text" @reflect="name" @on:enter="logName()">
     <div class="d-flex flex-center flex-align">
       <input type="number" @reflect="age1" @on:enter="logName()">
@@ -34,7 +34,7 @@
         <span class="text-xs-bold text-muted">[j.description]</span>
       </div>
 
-    </div> -->
+    </div>
 
   </div>
 </template>
@@ -45,6 +45,14 @@
     props: ["test1", "test2"],
     Data() {
       return {
+
+        test: {
+          name: "TESTER",
+          other: {
+            test2: "Hello"
+          }
+        },
+
         a: 0,
         timerOn: false,
         counter: false,
@@ -64,13 +72,15 @@
         ]
       }
     },
-    _Mounted(props) {     
+    _Mounted(props) {
+
       this.people = ActiveJS.State.Get("getPeople");
       // this.products = ActiveJS.State.Get("getProducts");
       this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
-      // this.startCounter();
+      this.startCounter();
       // this.nextView();
+      // debugger;
     },
     _Rendered() {
       console.log(document.getElementById('test'));
