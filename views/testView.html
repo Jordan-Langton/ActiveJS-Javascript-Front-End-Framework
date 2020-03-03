@@ -9,7 +9,7 @@
       <button @bind:class="button" route="/about">View 2 Attribute</button>
     </div>
 
-    <!-- <div class="">{{test.name}}</div> -->
+    <div class="">{{test.other.test2}}</div>
 
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
     <input type="text" @reflect="name" @on:enter="logName()">
@@ -80,6 +80,10 @@
       console.log(document.getElementById('test'));
       this.startCounter();
       // this.nextView();
+
+      setTimeout(() => {
+        this.test.other.test2 = "NEW VALUE";
+      }, 500);
       // debugger;
     },
     _Rendered() {
