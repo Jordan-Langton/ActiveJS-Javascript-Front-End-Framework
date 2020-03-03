@@ -203,18 +203,18 @@ export const PROXY = {
 
     },
 
-    checkForComputed: (key) => {
+    checkForComputed: (target, key) => {
 
       if (window.$qm["computedMethodKey"].methodKeys.length > 0) {
-              
         for (let i = 0; i < window.$qm["computedMethodKey"].methodKeys.length; i++) {
           const method = window.$qm["computedMethodKey"].methodKeys[i];
-
+          
           for (let j = 0; j < method.dependencies.length; j++) {
             const dependency = method.dependencies[j];
+            // debugger;
             
             if (dependency == key) {   
-              window.$qm["$scope"][method.name] = window.$qm["$scope"].computed[method.name].apply(window.$qm["$scope"]);
+              target[method.name] = target.computed[method.name].apply(target);
               if (window.$qm["computedMethodKey"].intialRun == false) PROXY.CALLBACK(method.name);
             }
 
@@ -263,7 +263,7 @@ export const PROXY = {
           console.warn("Setting up computed Prop : ["+window.$qm["computedMethodKey"].currentMethodName+"] Dependecy: "+key);
 
           //* prepare computed properties
-          Common.prepareComputedProperties();
+          Common.prepareComputedProperties(target, key);
 
           //* if the current key is a nested object return new proxy
           if ( (PROXY.helpers.isObject(target[key])) && (PROXY.helpers.isDataProperty(target, key)) && (target[key]["__isProxy"] == undefined) ) {
@@ -301,7 +301,7 @@ export const PROXY = {
       PROXY.helpers.checkForObservers(window.$qm["$scope"], key);
 
       //* run any computed props which need the current prop's value
-      PROXY.helpers.checkForComputed(key);
+      PROXY.helpers.checkForComputed(target, key);
       
       //* if the initial run is still going, 
       PROXY.helpers.isInitialRunOver();

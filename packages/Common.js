@@ -601,7 +601,7 @@ export const Common = {
   },
 
   prepareComputedProperties: (target, prop) => {
-
+    // debugger;
     window.$qm["computedMethodKey"].methodKeys.forEach((method, index) => {
       if (method.name == window.$qm["computedMethodKey"].currentMethodName) {
         window.$qm["computedMethodKey"].methodKeys[index].dependencies.push(prop);
