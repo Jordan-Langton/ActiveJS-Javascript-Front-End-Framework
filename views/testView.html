@@ -10,6 +10,8 @@
       <button @bind:class="button" route="/about">View 2 Attribute</button>
     </div>
 
+    <div class="">{{test.other.name}}</div>
+
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
     <input type="text" @reflect="name" @on:enter="logName()">
     <div class="d-flex flex-center flex-align">
@@ -44,6 +46,11 @@
     props: ["test1", "test2"],
     Data() {
       return {
+        test: {
+          other: {
+            name: "TESTER"
+          }
+        },
         a: 0,
         timerOn: false,
         counter: false,
@@ -69,6 +76,10 @@
       // this.products = ActiveJS.State.Get("getProducts");
       this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
+
+      setTimeout(() => {
+        this.test.other.name = "TEST";
+      }, 500);
       // this.startCounter();
       // this.nextView();
     },
