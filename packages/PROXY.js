@@ -213,8 +213,9 @@ export const PROXY = {
             const dependency = method.dependencies[j];
             // debugger;
             
-            if (dependency == key) {   
-              target[method.name] = target.computed[method.name].apply(target);
+            if (dependency == key) { 
+              debugger;  
+              window.$qm["$scope"][method.name] = window.$qm["$scope"].computed[method.name].apply(target);
               if (window.$qm["computedMethodKey"].intialRun == false) PROXY.CALLBACK(method.name);
             }
 
