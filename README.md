@@ -39,10 +39,12 @@
   
 
 # Importing ActiveJS
-In order to access some of the features the ActiveJS provides, you will need to import `ActiveJS` from the packages folder. You can import it in every view. See example below to see what you can access from the import:
+In order to access some of the features the ActiveJS provides, you will need to import `ActiveJS` from the packages folder if you are inside of your app entry point. If you are in a view, the `ActiveJS` global variable will be avaliable to you. See example below to see what you can access from the import/global variable:
 
 ```js
 import * as ActiveJS from "./packages/ActiveJS.js";
+// or
+ActiveJS.(whatever property you want to access)
 ```
 
 - ### ActiveJS (Config) [back to top](#sections)
@@ -160,10 +162,9 @@ import * as ActiveJS from "./packages/ActiveJS.js";
 
 - ### ActiveJS (newController) [back to top](#sections)
     ```js
-    import { newController } from "./packages/ActiveJS.js";
 
     // This is what you call to initialize a new controller for a view
-    newController(View_Name="", Controller={
+    ActiveJS.newController(View_Name="", Controller={
       el: '',
       props: [], 
       Data() {}, 
@@ -220,8 +221,7 @@ This is where you `register your view to ActiveJS` and define all the buisiness 
 ```html
 <script>
 
-  import { newController } from "./packages/ActiveJS.js";
-  newController("vewName", {
+  ActiveJS.newController("vewName", {
     el: "#app",
     Data() {
       return {
@@ -254,8 +254,7 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
   #### [back to top](#sections)
   When routing to a view in ActiveJS, you can pass data between views. If you tell a view that it accepts props, the view will produce an error until you pass it the props needed. See example below on how to tell a view it accepts props:
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Props", {
+  ActiveJS.newController("Props", {
     el: "#app",
     props: ["prop1", "prop2", "prop3"],
     Data() {
@@ -267,8 +266,7 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
   ```
   You can set a property in your view data to the value of one of the props inside of the `_Mounted` using `this.$props` life cycle method. See below example:
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Props", {
+  ActiveJS.newController("Props", {
     el: "#app",
     props: ["prop1", "prop2", "prop3"],
     Data() {
@@ -287,8 +285,7 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
   #### [back to top](#sections)
   An observer is a method which will `watch` for a property in your view data to `change`. Once the data does change, the observer will perform an `action you supplied`. To create an observer, first add the `observers` object to your view controller. Then add a method inside of the object with the method's name being the same as the name of the property you wish to `observe`. See example below:
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Observers", {
+  ActiveJS.newController("Observers", {
     el: "#app",
     Data() {
       return {
@@ -307,8 +304,7 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
   A computed property is a method which sets a property in your view data to the return value of said computed method. Your create a computed method by first adding the `computed` object to your view controller. Then add a method with the name you wish to access via your controller. Make sure that your computed methods `ALWAYS` return a value. See example below:
   >#### NOTE : As you can see, the computed method uses 2 data properties. If either of these properties change, the computed method will run and update it's computed value.
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Computed_Properties", {
+  ActiveJS.newController("Computed_Properties", {
     el: "#app",
     Data() {
       return {
@@ -333,8 +329,7 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
   </template>
   ```
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Methods", {
+  ActiveJS.newController("Methods", {
     el: "#app",
     Data() {
       return {
@@ -379,8 +374,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   </template>
   ```
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Directives", {
+  ActiveJS.newController("Directives", {
     el: "#app",
     Data() {
       return {
@@ -437,8 +431,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   </template>
   ```
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Directives", {
+  ActiveJS.newController("Directives", {
     el: "#app",
     Data() {
       return {
@@ -473,8 +466,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   </template>
   ```
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Directives", {
+  ActiveJS.newController("Directives", {
     el: "#app",
     Data() {
       return {
@@ -491,8 +483,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
 
   Say you want to render a list of users which displays some data. Bellow we created an array of users with some data about each user inside of our View Controller
   ```js
-  import { newController } from "./packages/ActiveJS.js";
-  newController("Directives", {
+  ActiveJS.newController("Directives", {
     el: "#app",
     Data() {
       return {
@@ -534,8 +525,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
 </template>
 ```
 ```js
-import { newController } from "./packages/ActiveJS.js";
-  newController("State_Management", {
+  ActiveJS.newController("State_Management", {
     el: "#app",
     Data() {
       return {
