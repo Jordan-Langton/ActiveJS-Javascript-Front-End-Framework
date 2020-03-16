@@ -146,7 +146,7 @@ export const ERROR = {
         let autoShow = (currentErr.ele != false)?'d-none':'d-flex';
   
         message += `      
-        <div id="systemErrModel-${currentErr.key}" class="${autoShow} flex-align shadow-xl">
+        <div id="systemErrModel-${currentErr.key}" class="${autoShow} flex-align shadow-sm">
           <div class="systemErrIcon left d-flex flex-center flex-align bg-danger">
             <i class="text-white text-lg fas fa-exclamation-triangle"></i>
           </div>

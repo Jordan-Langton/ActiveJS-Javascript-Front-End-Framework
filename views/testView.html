@@ -1,22 +1,30 @@
 <template>
   <div class="testView d-flex flex-col flex-even flex-align">
-
     <div class="d-flex flex-even flex-align flex-wrap">
       <button @bind:class="button" @on:click="show()">Show / Hide</button>
+      <button @bind:class="button" @on:click="startCounter()">Start / Stop</button>
       <button @bind:class="button" @on:click="add()">Add</button>
       <button @bind:class="button" @on:click="nextView()">View 2 Method</button>
       <button @bind:class="button" @on:click="changeClass()">changeClass</button>
       <button @bind:class="button" route="/about">View 2 Attribute</button>
     </div>
 
+    <div class="">{{test.other.test2}}</div>
+
     <h1 @if="bool" id="name" @bind:class="blue">hello this is a TESTER {{name}}!</h1>
     <input type="text" @reflect="name" @on:enter="logName()">
-    <p @if="bool">SHOWING 1</p>
-    <p @else>SHOWING 2</p>
+    <div class="d-flex flex-center flex-align">
+      <input type="number" @reflect="age1" @on:enter="logName()">
+      <div class=""> (TIMES) </div>
+      <input type="number" @reflect="age2" @on:enter="logName()">
+    </div>
+    <p @if="bool">SHOWING BLUE MESSAGE</p>
+    <p @else>NOT SHOWING BLUE MESSAGE</p>
     <p>{{a}}</p>
     <br>
+    <div id="test">{{foo}}</div>
 
-    <!-- <div class="block d-flex flex-even flex-align flex-wrap">
+    <div class="block d-flex flex-even flex-align flex-wrap">
 
       <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
         <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
@@ -26,19 +34,31 @@
         <span class="text-xs-bold text-muted">[j.description]</span>
       </div>
 
-    </div> -->
+    </div>
 
   </div>
 </template>
 
 <script>
-
-  Quantum.newView('testView', {
+  ActiveJS.newController('testView', {
+    el: "#app",
     props: ["test1", "test2"],
     Data() {
       return {
+
+        test: {
+          name: "TESTER",
+          other: {
+            test2: "Hello"
+          }
+        },
+
         a: 0,
-        bool: false,
+        timerOn: false,
+        counter: false,
+        bool: true,
+        age1: 0,
+        age2: 0,
         blue: "bg-primary text-white",
         button: "btn-p-xs shadow-sm",
         person: "person text-center d-flex flex-col flex-even flex-align flex-wrap shadow-sm",
@@ -52,33 +72,65 @@
         ]
       }
     },
-    Init() {      
-      this.people = this.$state.Get("getPeople");
-      this.products = this.$state.Get("getProducts");
-      console.log(this.products.length);
-      
-      this.people.push({name: "test 6", age: 17});
-      setInterval(() => {
-        this.add();
-      }, 1000);
-      // this.changeClass();
+    _Mounted(props) {
+
+      this.people = ActiveJS.State.Get("getPeople");
+      // this.products = ActiveJS.State.Get("getProducts");
+      this.name = ActiveJS.State.Get("getName");
+      console.log(document.getElementById('test'));
+
+      setTimeout(() => {
+        this.test.other.name = "TEST";
+      }, 500);
+      // this.startCounter();
+      // this.nextView();
+
+      setTimeout(() => {
+        this.test.other.test2 = "NEW VALUE";
+      }, 500);
+      // debugger;
     },
-    watchers: {
-      people() {
-        console.log("people watcher called");
+    _Rendered() {
+      console.log(document.getElementById('test'));
+    },
+    observers: {
+      name() {
+        ActiveJS.State.Commit("updateName", this.name);
+      },
+    },
+    computed: {
+      foo() {
+        return this.age1*this.age2;
       },
     },
     methods: {
-      add() {        
+      startCounter() {
+
+        if (this.timerOn == false) {
+          this.counter = setInterval(() => {
+            this.add();
+          }, 1000);
+          this.timerOn = true;
+        }
+        else {
+          clearInterval(this.counter);
+          this.timerOn = false;
+        }
+
+      },
+      add() {
         if (this.a == 10) {
           this.bool = true;
           this.a = 0;
+        }
+        else if (this.a == 5) {
+          this.bool = false;
         }
         this.a++;
       },
       changeClass() {
         if (this.button.indexOf("bg-danger") == -1) {
-          this.button = "btn-p-xs bg-danger text-white shadow-sm";          
+          this.button = "btn-p-xs bg-danger text-white shadow-sm";
         }
         else {
           this.button = "btn-p-xs shadow-sm";
@@ -87,19 +139,19 @@
       logItem(a, b, c) {
         console.log(`a: ${b} b: ${JSON.stringify(c)}`);
         console.log(this.products[a]);
-        
+
       },
       logName() {
         console.log(this.name);
       },
       show() {
         this.bool = !this.bool;
-        // console.log(this.bool);        
+        // console.log(this.bool);
       },
-      nextView() {        
-        Quantum.Events.route('/about', {name: this.name});
+      nextView() {
+        ActiveJS.Router.route('/about', {name: this.name, products: this.products});
       }
-    },    
+    },
   });
 
 </script>

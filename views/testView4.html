@@ -8,8 +8,8 @@
 </template>
 
 <script>
-
-  Quantum.newView('testView4', {
+  ActiveJS.newController('testView4', {
+    el: "#app",
     Data() {
       return {
         name: "VIEW 4",
@@ -17,7 +17,7 @@
     },
     methods: {
       back() {
-        Quantum.Events.navBack();
+        ActiveJS.Router.navBack();
       }
     }  
   });

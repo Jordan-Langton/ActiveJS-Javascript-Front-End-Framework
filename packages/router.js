@@ -4,18 +4,18 @@ import { ERROR } from "./logging.js";
 import { Common } from "./Common.js";
 import { Breadcrumbs } from "./breadcrumbs.js";
 
-export const Router = {
+export const router = {
 
   routes: [],
   lastRoute: false,
 
-  Build: () => {
+  Generate_Router: () => {
 
     //* add the routes to the router
-		//! Router.addRoutes(window.$qm.Config.routes);
+		//! router.addRoutes(window.$qm.Config.routes);
 
     //* add all router events
-    Router.addEvents();
+    router.addEvents();
 
   },
 
@@ -25,7 +25,26 @@ export const Router = {
     let matched = window.$qm.Config.routes.filter(route => route.path == route_path)[0];
     
     //* successfully fouch a match
-    if (matched) {      
+    if (matched) {
+
+      //* scroll to top of page
+      window.scrollTo(0,0);
+
+      //* destroy all event listeners
+      if (window.$qm["DOMEventListeners"].length > 0) {
+        let count = 0;
+        window.$qm["DOMEventListeners"].forEach(listener => {
+          // debugger;
+          listener.el.removeEventListener(listener.type, listener.event, true);
+          count++
+        });
+        
+        
+        if (count == window.$qm["DOMEventListeners"].length) {
+          // console.log(window.$qm["DOMEventListeners"]);
+          window.$qm["DOMEventListeners"] = [];
+        }
+      }
 
       //* load the VM into the DOM
       Common.LoadVM(
@@ -51,22 +70,22 @@ export const Router = {
           Breadcrumbs.NEW(CRUMB);
 
         }
-        Router.getInlineRoutes();
+
+        //* looks for any inline route attributes
+        router.getInlineRoutes();
 
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
       
 
     }
     else {
-      ERROR.NEW("Invalid Route", "The route you are trying to access has not been setup as a valid route", "router", false, true, false);
+      ERROR.NEW("System Router Error", `The route '${route_path}' you are trying to access has not been setup as a valid route`, "router", false, true, false);
     }
 
     ERROR.RENDER();
 
   },
-
-  addRoutes: (routes=[]) => Router.routes = routes,
 
   navBack: () => {
     
@@ -74,7 +93,7 @@ export const Router = {
     // debugger;
     if (last.path != window.$qm.Config.baseView) {
       Breadcrumbs.BACK();
-      Router.Search(last.path, last.params, true);
+      router.Search(last.path, last.params, true);
     }
 
   },
@@ -83,12 +102,12 @@ export const Router = {
 
     //? detect the back/forward button
     window.onpopstate = (e) => {       
-      // this.checkCurrentURL();
+      // console.log(e);
     };
     
     //? route Event
     document.addEventListener("checkRoutes", (e) => {      
-      // this.checkForRoutes();
+      // console.log(e);
     });
 
   },
@@ -102,11 +121,11 @@ export const Router = {
 
       let attrVal = element.attributes.route.value;
 
-      //? If attrVal is a route
+      //* If attrVal is a route
       if ( (element.hasAttribute("event") == false) && (attrVal != "back") ) {
         element.setAttribute("event","route-handler");
         element.style = "cursor:pointer;";
-        element.addEventListener("click", function() { Router.Search(attrVal); });
+        element.addEventListener("click", function() { router.Search(attrVal); });
       }      
 
     });

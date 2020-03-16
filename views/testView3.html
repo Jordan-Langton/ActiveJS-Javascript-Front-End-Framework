@@ -9,8 +9,8 @@
 </template>
 
 <script>
-
-  Quantum.newView('testView3', {
+  ActiveJS.newController('testView3', {
+    el: "#app",
     Data() {
       return {
         name: "VIEW 3",
@@ -18,10 +18,10 @@
     },
     methods: {
       back() {
-        Quantum.Events.navBack();
+        ActiveJS.Router.navBack();
       },
       next() {
-        Quantum.Events.route("/contact2");
+        ActiveJS.Router.route("/contact2");
       }
     }  
   });

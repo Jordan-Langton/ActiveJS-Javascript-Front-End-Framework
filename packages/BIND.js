@@ -31,13 +31,13 @@ export const BIND = {
 			//? check if of type input
 			if ((inputName == "input") || (inputName == "select") || (inputName == "option") || (inputName == "button") || (inputName == "textarea")) {
 
-				element.addEventListener("input", () => {
-
+				let eventObj = {type: "input", event: false, el: element};
+				let _method = (e) => {
 					//* if the input type is checkbox
 					if (element.type == "checkbox") {
 						element.value = element.checked;
 					}
-					
+
 					//* check if a timer has been set and reset it
 					if (BIND.OPTIONS.reflect.timer != false) {
 						clearTimeout(BIND.OPTIONS.reflect.timer);
@@ -71,8 +71,11 @@ export const BIND = {
 						}
 
 					}, BIND.OPTIONS.reflect.waitTime);
-
-				});
+				};
+				eventObj.type = "input";
+				eventObj.event = _method;
+				element.addEventListener("input", _method);
+				window.$qm["DOMEventListeners"].push(eventObj);
 
 			}
 			else {
@@ -105,8 +108,7 @@ export const BIND = {
 
 				//? checks if the attrVal exists in your data set
 				function checkIfAttrValExists(index, val) {
-					if (HANDLER[val]) return 1;
-					else if (HANDLER[val + "_comp"]) return 2;
+					if (HANDLER[val] != undefined) return 1;
 					else {
 						ERROR.NEW(
 							"Bind Directive Error",
@@ -117,8 +119,8 @@ export const BIND = {
 					}
 				}
 
-				let keys = Object.entries(bindDirective);
-
+				let keys = Object.entries(bindDirective);				
+				
 				//? Check what type of binding
 				switch (bindVal) {
 					case keys[0][1]:
@@ -223,6 +225,23 @@ export const BIND = {
 							);
 						}
 						break;
+					case keys[5][1]:
+						if (typeof HANDLER[attrVal] == "string") {
+							let check = checkIfAttrValExists(bindKey, attrVal);
+							if (check == 1) {
+								element.style = HANDLER[attrVal];
+							}
+						}
+						else {
+							ERROR.NEW(
+								"Bind Directive Error",
+								`You cannot bind the attribute ${bindKey} to the property ${attrVal}, because it is not of the type <b>string</b>`,
+								'bind',
+								element,
+								true
+							);
+						}
+						break;
 
 					default:
 						ERROR.NEW(
@@ -263,7 +282,7 @@ export const BIND = {
 			let script;
 			let newVal;
 
-			//? Checks for JS expressions
+			//* Checks for JS expressions
 			if (attrVal.indexOf("[") >= 0) {
 
 				//? replaces 'this' with $scope.view
@@ -329,8 +348,8 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks for object tree
-			else if (attrVal.indexOf(".") >= 0) {
+			//* Checks for object tree
+			else if (attrVal.indexOf(".") != -1) {
 				script = eval("(HANDLER." + attrVal + ")");
 				if (elseEle != null) {
 					if (script) {
@@ -351,7 +370,7 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks if value is a boolean
+			//* Checks if value is a boolean
 			else if (attrVal == "true" || attrVal == "false") {
 				if (elseEle != null) {
 					if (eval(attrVal)) {
@@ -372,7 +391,7 @@ export const BIND = {
 					}
 				}
 			}
-			//? Checks if the value exists in your View Controller
+			//* Checks if the value exists in your View Controller
 			else {
 
 				if (HANDLER.hasOwnProperty(attrVal)) {
@@ -422,6 +441,11 @@ export const BIND = {
 				}
 			}
 
+			//* call the mounted life cycle method
+			if (window.$qm["$scope"]._Updated && window.$qm["computedMethodKey"].intialRun == false) {
+				window.$qm["$scope"]._Updated();
+			}
+
 		});
 
 	},
@@ -440,8 +464,277 @@ export const BIND = {
 			bindings.forEach(value => {
 				let element = value;
 				let attrVal = element.attributes[bindVal].value;
-				let index = attrVal.indexOf("(");
-				let funcName = attrVal.slice(0, index);
+				let funcName = false;
+				let JS = false;
+				let keys = Object.entries(onDirective);
+				let eventObj = {type: "", event: false, el: element};
+				let _methods = {
+					"click": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"submit": (e) => {
+						e.preventDefault();
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"keypress": (e) => {
+						let key = e.which || e.keyCode;
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							if (key === 13) {
+								HANDLER[funcName](...found, e);
+								ERROR.RENDER();
+								//! DOM.applyUpdatesToElements(document, HANDLER);
+								// BIND.If(HANDLER);
+							}
+						}
+					},
+					"change": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"input": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+					"mousewheel": (e) => {
+						let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
+						if (check == 1) {
+							HANDLER[funcName](...found, e);
+							ERROR.RENDER();
+							//! DOM.applyUpdatesToElements(document, HANDLER);
+							// BIND.If(HANDLER);
+						}
+					},
+
+					"JSclick": (e) => {
+						try {
+							let data = eval(`( ${eval("(" + JS + ")")} )`);
+						}
+						catch (error) {
+							ERROR.NEW(
+								"On Directive Error",
+								error,
+								'on',
+								false,
+								true,
+								HANDLER.fileName
+							);
+						}						
+						ERROR.RENDER()
+					},
+					"JSsubmit": (e) => {
+						e.preventDefault();
+						try {
+							eval(`( ${eval("(" + JS + ")")} )`);
+						}
+						catch (error) {
+							ERROR.NEW(
+								"On Directive Error",
+								error,
+								'on',
+								false,
+								true,
+								HANDLER.fileName
+							);
+						}						
+						ERROR.RENDER()
+					},
+					"JSkeypress": (e) => {
+						let key = e.which || e.keyCode;
+						if (key === 13) {
+							try {
+								eval(`( ${eval("(" + JS + ")")} )`);
+							}
+							catch (error) {
+								ERROR.NEW(
+									"On Directive Error",
+									error,
+									'on',
+									false,
+									true,
+									HANDLER.fileName
+								);
+							}						
+							ERROR.RENDER()
+						}
+					},
+					"JSchange": (e) => {
+						try {
+							eval(`( ${eval("(" + JS + ")")} )`);
+						}
+						catch (error) {
+							ERROR.NEW(
+								"On Directive Error",
+								error,
+								'on',
+								false,
+								true,
+								HANDLER.fileName
+							);
+						}						
+						ERROR.RENDER()
+					},
+					"JSinput": (e) => {
+						try {
+							eval(`( ${eval("(" + JS + ")")} )`);
+						}
+						catch (error) {
+							ERROR.NEW(
+								"On Directive Error",
+								error,
+								'on',
+								false,
+								true,
+								HANDLER.fileName
+							);
+						}						
+						ERROR.RENDER()
+					},
+					"JSmousewheel": (e) => {
+						try {
+							eval(`( ${eval("(" + JS + ")")} )`);
+						}
+						catch (error) {
+							ERROR.NEW(
+								"On Directive Error",
+								error,
+								'on',
+								false,
+								true,
+								HANDLER.fileName
+							);
+						}						
+						ERROR.RENDER()
+					},
+				};
+
+				//* setup the function name
+				if (attrVal.indexOf("(") == -1) {
+					funcName = attrVal;										
+				}
+				else {
+					funcName = attrVal.slice(0, attrVal.indexOf("("));
+				}
+
+				//* check for js to compile in attribute value
+				if (attrVal.indexOf("[") != -1) {
+					let rgx = new RegExp("this", 'g');
+					JS = attrVal.replace("[", "").replace("]", "");
+					JS = JS.replace(rgx, "window.$qm['$scope']");
+					switch (bindVal) {
+						case keys[0][1]:
+							eventObj.type = "click";
+							eventObj.event = _methods["JSclick"];
+							element.addEventListener("click", _methods["JSclick"], false);
+							// debugger;
+							window.$qm["DOMEventListeners"].push(eventObj);
+							break;
+						case keys[1][1]:
+							if (element.localName == "form") {
+								eventObj.type = "submit";
+								eventObj.event = _methods["JSsubmit"];
+								element.addEventListener("submit", _methods["JSsubmit"], false);
+								window.$qm["DOMEventListeners"].push(eventObj);
+							}
+							else {
+								ERROR.NEW(
+									"On Directive Error",
+									`Invalid use of @on directive. You may only add the @on:${bindKey} directive to a form element.`,
+									'on',
+									element,
+									true
+								);
+							}
+							break;
+						case keys[2][1]:
+							eventObj.type = "keypress";
+							eventObj.event = _methods["JSkeypress"];
+							element.addEventListener("keypress", _methods["JSkeypress"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
+							break;
+						case keys[3][1]:
+							if ((element.localName == "input") || (element.localName == "select")) {
+								eventObj.type = "change";
+								eventObj.event = _methods["JSchange"];
+								element.addEventListener("change", _methods["JSchange"], false);
+								window.$qm["DOMEventListeners"].push(eventObj);
+							}
+							else {
+								ERROR.NEW(
+									"On Directive Error",
+									`Invalid use of @on directive. You may only add the @on:${bindKey} directive to an input element.`,
+									'on',
+									element,
+									true
+								);
+							}
+							break;
+						case keys[4][1]:
+							if (element.localName == "input") {
+								eventObj.type = "input";
+								eventObj.event = _methods["JSinput"];
+								element.addEventListener("input", _methods["JSinput"], false);
+								window.$qm["DOMEventListeners"].push(eventObj);
+							}
+							else {
+								ERROR.NEW(
+									"On Directive Error",
+									`Invalid use of @on directive. You may only add the @on:${bindKey} directive to an input element.`,
+									'on',
+									element,
+									true
+								);
+							}
+							break;
+						case keys[5][1]:
+							eventObj.type = "mousewheel";
+							eventObj.event = _methods["JSmousewheel"];
+							element.addEventListener("mousewheel", _methods["JSmousewheel"], false);
+							window.$qm["DOMEventListeners"].push();
+							break;
+						case keys[11][1]:
+							eventObj.type = "mousewheel";
+							eventObj.event = _methods["JSmousewheel"];
+							element.addEventListener("mousewheel", _methods["JSmousewheel"], false);
+							window.$qm["DOMEventListeners"].push();
+							break;
+	
+						default:
+							ERROR.NEW(
+								"On Directive Error",
+								`${bindKey} is an invalid binding and does not exist. Make sure the viewDirectives have support for the it.`,
+								'on',
+								element,
+								true
+							);
+							break;
+					}
+
+					return;					
+				}
+
 
 				//? Getting content between braces
 				let found = [];
@@ -469,40 +762,20 @@ export const BIND = {
 					element.style.cursor = "pointer";
 				}
 
-				let keys = Object.entries(onDirective);
-				/*
-				"@On:Click": "vm-u67W2a8",
-				"@On:Submit": "vm-dIbLGpz",
-				"@On:Enter": "vm-rwAaot4",
-				"@On:Change": "vm-8ikHgbc",
-				"@On:Input": "vm-fbnsI6S",
-				"@On:Scroll": "vm-ldN8dke",
-				*/
-
 				switch (bindVal) {
 					case keys[0][1]:
-						element.addEventListener("click", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								HANDLER[funcName](...found, e);
-								ERROR.RENDER();
-								//! DOM.applyUpdatesToElements(document, HANDLER);
-								// BIND.If(HANDLER);
-							}
-						});
+						eventObj.type = "click";
+						eventObj.event = _methods["click"];
+						element.addEventListener("click", _methods["click"], false);
+						// debugger;
+						window.$qm["DOMEventListeners"].push(eventObj);
 						break;
 					case keys[1][1]:
 						if (element.localName == "form") {
-							element.addEventListener("submit", (e) => {
-								e.preventDefault();
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "submit";
+							eventObj.event = _methods["submit"];
+							element.addEventListener("submit", _methods["submit"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -515,30 +788,17 @@ export const BIND = {
 						}
 						break;
 					case keys[2][1]:
-						element.addEventListener("keypress", (e) => {
-							let key = e.which || e.keyCode;
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								if (key === 13) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							}
-						});
+						eventObj.type = "keypress";
+						eventObj.event = _methods["keypress"];
+						element.addEventListener("keypress", _methods["keypress"], false);
+						window.$qm["DOMEventListeners"].push(eventObj);
 						break;
 					case keys[3][1]:
 						if ((element.localName == "input") || (element.localName == "select")) {
-							element.addEventListener("change", (e) => {
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "change";
+							eventObj.event = _methods["change"];
+							element.addEventListener("change", _methods["change"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -552,15 +812,10 @@ export const BIND = {
 						break;
 					case keys[4][1]:
 						if (element.localName == "input") {
-							element.addEventListener("input", (e) => {
-								let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-								if (check == 1) {
-									HANDLER[funcName](...found, e);
-									ERROR.RENDER();
-									//! DOM.applyUpdatesToElements(document, HANDLER);
-									// BIND.If(HANDLER);
-								}
-							});
+							eventObj.type = "input";
+							eventObj.event = _methods["input"];
+							element.addEventListener("input", _methods["input"], false);
+							window.$qm["DOMEventListeners"].push(eventObj);
 						}
 						else {
 							ERROR.NEW(
@@ -573,26 +828,16 @@ export const BIND = {
 						}
 						break;
 					case keys[5][1]:
-						element.addEventListener("mousewheel", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								HANDLER[funcName](...found, e);
-								ERROR.RENDER();
-								//! DOM.applyUpdatesToElements(document, HANDLER);
-								// BIND.If(HANDLER);
-							}
-						});
+						eventObj.type = "mousewheel";
+						eventObj.event = _methods["mousewheel"];
+						element.addEventListener("mousewheel", _methods["mousewheel"], false);
+						window.$qm["DOMEventListeners"].push();
 						break;
 					case keys[11][1]:
-						element.addEventListener("mousewheel", (e) => {
-							let check = BIND.checkIfFuncExists(funcName, bindKey, HANDLER);
-							if (check == 1) {
-								HANDLER[funcName](...found, e);
-								ERROR.RENDER();
-								//! DOM.applyUpdatesToElements(document, HANDLER);
-								// BIND.If(HANDLER);
-							}
-						});
+						eventObj.type = "mousewheel";
+						eventObj.event = _methods["mousewheel"];
+						element.addEventListener("mousewheel", _methods["mousewheel"], false);
+						window.$qm["DOMEventListeners"].push();
 						break;
 
 					default:
@@ -614,10 +859,15 @@ export const BIND = {
 
 	//* Checks if any elements have a @For attr and will loop that element according to the data
 	//? params (HANDLER, TEMPLATE)
-	For(HANDLER, innerHTML="") {
-		document.querySelectorAll("[vm-gtSXBIq]").forEach(FOR_ELEMENT => {
+	For(HANDLER, UPDATE_KEY=false) {
 
-			//? setup values
+		//* choose whether to look through DOM to loop or to update existing
+		let DOM_TO_LOOP = (UPDATE_KEY == false)? document.querySelectorAll("[vm-gtSXBIq]") : document.querySelectorAll("["+UPDATE_KEY+"]");
+
+		//* loop chosen elements
+		DOM_TO_LOOP.forEach(FOR_ELEMENT => {
+
+			//* setup values
 			let ELE_NAME = FOR_ELEMENT.localName;
 			let ELE_PARENT = FOR_ELEMENT.parentElement;
 			let ELE_ATTRIBUTES = FOR_ELEMENT.attributes["vm-gtSXBIq"].value;
@@ -625,11 +875,11 @@ export const BIND = {
 			//! let ITORATOR = ELE_ATTRIBUTES.split(" in ")[0];
 			let MODEL_ARR = ELE_ATTRIBUTES.split(" in ")[1];
 
-			//? check that the MODEL_ARR exists
+			//? check that the MODEL_ARR doesn't exist
 			if (HANDLER[MODEL_ARR] == undefined) {
 				ERROR.NEW(
 					"For Directive Error",
-					"The value supplied to itorate over, is undefined. Please make sure to set the variable before using it.",
+					"The array supplied to itorate over, is undefined. Please make sure to set the variable before using it.",
 					"for",
 					FOR_ELEMENT,
 					true,
@@ -647,7 +897,7 @@ export const BIND = {
 				let DYNAMIC_VALS = BIND.getVarsFromString(/(?<=\[).+?(?=\])/g, FOR_ELEMENT.innerHTML, FOR_ELEMENT.attributes, ELE_LOOP_KEY);
 
 				//* if there is something to loop over
-				if (TO_LOOP.length > 0) {
+				if (TO_LOOP.length > 0) {					
 
 					//* start looping through the MODEL DATA
 					TO_LOOP.forEach((HANDLER_VAL, index) => {
@@ -688,32 +938,39 @@ export const BIND = {
 
 						//* start building up the element
 						let parser = new DOMParser();
-						let ELE = parser.parseFromString(newHTML_TEMP, "text/html").body.firstChild;
+						let HTML = parser.parseFromString(newHTML_TEMP, "text/html");
+						let ELE = (HTML.body.firstChild)? HTML.body.firstChild : false;
 						let ELE_KEY = "qf-" + ELEMENT_KEY;
-						ELE.setAttribute(ELE_KEY, index);
-
-						//* build up the update object
-						let boundEle = {
-							el: ELE,
-							binding: MODEL_ARR,
-							ref: ELE_KEY,
-							type: "for",
-							index: index,
-							attribute: ELE_ATTRIBUTES,
-							interpolation: (FOR_ELEMENT.innerHTML.length > 0)?FOR_ELEMENT.innerHTML:innerHTML,
-						};
-						DOM.DOMBinding.push(boundEle);
+						
+						if (ELE != false) {
+							ELE.setAttribute(ELE_KEY, index);
+						}
 
 						//* insert elements
-						ELE_PARENT.appendChild(ELE);
+						if (ELE != false) {
+							ELE_PARENT.appendChild(ELE);
+						}
 
 						//* remove the original ele
 						FOR_ELEMENT.remove();
 
 					});
 
+					//* build up the update object
+					let boundEle = {
+						el: FOR_ELEMENT,
+						binding: MODEL_ARR,
+						ref: "qf-"+ELEMENT_KEY,
+						type: "for",
+						attribute: ELE_ATTRIBUTES,
+						interpolation: FOR_ELEMENT.innerHTML,
+					};
+					window.$qm["DOMBindings"].push(boundEle);
+
 				}
 				else {
+
+					FOR_ELEMENT.innerHTML = `No data avaliable`;
 
 					//? build up the update object
 					let boundEle = {
@@ -723,7 +980,7 @@ export const BIND = {
 						attribute: ELE_ATTRIBUTES,
 						interpolation: FOR_ELEMENT.innerHTML,
 					};
-					DOM.DOMBinding.push(boundEle);
+					window.$qm["DOMBindings"].push(boundEle);
 
 				}
 			}
@@ -736,7 +993,7 @@ export const BIND = {
 
 		let errStyle1 = "background-color: darkblue; color:#fff;border-radius:3px 0 0 3px;padding-right: 10px";
 		let errStyle2 = "background-color: lightblue; color:#000;padding:0 5px;border-radius:0 3px 3px 0";
-		console.groupCollapsed("%c SYSTEM %c Components Found", errStyle1, errStyle2);
+		// console.groupCollapsed("%c SYSTEM %c Components Found", errStyle1, errStyle2);
 
 		//* Check that this view is using components
 		if (HANDLER.components.length > 0) {
@@ -920,11 +1177,6 @@ export const BIND = {
 			}
 			else {
 				HANDLER[attrVal] = Number(inputVal);
-
-				//? NOTE* if your state has a global property 'attrVal' it will update it as well
-				if (HANDLER.$state.state.hasOwnProperty(attrVal)) {
-					HANDLER.$state.state[attrVal] = Number(inputVal);
-				}
 			}
 		}
 		//? if element is of type select

@@ -1,2 +1,4 @@
 node_modules
+views
+.vscode/settings.json
 build/bundle.js

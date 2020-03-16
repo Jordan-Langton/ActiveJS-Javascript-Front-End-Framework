@@ -10,6 +10,7 @@ export const viewDirectives = {
   "@Bind:disabled": "vm-Tw1OlOH", 
   "@Bind:checked": "vm-mPpEG7m",
   "@Bind:href": "vm-GUl9oHy",
+  "@Bind:style": "vm-bnl9oWy",
   "@Reflect": "vm-wOUrX40",
   "@On:click": "vm-u67W2a8",
   "@On:submit": "vm-dIbLGpz",
@@ -26,6 +27,7 @@ export const bindDirective = {
   "@Bind:disabled": "vm-Tw1OlOH", 
   "@Bind:checked": "vm-mPpEG7m",
   "@Bind:href": "vm-GUl9oHy",
+  "@Bind:style": "vm-bnl9oWy",
 };
 
 //? @On directive
