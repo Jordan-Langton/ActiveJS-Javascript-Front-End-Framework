@@ -26,13 +26,13 @@
 
     <div class="block d-flex flex-even flex-align flex-wrap">
 
-      <!-- <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
+      <div @bind:class="person" @for="j in products" :key="i" @on:click="logItem([i], [j.label], [j.containerSize])">
         <div class="img"><img class="img-50-p" src="[j.icon]" alt=""></div>
         <span class="text-sm-bold text-danger">Id: [j.productUId]</span>
         <span class="text-md-boldest text-secondary">[j.label]</span>
         <span class="text-xs-bold text-muted">[j.containerSize]</span>
         <span class="text-xs-bold text-muted">[j.description]</span>
-      </div> -->
+      </div>
 
     </div>
 
@@ -75,7 +75,7 @@
     _Mounted(props) {
 
       this.people = ActiveJS.State.Get("getPeople");
-      // this.products = ActiveJS.State.Get("getProducts");
+      this.products = ActiveJS.State.Get("getProducts");
       this.name = ActiveJS.State.Get("getName");
       console.log(document.getElementById('test'));
 
@@ -149,7 +149,7 @@
         // console.log(this.bool);
       },
       nextView() {
-        ActiveJS.Router.route('/about', {name: this.name, products: this.products});
+        ActiveJS.Router.route('/about', {name: this.name, products: null});
       }
     },
   });

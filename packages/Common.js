@@ -15,7 +15,7 @@ export const Common = {
   VM_LOADED: false,
 
   LoadVM: (VM_URL, VM_ANIMATION = false, VM_NAVBACK = false, PARAMS = null, BACKPAGE = false) => {
-    // debugger;
+    
     return new Promise((resolve, reject) => {
 
       Lib.getFileContents({ url: VM_URL, type: "document" }, (err, html) => {
@@ -51,6 +51,10 @@ export const Common = {
           //* reset bindings
           window.$qm.DOMBindings = [];
           window.$qm.DOMBoundKeys = [];
+
+          //* LOGGING
+          console.log("SYSTEM :: Gotten the model for the view");
+
           //* add template to DOM
           Common.prepareTEMPLATE(html)
             .then((DOCUMENT) => {
@@ -59,6 +63,9 @@ export const Common = {
               window.$qm["params"] = PARAMS;
 
               window.$qm["READY_DOCUMENT"] = DOCUMENT;
+
+              //* LOGGING
+              console.log("SYSTEM :: Prepared the template");
 
               //* check if there was a script there already
               let el = document.getElementById("CURRENT_VM");
@@ -71,6 +78,9 @@ export const Common = {
                 newScript.appendChild(inlineScript);
                 document.body.appendChild(newScript);
               }
+
+              //* LOGGING
+              console.log("SYSTEM :: Loaded VM into the window");
 
               //* setup the view_backPage for this view
               window.$qm["VM_LOADED"] = resolve;
@@ -118,6 +128,9 @@ export const Common = {
         computedMethodsLength: computed.length,
       };
 
+      //* LOGGING
+      console.log("SYSTEM :: VM has been built up");
+
       //! DEPRICATED CODE
       // ActiveJS.Config.name = window.$qm.Config.name;
       // ActiveJS.Config.version = window.$qm.Config.version;
@@ -144,23 +157,31 @@ export const Common = {
       //* build up the props
       Common.buildProps(VM, $VM).then(($props) => {
 
+        //* LOGGING
+        console.log("SYSTEM :: Props for view were generated");
+
         //* method to run when computed methods have been setup
         window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
 
-          //* tell the PROXY that we are done setting up computed props
-          // console.warn("intialRun is OVER");
+          //* tell the PROXY that we are done setting up computed props          
           window.$qm["computedMethodKey"].intialRun = false;
+
+          //* LOGGING
+          console.log("SYSTEM :: Computed properties have been built");
 
           //* call the mounted life cycle method
           if (window.$qm["$scope"]._Mounted) {
             window.$qm["$scope"]._Mounted($props);
+
+            //* LOGGING
+            console.log("SYSTEM :: _Mounted life cycle method has been called");
           }
 
           DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
 
           //* check for binding Reflect
           if (window.$qm["$scope"].components.length > 0) {
-            BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => window.$qm["VM_LOADED"]());
+            BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => { console.log("Components Loaded") });
           }
           else {
             //* callback to router
@@ -182,6 +203,9 @@ export const Common = {
 
           //* start render proccess
           if (wrapper != null) {
+
+            //* LOGGING
+            console.log("SYSTEM :: Render proccess is about to begin");
 
             //* animation passed
             if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName)) {
@@ -216,11 +240,18 @@ export const Common = {
             else {
               
               wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
+
+              //* LOGGING
+              console.log("SYSTEM :: Render complete");
+
               resolve(window.$qm["$scope"]);
 
               //* call Rendered life cycle method
               if (window.$qm["$scope"]._Rendered) {
                 window.$qm["$scope"]._Rendered();
+
+                //* LOGGING
+                console.log("SYSTEM :: _Rendered life cycle method called");                
               }
 
 
@@ -244,7 +275,14 @@ export const Common = {
           DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
 
         });
+
+        //* LOGGING
+        console.log("SYSTEM :: VM successfully added to the observer and is being watched");
+
         window["$scope"] = window.$qm["$scope"];
+
+        //* LOGGING
+        console.log("SYSTEM :: VM is accessable via the '$scope' variable");
 
         //* if you have computed props        
         if (computed.length != 0) {          

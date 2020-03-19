@@ -211,6 +211,9 @@ export const ERROR = {
   },
 
   RENDER() {
+
+    //* LOGGING
+    console.log("SYSTEM :: Errors are about to be displayed");
     
     if (ERROR.ERRORS.length > 0 && window.$qm["show_errors"] == true) {
       

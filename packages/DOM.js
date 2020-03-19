@@ -619,6 +619,9 @@ export const DOM = {
   // eslint-disable-next-line no-unused-vars
   applyUpdatesToElements(template, HANDLER, updatedProp=false, callback=false) {
 
+    //* LOGGING
+    // console.log("SYSTEM :: DOM updates are being applied");
+
     //? if the updated element was passed
     if (updatedProp) {
       

@@ -71,7 +71,10 @@ export const getFromCache = (key="") => {
 export const createApp = (configuration={}, Created=() => {}) => Initialize.Start(configuration, Created);
 
 export const newController = (View_Name="", Controller={props: [], Data() {}, Init() {}, observers: {}, methods: {}}) => Common.buildVM(View_Name, Controller)
-              .then((VM) => {             
+              .then((VM) => {
+                
+                //* LOGGING
+                console.log("SYSTEM :: Starting the DOM minipulations");
 
                 //? check for binding Reflect
                 BIND.Reflect(VM);        
@@ -93,6 +96,8 @@ export const newController = (View_Name="", Controller={props: [], Data() {}, In
 
                 //* display any errors that occured
                 ERROR.RENDER();
+
+                console.timeEnd();
                 
               }).catch((err) => console.error(err));
 
