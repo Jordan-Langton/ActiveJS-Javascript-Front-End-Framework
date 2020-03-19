@@ -1,5 +1,5 @@
 <template>
-  <div class="testView">
+  <div class="viewWrapper">
 
     <button class="btn-p-xs bg-warning" @on:click="back()">Back</button>
     <button class="btn-p-xs bg-warning" @on:click="next()">View 3</button>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  ActiveJS.newController('testView2', {
+  ActiveJS.newController('VIEW_2', {
     el: "#app",
     props: ["name", "products"],
     Data() {

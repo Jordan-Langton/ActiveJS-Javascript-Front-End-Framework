@@ -26,7 +26,7 @@ export const router = {
     
     //* successfully fouch a match
     if (matched) {
-
+      // debugger;
       //* scroll to top of page
       window.scrollTo(0,0);
 
@@ -88,14 +88,11 @@ export const router = {
   },
 
   navBack: () => {
-    
+    Breadcrumbs.BACK();
     const last = Breadcrumbs.GET_LAST();
-    // debugger;
-    if (last.path != window.$qm.Config.baseView) {
-      Breadcrumbs.BACK();
+    if (last.path != window.$qm.Config.baseView) {      
       router.Search(last.path, last.params, true);
     }
-
   },
 
   addEvents: () => {

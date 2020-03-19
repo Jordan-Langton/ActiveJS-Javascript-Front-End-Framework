@@ -15,7 +15,7 @@ export const Common = {
   VM_LOADED: false,
 
   LoadVM: (VM_URL, VM_ANIMATION = false, VM_NAVBACK = false, PARAMS = null, BACKPAGE = false) => {
-
+    // debugger;
     return new Promise((resolve, reject) => {
 
       Lib.getFileContents({ url: VM_URL, type: "document" }, (err, html) => {
@@ -59,7 +59,6 @@ export const Common = {
               window.$qm["params"] = PARAMS;
 
               window.$qm["READY_DOCUMENT"] = DOCUMENT;
-
 
               //* check if there was a script there already
               let el = document.getElementById("CURRENT_VM");
@@ -215,7 +214,7 @@ export const Common = {
             }
             //* no animation
             else {
-
+              
               wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
               resolve(window.$qm["$scope"]);
 

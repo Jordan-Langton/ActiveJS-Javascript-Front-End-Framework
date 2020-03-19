@@ -10,6 +10,12 @@
 
 }
 
+.animate-pageIn {
+  animation-name: pageIn;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+}
+
 @keyframes pageOut {
 
   from {
@@ -20,6 +26,12 @@
       left: 100%;
   }
 
+}
+
+.animate-pageOut {
+  animation-name: pageOut;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
 }
 
 /*? Push In Animation ?*/
@@ -36,6 +48,12 @@
 
 }
 
+.animate-pushIn {
+  animation-name: pushIn;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+}
+
 @keyframes pushOut {
 
   from {
@@ -47,6 +65,13 @@
   }
 
 }
+
+.animate-pushOut {
+  animation-name: pushOut;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+}
+
 @keyframes pushInOld {
 
   from {
@@ -59,6 +84,12 @@
 
 }
 
+.animate-pushInOld {
+  animation-name: pushInOld;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+}
+
 @keyframes pushOutOld {
 
   from {
@@ -69,4 +100,10 @@
       left: 0;
   }
 
+}
+
+.animate-pushOutOld {
+  animation-name: pushOutOld;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
 }
