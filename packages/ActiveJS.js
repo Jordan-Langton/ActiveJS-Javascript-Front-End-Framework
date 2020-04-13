@@ -18,7 +18,8 @@ export let Config = {
   "systemStyles": [],
   "interfaces": [],
   "store": false,
-  "routes": []
+  "routes": [],
+  "FrameworkVersion": "2.1.1",
 };
 
 let Emitted_Data = {};
