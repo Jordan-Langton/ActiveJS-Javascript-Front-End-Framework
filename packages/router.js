@@ -12,7 +12,9 @@ export const router = {
   Generate_Router: () => {
 
     //* add the routes to the router
-		//! router.addRoutes(window.$qm.Config.routes);
+    
+    //* LOGGING
+    console.log("SYSTEM :: Router registered in system");
 
     //* add all router events
     router.addEvents();
@@ -26,7 +28,10 @@ export const router = {
     
     //* successfully fouch a match
     if (matched) {
-
+      console.time();
+      //* LOGGING
+      console.log("SYSTEM :: Router successfully matched route");
+      
       //* scroll to top of page
       window.scrollTo(0,0);
 
@@ -46,6 +51,9 @@ export const router = {
         }
       }
 
+      //* LOGGING
+      console.log("SYSTEM :: Router about to load VM");
+
       //* load the VM into the DOM
       Common.LoadVM(
         matched.handler, 
@@ -55,6 +63,9 @@ export const router = {
         Breadcrumbs.GET_LAST()
       )
       .then(() => {
+
+        //* LOGGING
+        console.log("SYSTEM :: Router successfully finished rendering view");
 
         //* if you are not routing back add crumb
         if (navBack == false) {
@@ -68,6 +79,9 @@ export const router = {
 
           //* add to breadcrumbs
           Breadcrumbs.NEW(CRUMB);
+
+          //* LOGGING
+          console.log("SYSTEM :: New breadcrumb was added");
 
         }
 
@@ -88,14 +102,14 @@ export const router = {
   },
 
   navBack: () => {
-    
+    Breadcrumbs.BACK();
     const last = Breadcrumbs.GET_LAST();
-    // debugger;
-    if (last.path != window.$qm.Config.baseView) {
-      Breadcrumbs.BACK();
+    if (last.path != window.$qm.Config.baseView) {      
       router.Search(last.path, last.params, true);
     }
 
+    //* LOGGING
+    console.log("SYSTEM :: Router navBack method was hit");
   },
 
   addEvents: () => {
@@ -109,6 +123,9 @@ export const router = {
     document.addEventListener("checkRoutes", (e) => {      
       // console.log(e);
     });
+
+    //* LOGGING
+    console.log("SYSTEM :: Router events added");
 
   },
 
@@ -129,6 +146,9 @@ export const router = {
       }      
 
     });
+
+    //* LOGGING
+    console.log("SYSTEM :: Inline routes have been checked for");
 
   },
   

@@ -28,9 +28,9 @@ export const Breadcrumbs = {
   },
 
   CREATE_LAST: () => {
-        
+    
     if (window.$qm.CRUMBS.length > 1) {
-      window.$qm.lastCrumb = window.$qm.CRUMBS[(window.$qm.CRUMBS.length - 1) - 1];
+      window.$qm.lastCrumb = window.$qm.CRUMBS[window.$qm.CRUMBS.length - 1];
     }
     else if (window.$qm.CRUMBS.length == 1) {
       window.$qm.lastCrumb = window.$qm.CRUMBS[0];
@@ -42,8 +42,8 @@ export const Breadcrumbs = {
 
     if (crumb.hasOwnProperty("path") || crumb.hasOwnProperty("params")) {      
 
-      window.$qm.CRUMBS.push(crumb);
       Breadcrumbs.CREATE_LAST();
+      window.$qm.CRUMBS.push(crumb);
 
     }
     else {
