@@ -75,7 +75,9 @@ export const newController = (View_Name="", Controller={props: [], Data() {}, In
               .then((VM) => {
                 
                 //* LOGGING
-                console.log("SYSTEM :: Starting the DOM minipulations");
+                if (ActiveJS.Config.debugOptions.DOM_MINIPULATION) {
+                  console.log("SYSTEMx :: Starting the DOM minipulations");                  
+                }
 
                 //? check for binding Reflect
                 BIND.Reflect(VM);        
@@ -98,7 +100,9 @@ export const newController = (View_Name="", Controller={props: [], Data() {}, In
                 //* display any errors that occured
                 ERROR.RENDER();
 
-                console.timeEnd();
+                if (ActiveJS.Config.debugOptions.TIME_TO_RENDER) {
+                  console.timeEnd();
+                }
                 
               }).catch((err) => console.error(err));
 

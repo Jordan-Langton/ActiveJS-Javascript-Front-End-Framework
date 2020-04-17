@@ -3,6 +3,7 @@
 import { ERROR } from "./logging.js";
 import { Common } from "./Common.js";
 import { Breadcrumbs } from "./breadcrumbs.js";
+import { Initialize } from "./initialize.js";
 
 export const router = {
 
@@ -14,7 +15,9 @@ export const router = {
     //* add the routes to the router
     
     //* LOGGING
-    console.log("SYSTEM :: Router registered in system");
+    if (ActiveJS.Config.debugOptions.ROUTER) {
+      console.log("SYSTEMx :: Router registered in system");      
+    }
 
     //* add all router events
     router.addEvents();
@@ -28,9 +31,15 @@ export const router = {
     
     //* successfully fouch a match
     if (matched) {
-      console.time();
+
+      if (ActiveJS.Config.debugOptions.TIME_TO_RENDER) {
+        console.time();
+      }
+
       //* LOGGING
-      console.log("SYSTEM :: Router successfully matched route");
+      if (ActiveJS.Config.debugOptions.ROUTER) {
+        console.log("SYSTEMx :: Router successfully matched route");
+      }
       
       //* scroll to top of page
       window.scrollTo(0,0);
@@ -52,7 +61,9 @@ export const router = {
       }
 
       //* LOGGING
-      console.log("SYSTEM :: Router about to load VM");
+      if (ActiveJS.Config.debugOptions.ROUTER) {
+        console.log("SYSTEMx :: Router about to load VM");
+      }
 
       //* load the VM into the DOM
       Common.LoadVM(
@@ -65,7 +76,9 @@ export const router = {
       .then(() => {
 
         //* LOGGING
-        console.log("SYSTEM :: Router successfully finished rendering view");
+        if (ActiveJS.Config.debugOptions.ROUTER) {
+          console.log("SYSTEMx :: Router successfully finished rendering view");
+        }
 
         //* if you are not routing back add crumb
         if (navBack == false) {
@@ -81,7 +94,9 @@ export const router = {
           Breadcrumbs.NEW(CRUMB);
 
           //* LOGGING
-          console.log("SYSTEM :: New breadcrumb was added");
+          if (ActiveJS.Config.debugOptions.ROUTER) {
+            console.log("SYSTEMx :: New breadcrumb was added");
+          }
 
         }
 
@@ -109,7 +124,9 @@ export const router = {
     }
 
     //* LOGGING
-    console.log("SYSTEM :: Router navBack method was hit");
+    if (ActiveJS.Config.debugOptions.ROUTER) {
+      console.log("SYSTEMx :: Router navBack method was hit");
+    }
   },
 
   addEvents: () => {
@@ -125,7 +142,9 @@ export const router = {
     });
 
     //* LOGGING
-    console.log("SYSTEM :: Router events added");
+    if (ActiveJS.Config.debugOptions.ROUTER) {
+      console.log("SYSTEMx :: Router events added");
+    }
 
   },
 
@@ -148,7 +167,9 @@ export const router = {
     });
 
     //* LOGGING
-    console.log("SYSTEM :: Inline routes have been checked for");
+    if (ActiveJS.Config.debugOptions.ROUTER) {
+      console.log("SYSTEMx :: Inline routes have been checked for");
+    }
 
   },
   

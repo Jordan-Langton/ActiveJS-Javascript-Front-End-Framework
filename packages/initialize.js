@@ -34,6 +34,9 @@ export const Initialize = {
 	//* starts the initialization of ActiveJS
 	Start: (config, Created = false) => {
 
+		//* load the enviroment variables
+		Initialize.Set_Environment(config);
+
 		//* validate the config 
 		const isValid = Initialize.validateConfig(config);
 
@@ -52,6 +55,7 @@ export const Initialize = {
 			ActiveJS.Config.interfaces = isValid.interfaces;
 			ActiveJS.Config.store = isValid.store;
 			ActiveJS.Config.routes = isValid.routes;
+			ActiveJS.Config.debugOptions = (isValid.debugOptions)?isValid.debugOptions:{};
 
 			//* setup the state
 			ActiveJS.State.model = new Store(isValid.store).Model.model;
@@ -100,10 +104,7 @@ export const Initialize = {
 				newController: window.$qm.newController,
 				reqisterComponent: window.$qm.reqisterComponent,
 				Router: window.$qm.Router,
-			};
-
-			//* load the enviroment variables
-			Initialize.Set_Environment();
+			};			
 
 			//* initialize the router
 			router.Generate_Router();
@@ -122,11 +123,66 @@ export const Initialize = {
 
 	//* calls the custom init proccess after the DOM has loaded
 	buildInit: (Created) => document.addEventListener("DOMContentLoaded", () => {
+
 		Created();
+
+		//* log the dev elopment data
+		Initialize.showLogData();
+		
 	}, false),
 
 	//* this validates the config passed
 	validateConfig: (config) => {
+
+		if (!config.name) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [name] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.version) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [version] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.environment) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [environment] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.description) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [description] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.systemTheme) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [systemTheme] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.systemStyles) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [systemStyles] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.interfaces) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [interfaces] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.store) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [store] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.debugOptions) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [debugOptions] for you application", "initialize", false, true, false);
+			return;
+		}
+
+		if (!config.routes) {
+			ERROR.NEW("Missing Config Options", "Please make sure to pass a [routes] for you application", "initialize", false, true, false);
+			return;
+		}
 
 		//* 
 		return config;
@@ -134,9 +190,9 @@ export const Initialize = {
 	},
 
 	//* Chooses the environment
-	Set_Environment: () => {
+	Set_Environment: (Config) => {
 
-		switch (ActiveJS.Config.environment) {
+		switch (Config.environment) {
 			case "Development":
 				Initialize.loadDevSettings();
 				break;
@@ -156,11 +212,12 @@ export const Initialize = {
 
 		try {
 
+			window.$qm = {
+				show_errors: false
+			};
+
 			//* display a popup containing all errors that occured
 			window.$qm["show_errors"] = true;
-
-			//* log the dev elopment data
-			Initialize.showLogData();
 
 		} catch (err) {
 			console.error('Failed to load the Development settings : ' + err);
@@ -201,7 +258,7 @@ export const Initialize = {
 
 		//* clear the console
 		if (console.clear) {
-			console.clear();			
+			// console.clear();			
 		}
 
 		const styles1 = "font-size:90%;padding: 2px;color:#fff;background-color:lightslategrey;border-radius: 3px 0 0 3px";

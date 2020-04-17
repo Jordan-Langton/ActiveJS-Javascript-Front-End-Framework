@@ -28,12 +28,26 @@ export const ERROR = {
     }
 
     if (_ele == false) {
-      
-      let ERR = ERROR.ERRORS.filter(err => err.key == _key)[0];
 
-      if (ERR && window.$qm["show_errors"] == true) {
-        ERROR.BUILD_POPUP_ERRORS(ERR, true);
-      }
+      //* start looping through all generated system errors
+      ERROR.ERRORS.forEach(currentErr => {
+        //* if the error must be logged as well
+        if (currentErr.log) {
+
+          let errStyle1 = "background-color: #FA9E7B; color:#000;border-radius:3px 0 0 3px;padding-right: 10px";
+          let errStyle2 = "background-color: #C0C0C0; color:#000;padding:0 5px;border-radius:0 3px 3px 0";
+
+          console.groupCollapsed("%c Error %c "+currentErr.header+" ", errStyle1, errStyle2);
+            console.warn(currentErr.message);
+          console.groupEnd();
+        }
+      });
+      
+      // let ERR = ERROR.ERRORS.filter(err => err.key == _key)[0];
+
+      // if (ERR && window.$qm["show_errors"] == true) {
+      //   ERROR.BUILD_POPUP_ERRORS(ERR, true);
+      // }
     }
 
   },
@@ -213,7 +227,9 @@ export const ERROR = {
   RENDER() {
 
     //* LOGGING
-    console.log("SYSTEM :: Errors are about to be displayed");
+    if (ActiveJS.Config.debugOptions.ERRORS) {
+      console.log("SYSTEMx :: Errors are about to be displayed");      
+    }
     
     if (ERROR.ERRORS.length > 0 && window.$qm["show_errors"] == true) {
       

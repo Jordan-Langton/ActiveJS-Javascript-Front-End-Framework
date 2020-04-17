@@ -53,7 +53,9 @@ export const Common = {
           window.$qm.DOMBoundKeys = [];
 
           //* LOGGING
-          console.log("SYSTEM :: Gotten the model for the view");
+          if (ActiveJS.Config.debugOptions.VM_LOADED) {
+            console.log("SYSTEMx :: Gotten the model for the view");
+          }
 
           //* add template to DOM
           Common.prepareTEMPLATE(html)
@@ -65,7 +67,9 @@ export const Common = {
               window.$qm["READY_DOCUMENT"] = DOCUMENT;
 
               //* LOGGING
-              console.log("SYSTEM :: Prepared the template");
+              if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
+                console.log("SYSTEMx :: Prepared the template");
+              }
 
               //* check if there was a script there already
               let el = document.getElementById("CURRENT_VM");
@@ -80,7 +84,9 @@ export const Common = {
               }
 
               //* LOGGING
-              console.log("SYSTEM :: Loaded VM into the window");
+              if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
+                console.log("SYSTEMx :: Loaded VM into the window");
+              }
 
               //* setup the view_backPage for this view
               window.$qm["VM_LOADED"] = resolve;
@@ -129,7 +135,9 @@ export const Common = {
       };
 
       //* LOGGING
-      console.log("SYSTEM :: VM has been built up");
+      if (ActiveJS.Config.debugOptions.VM_BUILT) {
+        console.log("SYSTEMx :: VM has been built up");
+      }
 
       //! DEPRICATED CODE
       // ActiveJS.Config.name = window.$qm.Config.name;
@@ -158,7 +166,9 @@ export const Common = {
       Common.buildProps(VM, $VM).then(($props) => {
 
         //* LOGGING
-        console.log("SYSTEM :: Props for view were generated");
+        if (ActiveJS.Config.debugOptions.PASSED_PROPS_GENERATED) {
+          console.log("SYSTEMx :: Props for view were generated");
+        }
 
         //* method to run when computed methods have been setup
         window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
@@ -167,14 +177,18 @@ export const Common = {
           window.$qm["computedMethodKey"].intialRun = false;
 
           //* LOGGING
-          console.log("SYSTEM :: Computed properties have been built");
+          if (ActiveJS.Config.debugOptions.COMPUTED_PROPS_BUILT) {
+            console.log("SYSTEMx :: Computed properties have been built");
+          }
 
           //* call the mounted life cycle method
           if (window.$qm["$scope"]._Mounted) {
             window.$qm["$scope"]._Mounted($props);
 
             //* LOGGING
-            console.log("SYSTEM :: _Mounted life cycle method has been called");
+            if (ActiveJS.Config.debugOptions.MOUNTED_LIFECYCLE) {
+              console.log("SYSTEMx :: _Mounted life cycle method has been called");
+            }
           }
 
           DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
@@ -205,7 +219,9 @@ export const Common = {
           if (wrapper != null) {
 
             //* LOGGING
-            console.log("SYSTEM :: Render proccess is about to begin");
+            if (ActiveJS.Config.debugOptions.RENDER_BEGIN) {
+              console.log("SYSTEMx :: Render proccess is about to begin");
+            }
 
             //* animation passed
             if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName)) {
@@ -242,7 +258,9 @@ export const Common = {
               wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
 
               //* LOGGING
-              console.log("SYSTEM :: Render complete");
+              if (ActiveJS.Config.debugOptions.RENDER_COMPLETE) {
+                console.log("SYSTEMx :: Render complete");
+              }
 
               resolve(window.$qm["$scope"]);
 
@@ -251,7 +269,9 @@ export const Common = {
                 window.$qm["$scope"]._Rendered();
 
                 //* LOGGING
-                console.log("SYSTEM :: _Rendered life cycle method called");                
+                if (ActiveJS.Config.debugOptions.RENDER_LIFECYCLE) {
+                  console.log("SYSTEMx :: _Rendered life cycle method called");
+                }          
               }
 
 
@@ -277,12 +297,16 @@ export const Common = {
         });
 
         //* LOGGING
-        console.log("SYSTEM :: VM successfully added to the observer and is being watched");
+        if (ActiveJS.Config.debugOptions.VM_IS_OBSERVED) {
+          console.log("SYSTEMx :: VM successfully added to the observer and is being watched");
+        }
 
         window["$scope"] = window.$qm["$scope"];
 
         //* LOGGING
-        console.log("SYSTEM :: VM is accessable via the '$scope' variable");
+        if (ActiveJS.Config.debugOptions.VM_ACCESSED_UNDER_SCOPE) {
+          console.log("SYSTEMx :: VM is accessable via the '$scope' variable");
+        }
 
         //* if you have computed props        
         if (computed.length != 0) {          
