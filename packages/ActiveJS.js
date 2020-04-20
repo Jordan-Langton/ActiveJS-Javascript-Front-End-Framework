@@ -76,7 +76,7 @@ export const newController = (View_Name="", Controller={props: [], Data() {}, In
                 
                 //* LOGGING
                 if (ActiveJS.Config.debugOptions.DOM_MINIPULATION) {
-                  console.log("SYSTEMx :: Starting the DOM minipulations");                  
+                  DEBUG.NEW("SYSTEM", "Starting the DOM minipulations", VM);
                 }
 
                 //? check for binding Reflect

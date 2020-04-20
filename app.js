@@ -14,7 +14,7 @@ createApp({
     ROUTER: false,
     BREADCRUMBS: false,
     ERRORS: false,
-    VM_LOADED: false,
+    VM_LOADED: true,
     VIEW_TEMPLATE_LOADED: false,
     VM_LOADED_ONTO_WINDOW: false,
     VM_BUILT: false,

@@ -1,6 +1,6 @@
 /* eslint-disable dot-notation */
 /* eslint-disable camelcase */
-import { ERROR } from "./logging.js";
+import { ERROR, DEBUG } from "./logging.js";
 import { Common } from "./Common.js";
 import { Breadcrumbs } from "./breadcrumbs.js";
 import { Initialize } from "./initialize.js";
@@ -16,7 +16,7 @@ export const router = {
     
     //* LOGGING
     if (ActiveJS.Config.debugOptions.ROUTER) {
-      console.log("SYSTEMx :: Router registered in system");      
+      DEBUG.NEW("SYSTEM", "Router registered in system");    
     }
 
     //* add all router events
@@ -38,7 +38,7 @@ export const router = {
 
       //* LOGGING
       if (ActiveJS.Config.debugOptions.ROUTER) {
-        console.log("SYSTEMx :: Router successfully matched route");
+        DEBUG.NEW("SYSTEM", "Router successfully matched route", matched);
       }
       
       //* scroll to top of page
@@ -62,7 +62,7 @@ export const router = {
 
       //* LOGGING
       if (ActiveJS.Config.debugOptions.ROUTER) {
-        console.log("SYSTEMx :: Router about to load VM");
+        DEBUG.NEW("SYSTEM", "Router about to load VM", params);
       }
 
       //* load the VM into the DOM
@@ -77,7 +77,7 @@ export const router = {
 
         //* LOGGING
         if (ActiveJS.Config.debugOptions.ROUTER) {
-          console.log("SYSTEMx :: Router successfully finished rendering view");
+          DEBUG.NEW("SYSTEM", "Router successfully finished rendering view");
         }
 
         //* if you are not routing back add crumb
@@ -95,7 +95,7 @@ export const router = {
 
           //* LOGGING
           if (ActiveJS.Config.debugOptions.ROUTER) {
-            console.log("SYSTEMx :: New breadcrumb was added");
+            DEBUG.NEW("SYSTEM", "New breadcrumb was added", {breadcrumb:CRUMB });
           }
 
         }
@@ -125,7 +125,7 @@ export const router = {
 
     //* LOGGING
     if (ActiveJS.Config.debugOptions.ROUTER) {
-      console.log("SYSTEMx :: Router navBack method was hit");
+      DEBUG.NEW("SYSTEM", "Router navBack method was hit", last);
     }
   },
 
@@ -142,9 +142,9 @@ export const router = {
     });
 
     //* LOGGING
-    if (ActiveJS.Config.debugOptions.ROUTER) {
-      console.log("SYSTEMx :: Router events added");
-    }
+    // if (ActiveJS.Config.debugOptions.ROUTER) {
+    //   DEBUG.NEW("SYSTEM", "Router navBack method was hit");
+    // }
 
   },
 
@@ -168,7 +168,7 @@ export const router = {
 
     //* LOGGING
     if (ActiveJS.Config.debugOptions.ROUTER) {
-      console.log("SYSTEMx :: Inline routes have been checked for");
+      DEBUG.NEW("SYSTEM", "Inline routes have been checked for");
     }
 
   },

@@ -6,7 +6,7 @@ import * as ActiveJS from "./ActiveJS.js";
 import { PROXY } from "./PROXY.js";
 import { DOM } from "./DOM.js";
 import { Initialize } from "./initialize.js";
-import { ERROR } from "./logging.js";
+import { ERROR, DEBUG } from "./logging.js";
 import { BIND } from "./BIND.js";
 import { ANIMATE } from "./animations.js";
 
@@ -54,7 +54,7 @@ export const Common = {
 
           //* LOGGING
           if (ActiveJS.Config.debugOptions.VM_LOADED) {
-            console.log("SYSTEMx :: Gotten the model for the view");
+            DEBUG.NEW("SYSTEM", "Gotten the model for the view");
           }
 
           //* add template to DOM
@@ -68,7 +68,7 @@ export const Common = {
 
               //* LOGGING
               if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
-                console.log("SYSTEMx :: Prepared the template");
+                DEBUG.NEW("SYSTEM", "Prepared the template", {template: html});
               }
 
               //* check if there was a script there already
@@ -85,7 +85,7 @@ export const Common = {
 
               //* LOGGING
               if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
-                console.log("SYSTEMx :: Loaded VM into the window");
+                DEBUG.NEW("SYSTEM", "Loaded VM into the window", {script: newScript});
               }
 
               //* setup the view_backPage for this view
@@ -136,7 +136,7 @@ export const Common = {
 
       //* LOGGING
       if (ActiveJS.Config.debugOptions.VM_BUILT) {
-        console.log("SYSTEMx :: VM has been built up");
+        DEBUG.NEW("SYSTEM", "VM has been built up", $VM);
       }
 
       //! DEPRICATED CODE
@@ -167,7 +167,7 @@ export const Common = {
 
         //* LOGGING
         if (ActiveJS.Config.debugOptions.PASSED_PROPS_GENERATED) {
-          console.log("SYSTEMx :: Props for view were generated");
+          DEBUG.NEW("SYSTEM", "Props for view were generated", $props);
         }
 
         //* method to run when computed methods have been setup
@@ -178,7 +178,7 @@ export const Common = {
 
           //* LOGGING
           if (ActiveJS.Config.debugOptions.COMPUTED_PROPS_BUILT) {
-            console.log("SYSTEMx :: Computed properties have been built");
+            DEBUG.NEW("SYSTEM", "Computed properties have been built", window.$qm["computedMethodKey"]);
           }
 
           //* call the mounted life cycle method
@@ -187,7 +187,7 @@ export const Common = {
 
             //* LOGGING
             if (ActiveJS.Config.debugOptions.MOUNTED_LIFECYCLE) {
-              console.log("SYSTEMx :: _Mounted life cycle method has been called");
+              DEBUG.NEW("SYSTEM", "_Mounted life cycle method has been called", {passedProps: $props});
             }
           }
 
@@ -220,7 +220,7 @@ export const Common = {
 
             //* LOGGING
             if (ActiveJS.Config.debugOptions.RENDER_BEGIN) {
-              console.log("SYSTEMx :: Render proccess is about to begin");
+              DEBUG.NEW("SYSTEM", "Render proccess is about to begin", {mainEl: wrapper});
             }
 
             //* animation passed
@@ -259,7 +259,7 @@ export const Common = {
 
               //* LOGGING
               if (ActiveJS.Config.debugOptions.RENDER_COMPLETE) {
-                console.log("SYSTEMx :: Render complete");
+                DEBUG.NEW("SYSTEM", "Render complete", {document_rendered: window.$qm["READY_DOCUMENT"]});
               }
 
               resolve(window.$qm["$scope"]);
@@ -270,7 +270,7 @@ export const Common = {
 
                 //* LOGGING
                 if (ActiveJS.Config.debugOptions.RENDER_LIFECYCLE) {
-                  console.log("SYSTEMx :: _Rendered life cycle method called");
+                  DEBUG.NEW("SYSTEM", "_Rendered life cycle method called");
                 }          
               }
 
@@ -298,14 +298,14 @@ export const Common = {
 
         //* LOGGING
         if (ActiveJS.Config.debugOptions.VM_IS_OBSERVED) {
-          console.log("SYSTEMx :: VM successfully added to the observer and is being watched");
+          DEBUG.NEW("SYSTEM", "VM successfully added to the observer and is being watched",  window.$qm["$scope"]);
         }
 
         window["$scope"] = window.$qm["$scope"];
 
         //* LOGGING
         if (ActiveJS.Config.debugOptions.VM_ACCESSED_UNDER_SCOPE) {
-          console.log("SYSTEMx :: VM is accessable via the '$scope' variable");
+          DEBUG.NEW("SYSTEM", "VM is accessable via the '$scope' variable");
         }
 
         //* if you have computed props        

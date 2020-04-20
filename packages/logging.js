@@ -228,7 +228,7 @@ export const ERROR = {
 
     //* LOGGING
     if (ActiveJS.Config.debugOptions.ERRORS) {
-      console.log("SYSTEMx :: Errors are about to be displayed");      
+      DEBUG.NEW("SYSTEM", "Errors are about to be displayed");    
     }
     
     if (ERROR.ERRORS.length > 0 && window.$qm["show_errors"] == true) {
@@ -252,29 +252,29 @@ export const ERROR = {
 
 };
 
-export const SUCCESS = {
+export const DEBUG = {
 
-  MESSAGES: [],
+  NEW(type="", text="", data={}) {
 
-  NEW(type, header, message, from, params=false, fancy=false) {
-
-    let check = true;
-    SUCCESS.MESSAGES.forEach(err => {
-      if (err.message == message) {
-        check = false;
-      }
-    });
-
-    if (check) {
-      SUCCESS.MESSAGES.push({type: type, header: header, message: message, from: from, params: params, fancy: fancy});
+    switch (type) {
+      case "SYSTEM":
+        this.logSystemError({type, text, data});
+        break;
+    
+      default:
+        break;
     }
 
-  },
-
-  RENDER() {
-
-    
-
   }, 
+
+  logSystemError(LOG) {
+
+    const style = "";
+
+    console.groupCollapsed(`%c SYSTEM DEBUGGER :: ${LOG.text}`, style);
+      console.log(LOG.data);
+    console.groupEnd();
+
+  },
 
 };
