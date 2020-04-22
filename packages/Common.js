@@ -1,29 +1,46 @@
 /* eslint-disable dot-notation */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import { Lib } from "./lib.js";
+import {
+  Lib
+} from "./lib.js";
 import * as ActiveJS from "./ActiveJS.js";
-import { PROXY } from "./PROXY.js";
-import { DOM } from "./DOM.js";
-import { Initialize } from "./initialize.js";
-import { ERROR, DEBUG } from "./logging.js";
-import { BIND } from "./BIND.js";
-import { ANIMATE } from "./animations.js";
+import {
+  PROXY
+} from "./PROXY.js";
+import {
+  DOM
+} from "./DOM.js";
+import {
+  Initialize
+} from "./initialize.js";
+import {
+  ERROR,
+  DEBUG
+} from "./logging.js";
+import {
+  BIND
+} from "./BIND.js";
+import {
+  ANIMATE
+} from "./animations.js";
 
 export const Common = {
 
   VM_LOADED: false,
 
   LoadVM: (VM_URL, VM_ANIMATION = false, VM_NAVBACK = false, PARAMS = null, BACKPAGE = false) => {
-    
+
     return new Promise((resolve, reject) => {
 
-      Lib.getFileContents({ url: VM_URL, type: "document" }, (err, html) => {
+      Lib.getFileContents({
+        url: VM_URL,
+        type: "document"
+      }, (err, html) => {
 
         if (err) {
           reject(err);
-        }
-        else {
+        } else {
 
           //* get JS
           let JS = html.getElementsByTagName("script")[0].innerHTML;
@@ -68,7 +85,9 @@ export const Common = {
 
               //* LOGGING
               if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
-                DEBUG.NEW("SYSTEM", "Prepared the template", {template: html});
+                DEBUG.NEW("SYSTEM", "Prepared the template", {
+                  template: html
+                });
               }
 
               //* check if there was a script there already
@@ -77,15 +96,16 @@ export const Common = {
                 el.remove();
                 newScript.appendChild(inlineScript);
                 document.body.appendChild(newScript);
-              }
-              else {
+              } else {
                 newScript.appendChild(inlineScript);
                 document.body.appendChild(newScript);
               }
 
               //* LOGGING
               if (ActiveJS.Config.debugOptions.VIEW_TEMPLATE_LOADED) {
-                DEBUG.NEW("SYSTEM", "Loaded VM into the window", {script: newScript});
+                DEBUG.NEW("SYSTEM", "Loaded VM into the window", {
+                  script: newScript
+                });
               }
 
               //* setup the view_backPage for this view
@@ -118,8 +138,25 @@ export const Common = {
         ...VM.Data(),
         ...VM.methods,
         components: (VM.components) ? VM.components : [],
-        computed: { ...VM.computed },
-        observers: { ...VM.observers },
+        computed: {
+          ...VM.computed
+        },
+        observers: {
+          ...VM.observers
+        },
+        helpers: {
+          getLib: (key = "") => {
+            let _library = false;
+            ActiveJS.registeredLibraries.filter(lib => {
+              if (lib.key == key) {
+                _library = lib.library;
+              }
+            });
+            if (_library != false) {
+              return _library;
+            }
+          }
+        },
       };
 
       //* setup for if you have computed props
@@ -160,172 +197,177 @@ export const Common = {
 
       //! DEPRICATED CODE
       // window.$qm.registeredComponents.forEach(comp => ActiveJS.registeredComponents.push(comp));
-      
+
 
       //* build up the props
       Common.buildProps(VM, $VM).then(($props) => {
 
-        //* LOGGING
-        if (ActiveJS.Config.debugOptions.PASSED_PROPS_GENERATED) {
-          DEBUG.NEW("SYSTEM", "Props for view were generated", $props);
-        }
-
-        //* method to run when computed methods have been setup
-        window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
-
-          //* tell the PROXY that we are done setting up computed props          
-          window.$qm["computedMethodKey"].intialRun = false;
-
           //* LOGGING
-          if (ActiveJS.Config.debugOptions.COMPUTED_PROPS_BUILT) {
-            DEBUG.NEW("SYSTEM", "Computed properties have been built", window.$qm["computedMethodKey"]);
+          if (ActiveJS.Config.debugOptions.PASSED_PROPS_GENERATED) {
+            DEBUG.NEW("SYSTEM", "Props for view were generated", $props);
           }
 
-          //* call the mounted life cycle method
-          if (window.$qm["$scope"]._Mounted) {
-            window.$qm["$scope"]._Mounted($props);
+          //* method to run when computed methods have been setup
+          window.$qm["systemEvents"]["computedMethodsSetupDone"] = () => {
+
+            //* tell the PROXY that we are done setting up computed props          
+            window.$qm["computedMethodKey"].intialRun = false;
 
             //* LOGGING
-            if (ActiveJS.Config.debugOptions.MOUNTED_LIFECYCLE) {
-              DEBUG.NEW("SYSTEM", "_Mounted life cycle method has been called", {passedProps: $props});
-            }
-          }
-
-          DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
-
-          //* check for binding Reflect
-          if (window.$qm["$scope"].components.length > 0) {
-            BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => { console.log("Components Loaded") });
-          }
-          else {
-            //* callback to router
-            window.$qm["VM_LOADED"]();
-          }
-
-          let wrapper = false;
-          let VIEW_WRAPPER = false;
-          if (window.$qm["$scope"].hasOwnProperty("el")) {
-
-            wrapper = document.getElementById(window.$qm["$scope"].el.replace("#", ""));
-            VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
-            VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
-
-          }
-          else {
-            ERROR.NEW("System Failed During Render", `Property 'el' was not supplied for the view [${window.$qm["$scope"].fileName}]. Please make sure to always pass this property to your View Models`, "render", false, true, false);
-          }
-
-          //* start render proccess
-          if (wrapper != null) {
-
-            //* LOGGING
-            if (ActiveJS.Config.debugOptions.RENDER_BEGIN) {
-              DEBUG.NEW("SYSTEM", "Render proccess is about to begin", {mainEl: wrapper});
+            if (ActiveJS.Config.debugOptions.COMPUTED_PROPS_BUILT) {
+              DEBUG.NEW("SYSTEM", "Computed properties have been built", window.$qm["computedMethodKey"]);
             }
 
-            //* animation passed
-            if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName)) {
-
-              switch (window.$qm["view_animation"]) {
-                case "slideOver":
-                  VIEW_WRAPPER.classList = "view-1";
-                  break;
-                case "pushIn":
-                  VIEW_WRAPPER.classList = "view-2";
-                  break;
-
-                default:
-                  ERROR.NEW("System Failed During Render", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
-                  break;
-              }
-
-              //* add view to the DOM
-              wrapper.appendChild(window.$qm["READY_DOCUMENT"].body.firstChild);
-
-              //* start check for animations
-              Common.prepareRenderAnimations(window.$qm["view_animation"], window.$qm["view_navBack"], window.$qm["view_backPage"])
-                .then(() => {
-                  resolve(window.$qm["$scope"]);
-                })
-                .catch(() => {
-
-                });
-
-            }
-            //* no animation
-            else {
-              
-              wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
+            //* call the mounted life cycle method
+            if (window.$qm["$scope"]._Mounted) {
+              window.$qm["$scope"]._Mounted($props);
 
               //* LOGGING
-              if (ActiveJS.Config.debugOptions.RENDER_COMPLETE) {
-                DEBUG.NEW("SYSTEM", "Render complete", {document_rendered: window.$qm["READY_DOCUMENT"]});
+              if (ActiveJS.Config.debugOptions.MOUNTED_LIFECYCLE) {
+                DEBUG.NEW("SYSTEM", "_Mounted life cycle method has been called", {
+                  passedProps: $props
+                });
               }
-
-              resolve(window.$qm["$scope"]);
-
-              //* call Rendered life cycle method
-              if (window.$qm["$scope"]._Rendered) {
-                window.$qm["$scope"]._Rendered();
-
-                //* LOGGING
-                if (ActiveJS.Config.debugOptions.RENDER_LIFECYCLE) {
-                  DEBUG.NEW("SYSTEM", "_Rendered life cycle method called");
-                }          
-              }
-
-
             }
 
+            DOM.applyUpdatesToElements(window.$qm["READY_DOCUMENT"], window.$qm["$scope"]);
+
+            //* check for binding Reflect
+            if (window.$qm["$scope"].components.length > 0) {
+              BIND.getComponentsInUse(window.$qm["READY_DOCUMENT"], window.$qm["$scope"], (res) => {
+                console.log("Components Loaded")
+              });
+            } else {
+              //* callback to router
+              window.$qm["VM_LOADED"]();
+            }
+
+            let wrapper = false;
+            let VIEW_WRAPPER = false;
+            if (window.$qm["$scope"].hasOwnProperty("el")) {
+
+              wrapper = document.getElementById(window.$qm["$scope"].el.replace("#", ""));
+              VIEW_WRAPPER = window.$qm["READY_DOCUMENT"].getElementById("VIEW_PLACEHOLDER");
+              VIEW_WRAPPER.id = window.$qm["$scope"].fileName;
+
+            } else {
+              ERROR.NEW("System Failed During Render", `Property 'el' was not supplied for the view [${window.$qm["$scope"].fileName}]. Please make sure to always pass this property to your View Models`, "render", false, true, false);
+            }
+
+            //* start render proccess
+            if (wrapper != null) {
+
+              //* LOGGING
+              if (ActiveJS.Config.debugOptions.RENDER_BEGIN) {
+                DEBUG.NEW("SYSTEM", "Render proccess is about to begin", {
+                  mainEl: wrapper
+                });
+              }
+
+              //* animation passed
+              if (window.$qm["view_animation"] != false && (window.$qm["view_backPage"].viewName != window.$qm["$scope"].fileName)) {
+
+                switch (window.$qm["view_animation"]) {
+                  case "slideOver":
+                    VIEW_WRAPPER.classList = "view-1";
+                    break;
+                  case "pushIn":
+                    VIEW_WRAPPER.classList = "view-2";
+                    break;
+
+                  default:
+                    ERROR.NEW("System Failed During Render", "Invalid view animation type passed with route. Please pass a valid animation with your routes you create", "render", false, true, false);
+                    break;
+                }
+
+                //* add view to the DOM
+                wrapper.appendChild(window.$qm["READY_DOCUMENT"].body.firstChild);
+
+                //* start check for animations
+                Common.prepareRenderAnimations(window.$qm["view_animation"], window.$qm["view_navBack"], window.$qm["view_backPage"])
+                  .then(() => {
+                    resolve(window.$qm["$scope"]);
+                  })
+                  .catch(() => {
+
+                  });
+
+              }
+              //* no animation
+              else {
+
+                wrapper.innerHTML = window.$qm["READY_DOCUMENT"].body.innerHTML;
+
+                //* LOGGING
+                if (ActiveJS.Config.debugOptions.RENDER_COMPLETE) {
+                  DEBUG.NEW("SYSTEM", "Render complete", {
+                    document_rendered: window.$qm["READY_DOCUMENT"]
+                  });
+                }
+
+                resolve(window.$qm["$scope"]);
+
+                //* call Rendered life cycle method
+                if (window.$qm["$scope"]._Rendered) {
+                  window.$qm["$scope"]._Rendered();
+
+                  //* LOGGING
+                  if (ActiveJS.Config.debugOptions.RENDER_LIFECYCLE) {
+                    DEBUG.NEW("SYSTEM", "_Rendered life cycle method called");
+                  }
+                }
+
+
+              }
+
+            } else {
+              ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
+            }
+          };
+
+          //* setup proxy on the global VM        
+          window.$qm["$scope"] = PROXY.Observe($VM, PROXY.handler, (_property) => {
+
+            //? call the mounted life cycle method
+            if (window.$qm["$scope"]._beforeUpdate && window.$qm["computedMethodKey"].intialRun == false) {
+              window.$qm["$scope"]._beforeUpdate();
+            }
+
+            //? apply DOM updates
+            DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
+
+          });
+
+          //* LOGGING
+          if (ActiveJS.Config.debugOptions.VM_IS_OBSERVED) {
+            DEBUG.NEW("SYSTEM", "VM successfully added to the observer and is being watched", window.$qm["$scope"]);
           }
-          else {
-            ERROR.NEW("System Failed During Render", "App wrapper supplied in your config options does not exist in the DOM. Please make sure it exists and retry.", "render", false, true, false);
-          }
-        };
 
-        //* setup proxy on the global VM        
-        window.$qm["$scope"] = PROXY.Observe($VM, PROXY.handler, (_property) => {
+          window["$scope"] = window.$qm["$scope"];
 
-          //? call the mounted life cycle method
-          if (window.$qm["$scope"]._beforeUpdate && window.$qm["computedMethodKey"].intialRun == false) {
-            window.$qm["$scope"]._beforeUpdate();
+          //* LOGGING
+          if (ActiveJS.Config.debugOptions.VM_ACCESSED_UNDER_SCOPE) {
+            DEBUG.NEW("SYSTEM", "VM is accessable via the '$scope' variable");
           }
 
-          //? apply DOM updates
-          DOM.applyUpdatesToElements(document.body, window.$qm["$scope"], _property);
+          //* if you have computed props        
+          if (computed.length != 0) {
 
-        });
+            //* tell the PROXY that we are running computed props
+            computed.forEach((comp, index) => {
+              window.$qm["computedMethodKey"].currentMethodName = comp[0];
 
-        //* LOGGING
-        if (ActiveJS.Config.debugOptions.VM_IS_OBSERVED) {
-          DEBUG.NEW("SYSTEM", "VM successfully added to the observer and is being watched",  window.$qm["$scope"]);
-        }
+              //* push to setupArr
+              window.$qm["computedMethodKey"].methodKeys.push({
+                name: comp[0],
+                dependencies: []
+              });
 
-        window["$scope"] = window.$qm["$scope"];
-
-        //* LOGGING
-        if (ActiveJS.Config.debugOptions.VM_ACCESSED_UNDER_SCOPE) {
-          DEBUG.NEW("SYSTEM", "VM is accessable via the '$scope' variable");
-        }
-
-        //* if you have computed props        
-        if (computed.length != 0) {          
-
-          //* tell the PROXY that we are running computed props
-          computed.forEach((comp, index) => {
-            window.$qm["computedMethodKey"].currentMethodName = comp[0];
-            
-            //* push to setupArr
-            window.$qm["computedMethodKey"].methodKeys.push({
-              name: comp[0],
-              dependencies: []
-            });
-            
-            //* check if the loop is done
-            // if (count == computed.length) {
+              //* check if the loop is done
+              // if (count == computed.length) {
               //   window.$qm["computedMethodKey"].setupDone = true;
               // }
-              
+
               //* define a computed property for reference later on
               window.$qm["computedMethodKey"].methodsCalled++;
               window.$qm["$scope"][comp[0]] = new Promise((resolve, reject) => {
@@ -333,18 +375,16 @@ export const Common = {
                 if (responce == undefined) {
                   reject(responce);
                   ERROR.NEW("Computed Property Error", `Your computed property resolved to 'undefined'. This may be because you are using asynchronous code within the method. Note you cannot use asynchronous code inside of a computed property`);
-                }
-                else {
+                } else {
                   resolve(responce);
                 }
               });
-          });
-        }
-        else {
-          window.$qm["systemEvents"]["computedMethodsSetupDone"]();
-        }
+            });
+          } else {
+            window.$qm["systemEvents"]["computedMethodsSetupDone"]();
+          }
 
-      })
+        })
         .catch((err) => console.error(err));
 
     });
@@ -393,13 +433,11 @@ export const Common = {
 
               });
 
-            }
-            else {
+            } else {
               ERROR.NEW("Params Miss Match", `${newVM.fileName} Controller expects ${VM.props.length} prop(s). Please make to pass all props to this view: (${VM.props})`);
             }
 
-          }
-          else {
+          } else {
             ERROR.NEW("Params Miss Match", `${newVM.fileName} Controller expects ${VM.props.length} prop(s). Please make to pass all props to this view: (${VM.props})`);
           }
         });
@@ -430,26 +468,25 @@ export const Common = {
 
         Common.stripSTYLES(VIEW_STYLE.innerHTML, DOCUMENT).then((_STYLE) => {
 
-          //*Add the styles
-          let style = document.createElement("style");
-          let VIEW_DIV = DOCUMENT.getElementById("VIEW_PLACEHOLDER");
-          style.innerHTML = _STYLE;
-          VIEW_DIV.prepend(style);
+            //*Add the styles
+            let style = document.createElement("style");
+            let VIEW_DIV = DOCUMENT.getElementById("VIEW_PLACEHOLDER");
+            style.innerHTML = _STYLE;
+            VIEW_DIV.prepend(style);
 
-          //* replace all interpolation
-          DOM.replaceDirective(DOCUMENT);
+            //* replace all interpolation
+            DOM.replaceDirective(DOCUMENT);
 
-          //* get all the interpolation
-          DOM.getAllInterpolation(DOCUMENT);
+            //* get all the interpolation
+            DOM.getAllInterpolation(DOCUMENT);
 
 
-          resolve(DOCUMENT);
+            resolve(DOCUMENT);
 
-        })
+          })
           .catch((err) => console.log(err));
 
-      }
-      else {
+      } else {
         //*Add the styles
         let style = document.createElement("style");
         let VIEW_DIV = DOCUMENT.getElementById("VIEW_PLACEHOLDER");
@@ -518,9 +555,9 @@ export const Common = {
 
       Common.replaceAttributesInTemp(VIEW_TEMP, STYLES, attributes).then((_styles) => {
 
-        resolve(_styles);
+          resolve(_styles);
 
-      })
+        })
         .catch((err) => console.log(err));
 
     });
@@ -618,14 +655,16 @@ export const Common = {
               break;
           }
 
-        }
-        else {
+        } else {
 
           //* choose what animation to use
           if ("/" + window.$qm["$scope"].fileName != window.$qm["Config"].baseView) {
             switch (ANIMATION) {
               case ANIMATE.SLIDE_OVER_TYPE:
-                ANIMATE.SLIDE_OVER(ANIMATION, window.$qm["$scope"], BACKPAGE, { lastELE, viewELE })
+                ANIMATE.SLIDE_OVER(ANIMATION, window.$qm["$scope"], BACKPAGE, {
+                    lastELE,
+                    viewELE
+                  })
                   .then(() => {
                     //* have to wait for the animation to finnish
                     resolve();
@@ -635,7 +674,10 @@ export const Common = {
                   });
                 break;
               case ANIMATE.PUSH_IN_TYPE:
-                ANIMATE.PUSH_IN(ANIMATION, window.$qm["$scope"], BACKPAGE, { lastELE, viewELE })
+                ANIMATE.PUSH_IN(ANIMATION, window.$qm["$scope"], BACKPAGE, {
+                    lastELE,
+                    viewELE
+                  })
                   .then(() => {
                     //* have to wait for the animation to finnish
                     resolve();
@@ -652,8 +694,7 @@ export const Common = {
 
         }
 
-      }
-      else {
+      } else {
         resolve();
       }
 
@@ -673,7 +714,7 @@ export const Common = {
     window.$qm["systemEvents"]["computedPropSetOnVM"] = () => {
       if (window.$qm["computedMethodKey"].cbCalled == false) {
         window.$qm["computedMethodKey"].cbCalled = true;
-        window.$qm["systemEvents"]["computedMethodsSetupDone"]();   
+        window.$qm["systemEvents"]["computedMethodsSetupDone"]();
       }
     };
 

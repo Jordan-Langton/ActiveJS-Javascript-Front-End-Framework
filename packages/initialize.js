@@ -86,6 +86,7 @@ export const Initialize = {
 				createApp: ActiveJS.createApp,
 				newController: ActiveJS.newController,
 				reqisterComponent: ActiveJS.reqisterComponent,
+				registeredLibraries: ActiveJS.registeredLibraries,
 				Router: ActiveJS.Router,
 			};
 

@@ -26,6 +26,8 @@ let Emitted_Data = {};
 
 export let registeredComponents = [];
 
+export let registeredLibraries = [];
+
 export const Component = baseComponent;
 
 export let State = {
@@ -121,6 +123,23 @@ export const reqisterComponent = (reference="", component={}) => {
   if (exists == false) {
     registeredComponents.push(componentTO);
   }
+};
+
+export const use = (key="", library=false) => {
+  
+  if (key == "") {
+    return ERROR.NEW("System failed to add your library to ActiveJS", "Please make sure that you pass a key for the library to be stored under", "ActiveJS", false, true, false);
+  }
+
+  if (library == false) {
+    return ERROR.NEW("System failed to add your library to ActiveJS", "Please make sure that you pass a library to be stored under", "ActiveJS", false, true, false);
+  }
+
+  registeredLibraries.push({
+    key,
+    library
+  });
+
 };
 
 //* ================== CLASSES ==================
