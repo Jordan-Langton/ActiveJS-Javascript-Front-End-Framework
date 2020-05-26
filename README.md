@@ -18,6 +18,7 @@
   - [createApp](#activeJS-(createApp)-back-to-top)
   - [Router](#activeJS-(Router)-back-to-top)
   - [newController](#activeJS-(newController)-back-to-top)  
+  - [use](#activeJS-(use)-back-to-top)  
 - [View Structure](#the-single-file-view)
   - [Template](#the-template)
   - [Style](#the-style)
@@ -177,6 +178,12 @@ ActiveJS.(whatever property you want to access)
       methods: {}
     });
     ```
+- ### ActiveJS (use) [back to top](#sections)
+    ```js
+
+    // This is what you call to add a library you want to use in your views
+    ActiveJS.use(key="", library={});
+    ```
 
 # The Single File View
 In this section, we will teach you all the basics and fundamentals of the ActiveJS `SFV (Single File View)` to enable you to start building amazing and beautiful projects. We will go over the basics of how to structure your `View` and will explain the different parts of it, and what it does. So lets get started! The `SFV` is a `.html` file which will define a page or `View` inside of your application. It must always contin the following to help you define your views the way you want to.
@@ -219,8 +226,8 @@ The style tag also accepts the `scoped` attribute. This will stop all the style 
 This is where you `register your view to ActiveJS` and define all the buisiness logic for your `view`. First you will need to *import* `{newController}` from **ActiveJS** in your packages. then supply a *View Name* and a *Controller*
 
 ```html
+<!-- You can either have the js in the script tag -->
 <script>
-
   ActiveJS.newController("vewName", {
     el: "#app",
     Data() {
@@ -229,8 +236,10 @@ This is where you `register your view to ActiveJS` and define all the buisiness 
       }
     },
   })
-
 </script>
+
+<!-- Or you can pull in the js from another JS file -->
+<script src="./views/vewName.js"></script>
 ```
 
 # The View Controller
@@ -249,6 +258,7 @@ _Mounted|`Method`|A `life cycle` method which is called `before` anything has re
 _Rendered|`Method`|A `life cycle` method which is called `after` anything has rendered|[example](#rendered-example)
 _beforeUpdate|`Method`|A `life cycle` method which is called before anything has `updated` in the `DOM`|[example](#rendered-example)
 _Update|`Method`|A `life cycle` method which is called `after` anything has `updated` in the `DOM`|[example](#rendered-example)
+helpers|`Object`|An object of helper methods that alow you access to ActiveJS|[example](#rendered-example)
 
 - ## ActiveJS Props Example
   #### [back to top](#sections)
@@ -342,7 +352,31 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
       }
     }
   })
+- ## ActiveJS Helpers Example 
+  #### [back to top](#sections)
+  This is an object of helper functions that ActiveJS reveals to you. These methods are there to help you access something like a library you added to your project. See example below:
+  ```js
+  ActiveJS.newController("Methods", {
+    el: "#app",
+    Data() {
+      return {
+        URL: ""
+      }
+    },
+    methods: {
+      addToCounter() {
+        const common = this.helpers.getLib("common");
+        this.URL = common.getURL();
+      }
+    }
+  })
   ```
+
+  See the avaliable helper methods below:
+  Name | Description | (params)
+  ---- | ----------- | -------
+  getLib|Gets a library that you loaded into ActiveJS|[(key="library name")](#the-script)
+
 # Data Binding
 #### [back to top](#sections)
 We Know that alot of applications separate markup and logic into separtate files. In ActiveJS we decided to allow both to work side by side. We enable this with `Declerative Expressions`. These expressions make your UI alot easier to read and understand.
@@ -532,7 +566,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
         username: "John"
       }
     }
-  }
+  })
 ```
 Now if you update `username` via a method inside your `View Controller`. This is all good, but what happens when you change to another view and come back? The `username` property will now be set back to it's initial value when you load the view. This is where `State` comes into the picture!
 
@@ -597,6 +631,19 @@ The `getters` property will be an object of methods. The method's job is to `get
     return user;
   }
 }
+
+// using a 'getter' method in your view
+ActiveJS.newController("State_Management", {
+  el: "#app",
+  Data() {
+    return {
+      username: "John"
+    }
+  },
+  methods: {
+    get
+  }
+})
 ```
 
 ## The Mutations Object
