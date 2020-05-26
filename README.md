@@ -226,8 +226,8 @@ The style tag also accepts the `scoped` attribute. This will stop all the style 
 This is where you `register your view to ActiveJS` and define all the buisiness logic for your `view`. First you will need to *import* `{newController}` from **ActiveJS** in your packages. then supply a *View Name* and a *Controller*
 
 ```html
+<!-- You can either have the js in the script tag -->
 <script>
-
   ActiveJS.newController("vewName", {
     el: "#app",
     Data() {
@@ -236,8 +236,10 @@ This is where you `register your view to ActiveJS` and define all the buisiness 
       }
     },
   })
-
 </script>
+
+<!-- Or you can pull in the js from another JS file -->
+<script src="./views/vewName.js"></script>
 ```
 
 # The View Controller
@@ -564,7 +566,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
         username: "John"
       }
     }
-  }
+  })
 ```
 Now if you update `username` via a method inside your `View Controller`. This is all good, but what happens when you change to another view and come back? The `username` property will now be set back to it's initial value when you load the view. This is where `State` comes into the picture!
 
@@ -629,6 +631,19 @@ The `getters` property will be an object of methods. The method's job is to `get
     return user;
   }
 }
+
+// using a 'getter' method in your view
+ActiveJS.newController("State_Management", {
+  el: "#app",
+  Data() {
+    return {
+      username: "John"
+    }
+  },
+  methods: {
+    get
+  }
+})
 ```
 
 ## The Mutations Object
