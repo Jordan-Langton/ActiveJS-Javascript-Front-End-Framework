@@ -104,12 +104,15 @@ ActiveJS.(whatever property you want to access)
 
       constructor(props) {
         // Always call super passing props from the constructor
-        super(props);
+        super(props, {
+          anyExtraData: false
+        });
       }
 
       // this is a life cycle method
       compMounted() {    
         console.log(this.$props);    
+        console.log(this.$extraData);    
         this.render(`<h1>${this.$props.message}</h1>`);
       }
 
@@ -428,6 +431,17 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
       // other methods for view
     }
   })
+  ```
+
+  You can also put expressions in the `@if` directive. All you need to do is place "[expression]" inside the quotations of the `@if`.
+  Just make sure to use the keyword `this` and then the value that you are trying to access from your view model.
+  See below for example.
+  ```html
+  <template>
+    <div class="errMsg" @if="[this.error == false]">
+      Please fill in all required fields
+    </div>
+  </template>
   ```
 
 - ## bind Directive
