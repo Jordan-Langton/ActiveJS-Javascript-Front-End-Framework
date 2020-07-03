@@ -1,13 +1,22 @@
 import { createApp, Router } from "./packages/ActiveJS.js";
 import Store from "./public/app.state";
 
+const systemStyles = [
+  './src/css/messages.css',
+  './src/css/anamations.css',
+  './src/css/views.css',
+  './src/css/fonts.css',
+];
+const componentStyles = [];
+
 createApp({
   "name": "ActiveJS Project",
 	"version": "1.0.0",
 	"environment": "Development",
 	"description": "This is a test application",
 	"systemTheme": "project-theme",
-  "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
+  "systemStyles": systemStyles,
+  "componentStyles": componentStyles,
   "interfaces": [],
   "store": Store,
   "debugOptions": {
@@ -31,8 +40,8 @@ createApp({
     DOM_MINIPULATION: false,
   },
   "routes": [
-    {path: '/default', handler: './views/defaultView.html', animate: ''},
+    {path: '/', handler: './views/defaultView.html', animate: ''},
   ]
 }, () => {
-  Router.route("/default"); 
+  Router.route("/", {page: 'defaultView', id: 14726}); 
 });
