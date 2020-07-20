@@ -19,6 +19,10 @@
   - [Router](#activeJS-(Router)-back-to-top)
   - [newController](#activeJS-(newController)-back-to-top)  
   - [use](#activeJS-(use)-back-to-top)  
+- [Initializing Your App](#initializing-your-app)
+  - [Your Config Options](#your-config-options)
+  - [Defining A Route](#defining-a-route)
+  - [Passing Data To A View](#passing-data-to-a-view)
 - [View Structure](#the-single-file-view)
   - [Template](#the-template)
   - [Style](#the-style)
@@ -188,6 +192,98 @@ ActiveJS.(whatever property you want to access)
     ActiveJS.use(key="", library={});
     ```
 
+# Initializing Your App
+#### [back to top](#sections)
+Here we will show you how to build up you app config options and initialize your app. This will be the entry point for you `ActiveJS` application.
+
+## Your Config Options
+#### [back to top](#sections)
+These options are what helps `ActiveJS` understand the nature of your application. For example, the name of your app or the version. See below what options are avaliable to you.
+```js
+const configOptions = {
+  "name": "ActiveJS Project",
+  "version": "1.0.0",
+  "environment": "Development",
+  "description": "This is a test application",
+  "systemTheme": "project-theme",
+  "systemStyles": [],
+  "componentStyles": [],
+  "interfaces": [],
+  "store": {},
+  // these debug options are here for info about
+  // key points in the rendering life cycle
+  "debugOptions": {
+    ROUTER: false,
+    BREADCRUMBS: false,
+    ERRORS: false,
+    VM_LOADED: false,
+    VIEW_TEMPLATE_LOADED: false,
+    VM_LOADED_ONTO_WINDOW: false,
+    VM_BUILT: false,
+    VM_IS_OBSERVED: false,
+    VM_ACCESSED_UNDER_SCOPE: false,
+    COMPUTED_PROPS_BUILT: false,
+    MOUNTED_LIFECYCLE: false,
+    RENDER_LIFECYCLE: false,
+    RENDER_BEGIN: false,
+    RENDER_COMPLETE: false,
+    PASSED_PROPS_GENERATED: false,
+    TIME_TO_RENDER: false,
+    INLINE_ROUTES_CHECKED: false,
+    DOM_MINIPULATION: false,
+  },
+  "routes": []
+}
+```
+
+## Defining A Route
+#### [back to top](#sections)
+A `route` is a page in with your application can go to. You need to define a route before your application can understand that it can go there. See below how to create a `route`.
+```js
+const route = {
+  path: '/yourPage', 
+  handler: 'theSingleFileView.html', 
+  animate: ''
+};
+```
+
+## Passing Data To A View
+#### [back to top](#sections)
+if you want your view to accept some parameters/props you would do so inside the 'path' property of your route. Using a colon after your path URL you can define a property that needs to be passed to you view.
+```js
+const singleProp = {
+  path: `/yourPage
+            :customData`, 
+
+  handler: 'theSingleFileView.html', 
+  animate: ''
+};
+```
+
+You can define multiple props to pass by just putting another colon after your first param.
+```js
+const multiProp = {
+  path: `/yourPage
+            :customData1
+            :cunstomData2`,
+
+  handler: 'theSingleFileView.html', 
+  animate: ''
+};
+```
+
+If you want to default your property you are want to to accept to a custom value. Just put a '`=`' after the param name and then your value.
+```js
+const defaultValProp = {
+  path: `/yourPage
+            :customData1=false
+            :cunstomData2=Hello World`,
+
+  handler: 'theSingleFileView.html', 
+  animate: ''
+};
+```
+
 # The Single File View
 In this section, we will teach you all the basics and fundamentals of the ActiveJS `SFV (Single File View)` to enable you to start building amazing and beautiful projects. We will go over the basics of how to structure your `View` and will explain the different parts of it, and what it does. So lets get started! The `SFV` is a `.html` file which will define a page or `View` inside of your application. It must always contin the following to help you define your views the way you want to.
 
@@ -252,7 +348,6 @@ Name | Type | Description | (-------)
 ---- | ---- | ----------- | -------
 el|`String`|This is where you want your view to render to|[see above](#the-script)
 Data|`Method`|This is a `method` which returns an *object* with all your properties for the view|[see above](#the-script)
-props|`Array`|An `array` of strings telling the controller that it expects some `properties to be passed` to is when `routed` to|[example](#activeJS-props-example)
 components|`Array`|An `array` of strings with the `names of components` you are using in your `template`|[example](#components-example)
 observers|`Object`|This is an object of `methods` with names of properties defined in your `Data()` method|[example](#activeJS-observers-example)
 computed|`Object`|This is an object of `methods` which will generate properties for you|[example](#computed-example)
@@ -264,24 +359,11 @@ _Update|`Method`|A `life cycle` method which is called `after` anything has `upd
 helpers|`Object`|An object of helper methods that alow you access to ActiveJS|[example](#rendered-example)
 
 - ## ActiveJS Props Example
-  #### [back to top](#sections)
-  When routing to a view in ActiveJS, you can pass data between views. If you tell a view that it accepts props, the view will produce an error until you pass it the props needed. See example below on how to tell a view it accepts props:
-  ```js
-  ActiveJS.newController("Props", {
-    el: "#app",
-    props: ["prop1", "prop2", "prop3"],
-    Data() {
-      return {
-        message: 'Hello World!'
-      }
-    },
-  })
-  ```
+  #### [back to top](#sections)  
   You can set a property in your view data to the value of one of the props inside of the `_Mounted` using `this.$props` life cycle method. See below example:
   ```js
   ActiveJS.newController("Props", {
     el: "#app",
-    props: ["prop1", "prop2", "prop3"],
     Data() {
       return {
         propData: false
@@ -431,6 +513,17 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
       // other methods for view
     }
   })
+  ```
+
+  You can also put expressions in the `@if` directive. All you need to do is place "[expression]" inside the quotations of the `@if`.
+  Just make sure to use the keyword `this` and then the value that you are trying to access from your view model.
+  See below for example.
+  ```html
+  <template>
+    <div class="errMsg" @if="[this.error == false]">
+      Please fill in all required fields
+    </div>
+  </template>
   ```
 
 - ## bind Directive

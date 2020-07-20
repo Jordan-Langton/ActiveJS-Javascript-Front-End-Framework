@@ -43,10 +43,8 @@ createApp({
     DOM_MINIPULATION: false,
   },
   "routes": [
-    {path: '/', handler: './views/baseView.html', animate: ''},
-    {path: '/about', handler: './views/about.html', animate: ''},
-    {path: '/contact:name:age', handler: './views/contactMe.html', animate: ''},
+    {path: '/', handler: './views/defaultView.html', animate: ''},
   ]
 }, () => {
-  // Router.route("/about", {name: "Testing 123"}); 
+  Router.route("/", {page: 'defaultView', id: 14726}); 
 });
