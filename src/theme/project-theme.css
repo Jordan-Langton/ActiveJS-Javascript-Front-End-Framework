@@ -255,10 +255,6 @@ body{
 }
 
 /*? ======== BUTTON SIZES ======== ?*/
-[class*="btn-"] {font-family: UbuntuRegular;}
-[class*="underlineBtn-"] {font-family: UbuntuRegular;}
-[class*="invertBtn-"] {font-family: UbuntuRegular;}
-
 #buttonLoader {width: 20px;height: 20px;margin: 0 auto;border-top: solid 2px;border-radius: 50%;animation: Spinner 400ms ease-in infinite;}
 
 .btn-w-xs { width: 20%;padding: 12px 0; }

@@ -43,8 +43,8 @@ createApp({
     DOM_MINIPULATION: false,
   },
   "routes": [
-    {path: '/', handler: './views/defaultView.html', animate: ''},
+    {path: '/helloWorld', handler: './views/helloWorld.html', animate: ''},
   ]
 }, () => {
-  Router.route("/", {page: 'defaultView', id: 14726}); 
+  Router.route("/helloWorld");
 });

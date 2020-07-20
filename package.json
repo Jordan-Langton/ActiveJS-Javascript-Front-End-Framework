@@ -1,10 +1,9 @@
 {
-  "name": "@jordan_langton/quantum-js",
-  "version": "1.7.6",
-  "description": "A light weight Javascript framework built for speed",
+  "name": "activejs",
+  "version": "1.0.0",
+  "description": "ActiveJS is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the funs parts of developing!, Here we will help you understand how to use ActiveJS to its full potential, while also covering some of the core fundamentils. ",
   "main": "./app.js",
   "scripts": {
-    "lint": "eslint --fix",
     "build": "webpack",
     "watch": "webpack --watch",
     "dev": "webpack-dev-server --history-api-fallback",
@@ -12,11 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/PostmanPat123/quantum-js-v1.6.git"
+    "url": "git+https://github.com/PostmanPat123/activeJS.git"
   },
+  "keywords": [
+    "ActiveJS"
+  ],
   "author": "Jordan Langton",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/PostmanPat123/quantum-js-v1.6#readme",
+  "bugs": {
+    "url": "https://github.com/PostmanPat123/activeJS/issues"
+  },
+  "homepage": "https://github.com/PostmanPat123/activeJS#readme",
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
@@ -27,6 +32,5 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
-  },
-  "dependencies": {}
+  }
 }
