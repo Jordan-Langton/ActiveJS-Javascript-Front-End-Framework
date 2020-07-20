@@ -104,12 +104,15 @@ ActiveJS.(whatever property you want to access)
 
       constructor(props) {
         // Always call super passing props from the constructor
-        super(props);
+        super(props, {
+          anyExtraData: false
+        });
       }
 
       // this is a life cycle method
       compMounted() {    
         console.log(this.$props);    
+        console.log(this.$extraData);    
         this.render(`<h1>${this.$props.message}</h1>`);
       }
 

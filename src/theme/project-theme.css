@@ -202,6 +202,28 @@ body{
 .scrollbar-lg-y::-webkit-scrollbar {width: 14px;}
 .scrollbar-xl-y::-webkit-scrollbar {width: 16px;}
 
+/** Font Sizes **/
+.text-xs {font-size: 10px !important;}
+.text-xs-bold {font-size: 10px !important;font-weight: bold;}
+.text-xs-bolder {font-size: 10px !important;font-weight: bolder;}
+.text-xs-boldest {font-size: 10px !important;font-weight: 900;}
+.text-sm {font-size: 13px !important;}
+.text-sm-bold {font-size: 13px !important;font-weight: bold;}
+.text-sm-bolder {font-size: 13px !important;font-weight: bolder;}
+.text-sm-boldest {font-size: 13px !important;font-weight: 900;}
+.text-md {font-size: 16px !important;}
+.text-md-bold {font-size: 16px !important;font-weight: bold;}
+.text-md-bolder {font-size: 16px !important;font-weight: bolder;}
+.text-md-boldest {font-size: 16px !important;font-weight: 900;}
+.text-lg {font-size: 18px !important;}
+.text-lg-bold {font-size: 18px !important;font-weight: bold;}
+.text-lg-bolder {font-size: 18px !important;font-weight: bolder;}
+.text-lg-boldest {font-size: 18px !important;font-weight: 900;}
+.text-xl {font-size: 22px !important;}
+.text-xl-bold {font-size: 22px !important;font-weight: bold;}
+.text-xl-bolder {font-size: 22px !important;font-weight: bolder;}
+.text-xl-boldest {font-size: 22px !important;font-weight: 900;}
+
 ::-webkit-inner-spin-button {
   display: none;
 }
