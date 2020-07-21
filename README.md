@@ -72,7 +72,8 @@ In order to access some of the features the ActiveJS provides, you will need to 
 
 ```js
 import * as ActiveJS from "@jordan_langton/activejs";
-// or
+
+// or access ActiveJS from a global variable
 ActiveJS.(whatever property you want to access)
 ```
 
