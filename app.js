@@ -1,13 +1,25 @@
 import { createApp, Router } from "./packages/ActiveJS.js";
 import Store from "./public/app.state";
 
+//* list of library style sheets
+const systemStyles = [
+  './src/css/messages.css',
+  './src/css/anamations.css',
+  './src/css/views.css',
+  './src/css/fonts.css',
+];
+
+//* custom components css files
+const componentStyles = [];
+
 createApp({
   "name": "ActiveJS Project",
 	"version": "1.0.0",
 	"environment": "Development",
 	"description": "This is a test application",
 	"systemTheme": "project-theme",
-  "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
+  "systemStyles": systemStyles,
+  "componentStyles": componentStyles,
   "interfaces": [],
   "store": Store,
   "debugOptions": {
@@ -31,8 +43,8 @@ createApp({
     DOM_MINIPULATION: false,
   },
   "routes": [
-    {path: '/default', handler: './views/defaultView.html', animate: ''},
+    {path: '/helloWorld', handler: './views/helloWorld.html', animate: ''},
   ]
 }, () => {
-  Router.route("/default"); 
+  Router.route("/helloWorld");
 });
