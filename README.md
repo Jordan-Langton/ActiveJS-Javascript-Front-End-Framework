@@ -46,25 +46,25 @@
 # Installing ActiveJS
 You can add the framework from command line like:
 ```
-git clone https://github.com/PostmanPat123/activeJS.git
+$ git clone https://github.com/PostmanPat123/activeJS.git
 ```
 Or you can download the files from Github from [here](https://github.com/PostmanPat123/activeJS/tree/master)
 
 ## Installing NPM Packages
   -  Once you have downloaded the `GIT` repo, you will need to run the following. This will install the required `DEV` dependecies to build the project.
   ```
-  npm install
+  $ npm install
   ```
   -  Once the install is finnished, run the following to generate the `bundle.js` file which is included inside of your `index.html` file.
   >#### `Note : NPM is only installed to give you the most up to date framework packages on npm, and to help with the dev server and bundling of the js. ActiveJS does not require node to run in the background, just to download the packages.`
   ```
-  npm run build
+  $ npm run build
   ```
 
 ## Starting DEV Server
   -  To start a `DEV` server and start building your application, simply run the following to start up your very wn server.
   ```
-  npm run dev
+  $ npm run dev
   ```
 
 # Importing ActiveJS
