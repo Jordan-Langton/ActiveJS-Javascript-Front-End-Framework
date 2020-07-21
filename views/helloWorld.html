@@ -1,0 +1,44 @@
+<template>
+  <div class="container bg-light d-flex flex-col flex-center flex-align">
+    <img src="./src/images/system/ActiveJS_Logo_Full.png" class="img-20-p">
+    <div class="content d-flex flex-col flex-align">
+      <h1 class="text-primary">Welcome to Your ActiveJS App!</h1>
+      <div class="help d-flex flex-col">
+        <div class="text-lg-bold text-center">Need help learning how to use ActiveJS? Just take a look at our documentation on our <a href="https://github.com/PostmanPat123/activeJS/tree/master">Github page</a></div>
+      </div>
+      <button class="btn-p-sm bg-secondary text-white shadow-xs" @on:click="clickButton">Click Me ({{counter}})</button>
+    </div>
+  </div>
+</template>
+
+<script>
+  ActiveJS.newController('helloWorld', {
+    el: "#app",
+    Data() {
+      return {
+        counter: 0,
+      }
+    },
+    methods: {
+      clickButton() {
+        this.counter++;
+      }
+    }
+  });
+</script>
+
+<style>
+.container {
+  width: 100%;
+  height: 100%;
+}
+.content {
+  padding: 5% 0;
+}
+.help {
+  width: 55%;
+}
+button {
+  margin-top: 2%;
+}
+</style>

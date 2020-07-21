@@ -1,6 +1,5 @@
 node_modules
 packages
-views/
 .vscode/settings.json
 build/bundle.js
 packages
