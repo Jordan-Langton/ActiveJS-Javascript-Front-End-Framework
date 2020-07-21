@@ -56,7 +56,7 @@ Or you can download the files from Github from [here](https://github.com/Postman
   npm install
   ```
   -  Once the install is finnished, run the following to generate the `bundle.js` file which is included inside of your `index.html` file.
-  >#### `Note : NPM is only installedto give you the most up to date framework packages on npm, and to help wiht the dev server and bundling of the js. ActiveJS does not require node to run in the background, just to download the packages.`
+  >#### `Note : NPM is only installed to give you the most up to date framework packages on npm, and to help wiht the dev server and bundling of the js. ActiveJS does not require node to run in the background, just to download the packages.`
   ```
   npm run build
   ```
