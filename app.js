@@ -1,4 +1,4 @@
-import { createApp, Router } from "./packages/ActiveJS.js";
+import { createApp, Router } from "@jordan_langton/activejs";
 import Store from "./public/app.state";
 
 //* list of library style sheets

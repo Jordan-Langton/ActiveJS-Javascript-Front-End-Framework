@@ -6,6 +6,7 @@
 `ActiveJS` is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the `funs parts of developing!`, Here we will help you understand how to `use ActiveJS to its full potential`, while also covering some of the `core fundamentils`. So what are you waiting for, `lets begin!`.
 
 # Sections
+- [Installing ActiveJS](#installing-activeJS)
 - [Importing ActiveJS](#importing-activeJS)
   - [Config](#activeJS-(Config)-back-to-top)
   - [State](#activeJS-(State)-back-to-top)
@@ -42,19 +43,26 @@
   - [The Mutations Object](#the-mutations-object)  
   - [The Actions Object](#the-actions-object)  
   
+# Installing ActiveJS
+You can add the framework from command line like:
+```
+npm install https://github.com/PostmanPat123/activeJS.git
+```
+Or you can download the files from Github from [here](https://github.com/PostmanPat123/activeJS/tree/master)
+
 
 # Importing ActiveJS
 In order to access some of the features the ActiveJS provides, you will need to import `ActiveJS` from the packages folder if you are inside of your app entry point. If you are in a view, the `ActiveJS` global variable will be avaliable to you. See example below to see what you can access from the import/global variable:
 
 ```js
-import * as ActiveJS from "./packages/ActiveJS.js";
+import * as ActiveJS from "@jordan_langton/activejs";
 // or
 ActiveJS.(whatever property you want to access)
 ```
 
 - ### ActiveJS (Config) [back to top](#sections)
     ```js
-    import { Config } from "./packages/ActiveJS.js";
+    import { Config } from "@jordan_langton/activejs";
 
     // An object with all your initial config data inside
     Config = {
@@ -72,7 +80,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (State) [back to top](#sections)
     ```js
-    import { State } from "./packages/ActiveJS.js";
+    import { State } from "@jordan_langton/activejs";
 
     // An object with all your State methods and global state
     State = {
@@ -85,7 +93,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (Emit) [back to top](#sections)
     ```js
-    import { Emit } from "./packages/ActiveJS.js";
+    import { Emit } from "@jordan_langton/activejs";
 
     // A method used to 'emit' some sort of data
     Emit(eventName="", payload=true);
@@ -93,7 +101,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (Accept) [back to top](#sections)
       ```js
-      import { Accept } from "./packages/ActiveJS.js";
+      import { Accept } from "@jordan_langton/activejs";
 
       // A method used to 'accept' data emited from somewhere in your app
       Accept(eventName="");
@@ -101,7 +109,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (Component) [back to top](#sections)
     ```js
-    import { Component } from "./packages/ActiveJS.js";
+    import { Component } from "@jordan_langton/activejs";
 
     // A class where you define a new component
     export default class testComp extends Component {
@@ -125,7 +133,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (reqisterComponent) [back to top](#sections)
     ```js
-    import { reqisterComponent } from "./packages/ActiveJS.js";
+    import { reqisterComponent } from "@jordan_langton/activejs";
 
     // A method used to a component to ActiveJS to use in your views
     reqisterComponent(reference="", component={});
@@ -133,7 +141,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (saveToCache) [back to top](#sections)
     ```js
-    import { saveToCache } from "./packages/ActiveJS.js";
+    import { saveToCache } from "@jordan_langton/activejs";
 
     // A method used to cache some data on the device
     saveToCache(key="", payload={});
@@ -141,7 +149,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (getFromCache) [back to top](#sections)
     ```js
-    import { getFromCache } from "./packages/ActiveJS.js";
+    import { getFromCache } from "@jordan_langton/activejs";
 
     // A method used to get something out of your device cache
     getFromCache(key="");
@@ -149,7 +157,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (createApp) [back to top](#sections)
     ```js
-    import { createApp } from "./packages/ActiveJS.js";
+    import { createApp } from "@jordan_langton/activejs";
 
     // This is what you call to initialize your ActiveJS application
     createApp(configuration={}, Created=() => {});
@@ -157,7 +165,7 @@ ActiveJS.(whatever property you want to access)
 
 - ### ActiveJS (Router) [back to top](#sections)
     ```js
-    import { Router } from "./packages/ActiveJS.js";
+    import { Router } from "@jordan_langton/activejs";
 
     // An object with router specific methods
     Router = {
