@@ -55,7 +55,7 @@ Or you can download the files from Github from [here](https://github.com/Postman
   ```
   npm install
   ```
-  -  Once the install is finnished run the following to generate the `bundle.js` file which is included inside of your `index.html` file.
+  -  Once the install is finnished, run the following to generate the `bundle.js` file which is included inside of your `index.html` file.
   ```
   npm run build
   ```
