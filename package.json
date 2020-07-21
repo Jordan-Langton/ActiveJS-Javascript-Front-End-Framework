@@ -1,5 +1,5 @@
 {
-  "name": "activejs",
+  "name": "@jordan_langton/activejs",
   "version": "1.0.0",
   "description": "ActiveJS is a Javasrcipt library built to make your life a whole lot easier when building a user interface. It takes away all the nity grity parts of development, and allows you to play around with the funs parts of developing!, Here we will help you understand how to use ActiveJS to its full potential, while also covering some of the core fundamentils. ",
   "main": "./app.js",

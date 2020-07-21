@@ -558,6 +558,9 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   ```html
   <template>
     <button @on:click="submit()">Submit</button>
+
+    <!-- you don't need the () -->
+    <button @on:click="submit">Submit</button>
   </template>
   ```
   ```js
@@ -578,6 +581,24 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
         }
       }
       // other methods for view
+    }
+  })
+  ```
+  You can also pass run a JS expression using the `@on` directive. Just use '[ ]' inside the value and place your JS expresion inside the square brakets. Note that the keyword `this` points to the currently loaded View Controller.
+  ```html
+  <template>
+    <button @on:click="[alert('Hello World')]">Submit</button>
+
+    <button @on:click="[alert(this.username)]">Submit</button>
+  </template>
+  ```
+  ```js
+  ActiveJS.newController("Directives", {
+    el: "#app",
+    Data() {
+      return {
+        username: "Hello World",
+      }
     }
   })
   ```
@@ -727,7 +748,9 @@ The `getters` property will be an object of methods. The method's job is to `get
     return user;
   }
 }
+```
 
+```js
 // using a 'getter' method in your view
 ActiveJS.newController("State_Management", {
   el: "#app",
@@ -737,7 +760,9 @@ ActiveJS.newController("State_Management", {
     }
   },
   methods: {
-    get
+    getUsers() {
+      ActiveJS.State.Get("getUser", {name: this.username});
+    }
   }
 })
 ```
@@ -760,6 +785,22 @@ As an example, lets say you want to update the user within the `model` called `"
     });
   }
 }
+```
+```js
+// using a 'getter' method in your view
+ActiveJS.newController("State_Management", {
+  el: "#app",
+  Data() {
+    return {
+      inputValue: "John"
+    }
+  },
+  methods: {
+    updateUser() {
+      ActiveJS.State.Commit("updateUser", {name: "Fred", newName: this.inputValue});
+    }
+  }
+})
 ```
 ## The Actions Object
 #### [back to top](#sections)
