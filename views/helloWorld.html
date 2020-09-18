@@ -1,77 +1,27 @@
 <template>
   <div class="container bg-light d-flex flex-col flex-center flex-align">
-    <button @on:click="reset" class="btn-p-lg bg-primary text-white shadow-sm">Reset</button>  
-    <div class="">
-      <button @on:click="updateBundle" class="btn-p-lg bg-primary text-white shadow-sm">Update</button>    
-      <div class="loop d-flex flex-align" @for="bundle in bundles">
-        <div class="">id: [bundle.id]</div>
-        <div class="">data: [bundle.data]</div>
+    <img src="./src/images/system/ActiveJS_Logo_Full.png" class="img-20-p">
+    <div class="content d-flex flex-col flex-align">
+      <h1 class="text-primary">Welcome to Your ActiveJS App!</h1>
+      <div class="help d-flex flex-col">
+        <div class="text-lg-bold text-center">Need help learning how to use ActiveJS? Just take a look at our documentation on our <a href="https://github.com/PostmanPat123/activeJS/tree/master">Github page</a></div>
       </div>
+      <button class="btn-p-sm bg-secondary border-secondary text-white shadow-xs" @on:click="clickButton">Click Me ({{counter}})</button>
     </div>
-
-    <div class="">
-      <button @on:click="updateBundle2" class="btn-p-lg bg-primary text-white shadow-sm">Update 2</button>
-      <div class="loop d-flex flex-align" @for="bundle in bundles2">
-        <div class="">id: [bundle.id]</div>
-        <div class="">data: [bundle.data]</div>
-      </div>
-    </div>
-
-    <!-- <div class="">{{test()}}</div> -->
-    <button @on:click="goToLoggedIn">Logged In</button>
   </div>
 </template>
 
 <script>
-  const Router = ActiveJS.Router;
   ActiveJS.newController('helloWorld', {
     el: "#app",
     Data() {
       return {
         counter: 0,
-        bundles: [],
-        bundles2: [],
       }
     },
-    _Mounted() {
-
-      this.bundles = [
-          {id: 1, data: "Foo"},
-          {id: 2, data: "Bar"},
-          {id: 3, data: "Fring"},
-          {id: 4, data: "Ding"}
-        ];
-
-    },
     methods: {
-      goToLoggedIn() {
-        Router.route('/loggedIn');
-      },
-      test() {
-        return this.counter;
-      },
       clickButton() {
         this.counter++;
-      },
-      reset() {
-        this.bundles = [];
-        this.bundles2 = [];
-      },
-      updateBundle() {
-        
-        this.bundles = [
-          {id: 5, data: "Foo"},
-          {id: 6, data: "Bar"},
-          {id: 7, data: "Fring"},
-          {id: 8, data: "Ding"}
-        ];
-
-      },
-      updateBundle2() {
-        
-        this.bundles2.push({id: 8, data: "Ding"});
-        this.bundles2 = this.bundles2;
-
       }
     }
   });
@@ -90,5 +40,7 @@
 }
 button {
   margin-top: 2%;
+  border-width: 1px;
+  border-style: solid;
 }
 </style>
