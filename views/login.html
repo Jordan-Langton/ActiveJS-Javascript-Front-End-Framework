@@ -1,0 +1,44 @@
+<template>
+    <div class="container bg-light d-flex flex-col flex-center flex-align">
+      <div class="">{{heading}}</div>
+      <button @on:click="login">login</button>
+    </div>
+  </template>
+  
+  <script>
+    const Router = ActiveJS.Router;
+    ActiveJS.newController('login', {
+      el: "#app",
+      Data() {
+        return {
+          heading: 'You are not logged in'
+        }
+      },
+      _Mounted() {        
+  
+      },
+      methods: {
+        login() {
+          window.loggedIn = true;
+          Router.route("/helloWorld");
+        }
+      }
+    });
+  </script>
+  
+  <style>
+  .container {
+    width: 100%;
+    height: 100%;
+  }
+  .content {
+    padding: 5% 0;
+  }
+  .help {
+    width: 55%;
+  }
+  button {
+    margin-top: 2%;
+  }
+  </style>
+  

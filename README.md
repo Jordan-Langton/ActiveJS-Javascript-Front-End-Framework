@@ -24,6 +24,7 @@
   - [Your Config Options](#your-config-options)
   - [Defining A Route](#defining-a-route)
   - [Passing Data To A View](#passing-data-to-a-view)
+  - [The beforeEach Life Cycle Hook](#the-beforeEach-life-cycle-hook)
 - [View Structure](#the-single-file-view)
   - [Template](#the-template)
   - [Style](#the-style)
@@ -190,6 +191,7 @@ ActiveJS.(whatever property you want to access)
       removeLastCrumb: () => {},
       route: (path="", params=null) => {},
       addCrumb: (crumb={path: "", params: null}) => {},
+      beforeEach: (callback=(to, from, done) => null) => {},
     }
     ```
 
@@ -268,7 +270,8 @@ A `route` is a page in with your application can go to. You need to define a rou
 const route = {
   path: '/yourPage', 
   handler: 'theSingleFileView.html', 
-  animate: ''
+  animate: '',
+  meta: {} // This is for any custom options/properties you want to add
 };
 ```
 
@@ -281,7 +284,8 @@ const singleProp = {
             :customData`, 
 
   handler: 'theSingleFileView.html', 
-  animate: ''
+  animate: '',
+  meta: {}
 };
 ```
 
@@ -293,7 +297,8 @@ const multiProp = {
             :cunstomData2`,
 
   handler: 'theSingleFileView.html', 
-  animate: ''
+  animate: '',
+  meta: {}
 };
 ```
 
@@ -305,8 +310,97 @@ const defaultValProp = {
             :cunstomData2=Hello World`,
 
   handler: 'theSingleFileView.html', 
-  animate: ''
+  animate: '',
+  meta: {}
 };
+```
+
+# The beforeEach Life Cycle Hook 
+#### [back to top](#sections)
+This hook is to allow you to do any specific checks before the route request finalizes and exicutes said route. Below is an example as to how you create it.
+```js
+Router.beforeEach((to, from, done) => {
+  //* custom code
+});
+```
+As you can see the callback has three main properties `( to, from, done )`. The 'to' property is the route object that was requested to go to. The 'from' property is the route object you are currently on and want to leave "from". And last but not least, the 'done' property. This is a callback to let the hook know you are "done" with whatever check you are performing on the route data. Take a look below to see what each of these properties look like:
+```js
+// the 'to' property
+const to = {
+  animate: undefined,
+  handler: "./newRoute.html",
+  meta: {},
+  params: false,
+  path: "/newRoute",
+};
+
+// the 'from' property
+const from = {
+  animate: undefined,
+  handler: "./currentRoute.html",
+  meta: {},
+  params: false,
+  path: "/currentRoute",
+};
+
+// the 'done' property
+// you can pass different options to the callback eg.
+
+// handle the route with the default behaviour
+done();
+
+// an error happened so don't do the default behaviour
+done({
+  error: true
+});
+
+/* 
+ * an error happened and you want to
+ * redirect the user to another view
+ */
+done({
+  error: true,
+   path: '/anotherView'
+});
+
+/*
+ * an error happened and you want to redirect
+ * the user to another view with custom params
+ */
+done({
+  error: true, 
+  path: '/anotherView', 
+  params: {
+    foo: 'bar'
+  }
+});
+
+```
+
+## beforeEach usage Example
+#### [back to top](#sections)
+```js
+Router.beforeEach((to, from, done) => {
+  
+  // does route require authentication
+  if (to.meta.requiresAuth) {
+
+    // is the user logged in
+    if (State.Get("isUserLoggedIn")) done();
+
+    // user not logged in
+    // redirect to login
+    else {
+      done({error: true, path: '/login'});
+    }
+  }
+
+  // any other view without the 'requiresAuth' meta tag
+  else {
+    done();
+  }
+
+});
 ```
 
 # The Single File View

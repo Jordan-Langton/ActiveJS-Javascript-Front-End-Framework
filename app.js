@@ -1,4 +1,7 @@
-import { createApp, Router } from "@jordan_langton/activejs";
+import {
+  createApp,
+  Router
+} from "@jordan_langton/activejs";
 import Store from "./public/app.state";
 
 //* list of library style sheets
@@ -12,12 +15,29 @@ const systemStyles = [
 //* custom components css files
 const componentStyles = [];
 
+window.loggedIn = false;
+
+//* setup a router life cycle method
+Router.beforeEach((to, from, done) => {
+  console.log(to);
+  if (to.meta.requiresAuth) {
+    if (window.loggedIn) done();
+    else {
+      done({error: true, path: '/login'});
+    }
+  }
+  else {
+    done();
+  }
+
+});
+
 createApp({
   "name": "ActiveJS Project",
-	"version": "1.0.0",
-	"environment": "Development",
-	"description": "This is a test application",
-	"systemTheme": "project-theme",
+  "version": "1.0.0",
+  "environment": "Development",
+  "description": "This is a test application",
+  "systemTheme": "project-theme",
   "systemStyles": systemStyles,
   "componentStyles": componentStyles,
   "interfaces": [],
@@ -43,7 +63,27 @@ createApp({
     DOM_MINIPULATION: false,
   },
   "routes": [
-    {path: '/helloWorld', handler: './views/helloWorld.html', animate: ''},
+    {
+      path: '/helloWorld',
+      handler: './views/helloWorld.html',
+      meta: {
+        requiresBrowsing: true
+      }
+    },
+    {
+      path: '/login',
+      handler: './views/login.html',
+      meta: {
+        requiresBrowsing: true
+      }
+    },
+    {
+      path: '/loggedIn',
+      handler: './views/loggedIn.html',
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 }, () => {
   Router.route("/helloWorld");
