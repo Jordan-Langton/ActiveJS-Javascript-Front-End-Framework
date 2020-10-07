@@ -1,24 +1,11 @@
 <template>
   <div class="container bg-light d-flex flex-col flex-center flex-align">
-    <button @on:click="reset" class="btn-p-lg bg-primary text-white shadow-sm">Reset</button>  
-    <div class="">
-      <button @on:click="updateBundle" class="btn-p-lg bg-primary text-white shadow-sm">Update</button>    
-      <div class="loop d-flex flex-align" @for="bundle in bundles">
-        <div class="">id: [bundle.id]</div>
-        <div class="">data: [bundle.data]</div>
-      </div>
-    </div>
+    <button @on:click="toggle" class="btn-p-sm bg-primary text-white shadow-sm">Reset</button>
 
-    <div class="">
-      <button @on:click="updateBundle2" class="btn-p-lg bg-primary text-white shadow-sm">Update 2</button>
-      <div class="loop d-flex flex-align" @for="bundle in bundles2">
-        <div class="">id: [bundle.id]</div>
-        <div class="">data: [bundle.data]</div>
-      </div>
-    </div>
+    <input id="tester" class="d-none" type="email" @if="show" @reflect="data.value" @on:input="logVal">
 
     <!-- <div class="">{{test()}}</div> -->
-    <button @on:click="goToLoggedIn">Logged In</button>
+<!--    <button @on:click="goToLoggedIn">Logged In</button>-->
   </div>
 </template>
 
@@ -29,6 +16,11 @@
     Data() {
       return {
         counter: 0,
+        show: false,
+        value: '',
+        data: {
+          value: ''
+        },
         bundles: [],
         bundles2: [],
       }
@@ -44,6 +36,21 @@
 
     },
     methods: {
+      toggle(e) {
+        this.show = !this.show;
+
+        if (this.show) {
+          document.getElementById('tester').classList.remove('d-none');
+        }
+        else {
+          document.getElementById('tester').classList.add('d-none');
+        }
+      },
+      logVal(e) {
+        let key = e.which || e.keyCode;
+        // debugger;
+        console.log(this.data.value);
+      },
       goToLoggedIn() {
         Router.route('/loggedIn');
       },
