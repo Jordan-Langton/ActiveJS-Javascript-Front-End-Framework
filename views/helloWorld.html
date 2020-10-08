@@ -1,8 +1,41 @@
 <template>
   <div class="container bg-light d-flex flex-col flex-center flex-align">
     <button @on:click="toggle" class="btn-p-sm bg-primary text-white shadow-sm">Reset</button>
+    <h2>{{data.name}}</h2>
+    <input id="tester" type="email" @reflect="data.name">
 
-    <input id="tester" class="d-none" type="email" @if="show" @reflect="data.value" @on:input="logVal">
+    <br>
+    <br>
+
+    <div id="updateItem-[i]" class="item bg-white shadow-xs" @for="info in bundles" :key="i">
+      <div class="default d-flex flex-align">
+        <div class="header d-flex flex-col">
+          <div class="heading text-md-bold">[info.heading]</div>
+          <div class="value text-sm">[info.value]</div>
+        </div>
+        <div class="buttons d-flex flex-align flex-center">
+          <button @on:click="showEditForm([info.type], [i])" class="btn-p-lg bg-secondary text-white shadow-sm">Edit</button>
+        </div>
+        <input type="text" @reflect="data.name" @on:input="logVal">
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <table>
+      <tr>
+        <th>Heading</th>
+        <th>Type</th>
+        <th>Value</th>
+      </tr>
+      <tr @for="data in bundles">
+        <td>[data.heading]</td>
+        <td>[data.type]</td>
+        <td>[data.value]</td>
+        <td>{{data.name}}</td>
+      </tr>
+    </table>
+
 
     <!-- <div class="">{{test()}}</div> -->
 <!--    <button @on:click="goToLoggedIn">Logged In</button>-->
@@ -16,10 +49,10 @@
     Data() {
       return {
         counter: 0,
-        show: false,
+        show: true,
         value: '',
         data: {
-          value: ''
+          name: 'Hello World',
         },
         bundles: [],
         bundles2: [],
@@ -27,29 +60,34 @@
     },
     _Mounted() {
 
-      this.bundles = [
-          {id: 1, data: "Foo"},
-          {id: 2, data: "Bar"},
-          {id: 3, data: "Fring"},
-          {id: 4, data: "Ding"}
+      setTimeout(() => {
+        this.bundles = [
+          {value: 1, heading: "Foo", type: 'NODE'},
+          {value: 2, heading: "Bar", type: 'NODE'},
+          {value: 3, heading: "Fring", type: 'NODE'},
+          {value: 4, heading: "Ding", type: 'NODE'}
         ];
+      }, 2000)
 
     },
     methods: {
       toggle(e) {
-        this.show = !this.show;
+        this.data.name = '';
+        this.bundles = [];
 
-        if (this.show) {
-          document.getElementById('tester').classList.remove('d-none');
-        }
-        else {
-          document.getElementById('tester').classList.add('d-none');
-        }
+        setTimeout(() => {
+          this.bundles = [
+            {value: 1, heading: "Foo", type: 'NODE'},
+            {value: 2, heading: "Bar", type: 'NODE'},
+            {value: 3, heading: "Fring", type: 'NODE'},
+            {value: 4, heading: "Ding", type: 'NODE'}
+          ];
+        }, 2000);
       },
       logVal(e) {
         let key = e.which || e.keyCode;
         // debugger;
-        console.log(this.data.value);
+        console.log(this.data.name);
       },
       goToLoggedIn() {
         Router.route('/loggedIn');
