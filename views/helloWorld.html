@@ -16,6 +16,7 @@
         <div class="buttons d-flex flex-align flex-center">
           <button @on:click="showEditForm([info.type], [i])" class="btn-p-lg bg-secondary text-white shadow-sm">Edit</button>
         </div>
+        <div class="" @for="data in bundles2">[data.other]</div>
         <input type="text" @reflect="data.name" @on:input="logVal">
       </div>
     </div>
@@ -54,20 +55,28 @@
         data: {
           name: 'Hello World',
         },
-        bundles: [],
-        bundles2: [],
+        bundles: [
+          // {value: 1, heading: "Foo", type: 'NODE'},
+          // {value: 2, heading: "Bar", type: 'NODE'},
+          // {value: 3, heading: "Fring", type: 'NODE'},
+          // {value: 4, heading: "Ding", type: 'NODE'}
+        ],
+        bundles2: [
+          {value: 1, other: "My", type: 'NODE'},
+          {value: 2, other: "Name", type: 'NODE'},
+          {value: 3, other: "Is", type: 'NODE'},
+          {value: 4, other: "Hello", type: 'NODE'}
+        ],
       }
     },
     _Mounted() {
 
-      setTimeout(() => {
-        this.bundles = [
-          {value: 1, heading: "Foo", type: 'NODE'},
-          {value: 2, heading: "Bar", type: 'NODE'},
-          {value: 3, heading: "Fring", type: 'NODE'},
-          {value: 4, heading: "Ding", type: 'NODE'}
-        ];
-      }, 2000)
+      this.bundles = [
+        {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 3, heading: "Fring", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]}
+      ];
 
     },
     methods: {
