@@ -1,7 +1,7 @@
 <template>
   <div class="container bg-light d-flex flex-col flex-center flex-align">
     <button @on:click="toggle" class="btn-p-sm bg-primary text-white shadow-sm">Reset</button>
-    <h2>{{data.name}}</h2>
+    <h2 @on:click="logVal([i], [info.heaing])" @for="info in bundles" :key="i">[info.value]</h2>
     <input id="tester" type="email" @reflect="data.name">
 
     <br>
@@ -16,7 +16,7 @@
         <div class="buttons d-flex flex-align flex-center">
           <button @on:click="showEditForm([info.type], [i])" class="btn-p-lg bg-secondary text-white shadow-sm">Edit</button>
         </div>
-        <div class="" @for="data in bundles2">[data.other]</div>
+        <div @on:click="logVal([i], [info.heaing])" class="" @for="data in bundles2">[data.other]</div>
         <input type="text" @reflect="data.name" @on:input="logVal">
       </div>
     </div>
@@ -75,7 +75,24 @@
         {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
         {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
         {value: 3, heading: "Fring", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
-        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]}
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 3, heading: "Fring", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 3, heading: "Fring", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
+        {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
       ];
 
     },
@@ -93,10 +110,9 @@
           ];
         }, 2000);
       },
-      logVal(e) {
-        let key = e.which || e.keyCode;
-        // debugger;
-        console.log(this.data.name);
+      logVal(i, value) {
+        console.log(i);
+        console.log(value);
       },
       goToLoggedIn() {
         Router.route('/loggedIn');
@@ -133,8 +149,8 @@
 
 <style>
 .container {
-  width: 100%;
-  height: 100%;
+  /*width: 100%;*/
+  /*height: 100%;*/
 }
 .content {
   padding: 5% 0;

@@ -9,6 +9,14 @@
     "dev": "webpack-dev-server --history-api-fallback",
     "test": "jest"
   },
+  "jest": {
+    "roots": [
+      "tests"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PostmanPat123/activeJS.git"
