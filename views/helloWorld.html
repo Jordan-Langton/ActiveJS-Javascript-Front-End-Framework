@@ -16,7 +16,7 @@
         <div class="buttons d-flex flex-align flex-center">
           <button @on:click="showEditForm([info.type], [i])" class="btn-p-lg bg-secondary text-white shadow-sm">Edit</button>
         </div>
-        <div @on:click="logVal([i], [info.heaing])" class="" @for="data in bundles2">[data.other]</div>
+        <div @on:click="logVal([j], [info.other])" class="" @for="data in bundles2" :key="j">[data.other]</div>
         <input type="text" @reflect="data.name" @on:input="logVal">
       </div>
     </div>
@@ -70,7 +70,7 @@
       }
     },
     _Mounted() {
-      setTimeout(() => {
+      // setTimeout(() => {
         this.bundles = [
           {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
           {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
@@ -94,7 +94,7 @@
           {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
           {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
         ];
-      }, 2000);
+      // }, 2000);
 
     },
     methods: {
