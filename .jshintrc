@@ -1,0 +1,26 @@
+{
+  "browser": true
+, "bitwise": true
+, "esversion": 6
+, "undef": true
+, "trailing": true
+, "quotmark": false
+, "indent": 4
+, "unused": "vars"
+, "latedef": "nofunc"
+, "globals": {
+
+  "ActiveJS": true,
+  "$scope": true,
+
+  "window": true,
+  "document": true,
+  "alert": true,
+  "console": true,
+  "$": true,
+
+  "module": true,
+  "exports": true,
+  "require": false
+}
+}
