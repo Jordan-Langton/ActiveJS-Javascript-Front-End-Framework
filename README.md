@@ -634,12 +634,13 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   })
   ```
 
-  You can also put expressions in the `@if` directive. All you need to do is place "[expression]" inside the quotations of the `@if`.
+  You can also put expressions in the `@if` directive. All you need to do is place "#expression#" inside the
+   quotations of the `@if`.
   Just make sure to use the keyword `this` and then the value that you are trying to access from your view model.
   See below for example.
   ```html
   <template>
-    <div class="errMsg" @if="[this.error == false]">
+    <div class="errMsg" @if="# this.error == false #">
       Please fill in all required fields
     </div>
   </template>
@@ -648,13 +649,16 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
 - ## bind Directive
   #### [back to top](#sections)
   The `@bind` directive is very useful. You can use this directive to bind a property in your View Controller to an `attribute` on an element. For instance, if you want to apply a class to an element if an error occurs. You would use the `@Bind:class` attribute to do so. See the table below for infomation on what you can bind to.
-
+>##### NOTE : The @bind directive does not yet support nested properties
   Binding | Type | Description
   ------- | ---- | -----------
   @bind:id|`String`|Allows you to bind your data property to the `id` of the element
   @bind:class|`String`|Allows you to bind your data property to the `class` of the element
   @bind:disabled|`Boolean`|Will add a `disbaled` attribute to the element depending on the `value` of your data property
+  @bind:checked|`Boolean`|Will add a `checked` attribute to the element depending on the `value` of your data property
   @bind:href|`String`|Will set the `href` attribute to the value of your data property
+  @bind:style|`String`|Will set the `style` attribute to the value of your data property
+  @bind:type|`String`|Will set the `type` attribute to the value of your data property
 
   ```html
   <template>
@@ -673,6 +677,7 @@ Directives are special `attributes` prefixed with the `"@"` symbol that ActiveJS
   @on:change|This allows you to add an `onchange` event to your element
   @on:submit|This allows you to add a `submit` event to a form
   @on:scroll|This allows you to add a `scroll` event to your element
+  @on:input|This allows you to add a `input` event to your element
 
   ```html
   <template>
