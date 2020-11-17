@@ -45,6 +45,7 @@ createApp({
     INLINE_ROUTES_CHECKED: false,
     DOM_MINIPULATION: false,
   },
+  "useURLBasedRouting": false,
   "routes": [{
       path: '/helloWorld',
       handler: './views/helloWorld.html',
