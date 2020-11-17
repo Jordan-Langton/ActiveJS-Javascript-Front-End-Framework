@@ -92,6 +92,7 @@ ActiveJS.(whatever property you want to access)
       "systemStyles": ['messages', 'anamations', 'views', 'fonts'],
       "interfaces": [],
       "store": Store, // if you passed a global store to ActiveJS
+      "useURLBasedRouting": false, // tells fremework if it must use the url to route when 'Router.route()' is used
       "routes": []
     }
     ```
