@@ -15,23 +15,6 @@ const systemStyles = [
 //* custom components css files
 const componentStyles = [];
 
-window.loggedIn = false;
-
-//* setup a router life cycle method
-Router.beforeEach((to, from, done) => {
-  console.log(to);
-  if (to.meta.requiresAuth) {
-    if (window.loggedIn) done();
-    else {
-      done({error: true, path: '/login'});
-    }
-  }
-  else {
-    done();
-  }
-
-});
-
 createApp({
   "name": "ActiveJS Project",
   "version": "1.0.0",
