@@ -1,156 +1,44 @@
 <template>
-  <div class="container bg-light d-flex flex-col flex-center flex-align">
-<!--    <button @click="toggle" class="btn-p-sm bg-primary text-white shadow-sm">Reset</button>-->
-<!--    <h2 @on:click="logVal([i], [info.heaing])" @for="info in bundles" :key="i">[info.value]</h2>-->
-<!--    <input id="tester" type="email" @reflect="data.name">-->
-
-<!--    <br>-->
-<!--    <br>-->
-
-<!--    <div id="updateItem-[i]" class="item bg-white shadow-xs" @for="info in bundles" :key="i">-->
-<!--      <div class="default d-flex flex-align">-->
-<!--        <div class="header d-flex flex-col">-->
-<!--          <div @if="#[info.value] >= 3#" class="heading text-lg-bold">[info.value]</div>-->
-<!--          <div class="heading text-md-bold">[info.heading]</div>-->
-<!--          <div class="value text-sm">[info.value]</div>-->
-<!--        </div>-->
-<!--        <div class="buttons d-flex flex-align flex-center">-->
-<!--          <button @on:click="showEditForm([info.type], [i])" class="btn-p-lg bg-secondary text-white shadow-sm">Edit</button>-->
-<!--        </div>-->
-<!--        <div @on:click="logVal([j], [info.other])" class="" @for="data in bundles2" :key="j">[data.other]</div>-->
-<!--        <input type="text" @reflect="data.name" @on:input="logVal">-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <br>-->
-<!--    <br>-->
-<!--    <table>-->
-<!--      <tr>-->
-<!--        <th>Heading</th>-->
-<!--        <th>Type</th>-->
-<!--        <th>Value</th>-->
-<!--      </tr>-->
-<!--      <tr @for="data in bundles">-->
-<!--        <td>[data.heading]</td>-->
-<!--        <td>[data.type]</td>-->
-<!--        <td>[data.value]</td>-->
-<!--        <td>{{data.name}}</td>-->
-<!--      </tr>-->
-<!--    </table>-->
-
-
-    <button :class="value" @click="logVal(1, @click)">Button Click</button>
-    <button @on:click="logVal(1, @on:click)">Button Click</button>
-    <br>
-    <input type="text" @change="logVal(@input, this.value)">
-    <input type="text" @on:change="logVal(@on:input, this.value)">
-
-
-    <!-- <div class="">{{test()}}</div> -->
-<!--    <button @on:click="goToLoggedIn">Logged In</button>-->
-  </div>
+	<div class="container bg-light d-flex flex-col flex-center flex-align">
+		<button @click="clickButton">Click Me ({{counter}})</button>
+	</div>
 </template>
 
 <script>
-  const Router = ActiveJS.Router;
-  ActiveJS.newController('helloWorld', {
-    el: "#app",
-    Data() {
-      return {
-        counter: 0,
-        show: true,
-        value: 'test',
-        data: {
-          name: 'Hello World',
-        },
-        bundles: [
-          // {value: 1, heading: "Foo", type: 'NODE'},
-          // {value: 2, heading: "Bar", type: 'NODE'},
-          // {value: 3, heading: "Fring", type: 'NODE'},
-          // {value: 4, heading: "Ding", type: 'NODE'}
-        ],
-        bundles2: [
-          {value: 1, other: "My", type: 'NODE'},
-          {value: 2, other: "Name", type: 'NODE'},
-          {value: 3, other: "Is", type: 'NODE'},
-          {value: 4, other: "Hello", type: 'NODE'}
-        ],
-      }
-    },
-    _Mounted() {
-      // setTimeout(() => {
-        this.bundles = [
-          {value: 1, heading: "Foo", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
-          {value: 2, heading: "Bar", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
-          {value: 3, heading: "Fring", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
-          {value: 4, heading: "Ding", type: 'NODE', all: [{value: 'value 1'}, {value: 'value 2'}]},
-        ];
-      // }, 2000);
-
-    },
-    methods: {
-      toggle(e) {
-        this.data.name = '';
-        this.bundles = [];
-
-        setTimeout(() => {
-          this.bundles = [
-            {value: 1, heading: "Foo", type: 'NODE'},
-            {value: 2, heading: "Bar", type: 'NODE'},
-            {value: 3, heading: "Fring", type: 'NODE'},
-            {value: 4, heading: "Ding", type: 'NODE'}
-          ];
-        }, 2000);
-      },
-      logVal(i, value) {
-        console.log(i);
-        console.log(value);
-      },
-      goToLoggedIn() {
-        Router.route('/loggedIn');
-      },
-      test() {
-        return this.counter;
-      },
-      clickButton() {
-        this.counter++;
-      },
-      reset() {
-        this.bundles = [];
-        this.bundles2 = [];
-      },
-      updateBundle() {
-        
-        this.bundles = [
-          {id: 5, data: "Foo"},
-          {id: 6, data: "Bar"},
-          {id: 7, data: "Fring"},
-          {id: 8, data: "Ding"}
-        ];
-
-      },
-      updateBundle2() {
-        
-        this.bundles2.push({id: 8, data: "Ding"});
-        this.bundles2 = this.bundles2;
-
-      }
-    }
-  });
+	const Router = ActiveJS.Router;
+	ActiveJS.newController('helloWorld', {
+		el: "#app",
+		Data() {
+			return {
+				counter: 0,
+			}
+		},
+		_Mounted() {
+		
+		},
+		methods: {
+			clickButton() {
+				this.counter++;
+			},
+		}
+	});
 </script>
 
 <style>
-.container {
-  /*width: 100%;*/
-  /*height: 100%;*/
-}
-.content {
-  padding: 5% 0;
-}
-.help {
-  width: 55%;
-}
-button {
-  margin-top: 2%;
-}
+	.container {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.content {
+		padding: 5% 0;
+	}
+	
+	.help {
+		width: 55%;
+	}
+	
+	button {
+		margin-top: 2%;
+	}
 </style>
